@@ -1,0 +1,114 @@
+# CSCM-IoMT Preprocessing Configuration
+
+# ---------------------------------------------------------
+# General
+# ---------------------------------------------------------
+seed: 42
+
+# ---------------------------------------------------------
+# PhysioNet Preprocessing
+# ---------------------------------------------------------
+physionet:
+  # Split ratios
+  split:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+
+  # Candidates for temporal grid resolution (in minutes)
+  temporal_grids:
+    - 30
+    - 60
+    - 120
+
+  # Channels to process
+  primary_channels:
+    - HR
+    - NISysABP
+    - NIDiasABP
+    - NIMAP
+    - Temp
+  secondary_channels:
+    - RespRate
+
+  # Max gaps for missingness imputation (in minutes)
+  max_imputation_gaps:
+    - 30
+    - 60
+    - 120
+
+  # Imputation strategies (causal vs offline)
+  imputation_modes:
+    - "causal"   # Forward fill only
+    - "offline"  # Linear interpolation allowed
+
+  # Minimum temporal points required in a single window to be valid
+  min_temporal_points: 4
+
+  # Candidate window sizes (in hours)
+  window_sizes_hours:
+    - 2
+    - 4
+    - 6
+    - 12
+
+  # Window overlap (fraction: 0.0 to 1.0)
+  window_overlap: 0.5
+
+  # Minimum % of non-missing channel values required for a window to be usable
+  coverage_thresholds:
+    - 0.50
+    - 0.70
+    - 0.80
+
+  # Normalization candidates
+  normalization_methods:
+    - "zscore"
+    - "robust"
+
+
+# ---------------------------------------------------------
+# WESAD Preprocessing
+# ---------------------------------------------------------
+wesad:
+  # Split logic (Subject-level)
+  split:
+    train_subjects: ["S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"]
+    val_subjects: ["S13", "S14"]
+    test_subjects: ["S15", "S16", "S17"]
+
+  # Candidate target sampling rates (in Hz)
+  target_rates_hz:
+    - 4
+    - 8
+    - 16
+    - 32
+
+  # Candidate window sizes (in seconds)
+  window_sizes_seconds:
+    - 30
+    - 60
+    - 120
+
+  # Window overlap (fraction)
+  window_overlap: 0.5
+
+  # Label purity threshold candidates
+  purity_thresholds:
+    - 0.80
+    - 0.90
+    - 1.00
+
+  # Labels to map/keep
+  valid_labels:
+    - 1  # baseline
+    - 2  # stress
+    - 3  # amusement
+    - 4  # meditation
+  transient_label: 0
+  ignore_labels: [5, 6, 7]
+
+  # Normalization candidates
+  normalization_methods:
+    - "zscore"
+    - "robust"

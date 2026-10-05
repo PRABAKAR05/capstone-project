@@ -1,0 +1,33 @@
+# Phase 6 Configuration
+version: "1.0"
+
+# Reproducibility
+seeds: [42, 123, 2024]
+
+# Model Configuration
+model:
+  hidden_channels: 64    # Temporal block base dimension
+  relation_dim: 64       # D_relation (Explicit Pairwise Consistency dimension)
+
+# Training Configuration
+training:
+  batch_size: 128
+  epochs: 50
+  patience: 10
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  
+# Dataset Config References
+physionet:
+  num_channels: 5
+  fusion_dim: 256  # To ensure parameter parity with Model C (approx 446K)
+  channels: ["HR", "NISysABP", "NIDiasABP", "NIMAP", "Temp"]
+
+wesad:
+  num_channels: 14
+  fusion_dim: 90  # To ensure parameter parity with Model C (approx 448K)
+  channels: [
+    "chest_ACC_0", "chest_ACC_1", "chest_ACC_2", "chest_ECG", "chest_EDA",
+    "chest_EMG", "chest_Resp", "chest_Temp", "wrist_ACC_0", "wrist_ACC_1",
+    "wrist_ACC_2", "wrist_BVP", "wrist_EDA", "wrist_TEMP"
+  ]

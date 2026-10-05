@@ -1,0 +1,80 @@
+# ============================================================
+# CSCM-IoMT Dataset & Project Paths Configuration
+# ============================================================
+#
+# PURPOSE:
+#   This file stores configured paths to raw datasets and
+#   project output directories.
+#
+# IMPORTANT:
+#   - Raw dataset files must NEVER be modified.
+#   - Paths below are relative to the project root unless they
+#     are absolute paths (start with a drive letter or /).
+#   - Path resolution and validation is performed by
+#     src/utils/config.py — this YAML is declarative only.
+#
+# USAGE:
+#   The system reads this file at startup, resolves relative
+#   paths against the project root, and validates existence.
+#
+# ============================================================
+
+# Project root reference
+# The config loader resolves this automatically.
+# Leave as "." to use the directory containing this file's
+# parent (i.e., the capstone_PRABAKAR/ directory).
+project_root: "."
+
+# ============================================================
+# DATASET PATHS
+# ============================================================
+datasets:
+
+  physionet:
+    # PhysioNet/CinC Challenge 2012
+    # Official source: https://physionet.org/content/challenge-2012/1.0.0/
+    # Local path: relative to project root
+    set_a: "data/raw/physionet/set-a"
+    set_b: "data/raw/physionet/set-b"
+    set_c_archive: "data/raw/physionet/set-c.tar.gz"
+    outcomes_a: "data/raw/physionet/Outcomes-a.txt"
+    outcomes_b: "data/raw/physionet/Outcomes-b.txt"
+    outcomes_c: "data/raw/physionet/Outcomes-c.txt"
+
+  wesad:
+    # WESAD — Wearable Stress and Affect Detection
+    # Official source: https://ub-madoc.bib.uni-mannheim.de/45817/
+    # Available subjects: S2-S17 (S1, S12 absent — sensor malfunction per documentation)
+    root: "data/raw/WESAD"
+    available_subjects:
+      - "S2"
+      - "S3"
+      - "S4"
+      - "S5"
+      - "S6"
+      - "S7"
+      - "S8"
+      - "S9"
+      - "S10"
+      - "S11"
+      - "S13"
+      - "S14"
+      - "S15"
+      - "S16"
+      - "S17"
+    # S1 and S12 are intentionally absent (sensor malfunction - NOT an error)
+    absent_subjects:
+      - "S1"
+      - "S12"
+
+# ============================================================
+# OUTPUT PATHS (relative to project root)
+# ============================================================
+outputs:
+  processed: "data/processed"
+  generated_attacks: "data/generated_attacks"
+  results: "results"
+  dataset_audit: "results/dataset_audit"
+  logs: "results/logs"
+  splits: "data/processed/splits"
+  checkpoints: "models"

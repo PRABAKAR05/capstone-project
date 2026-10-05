@@ -1,0 +1,123 @@
+# ============================================================
+# PhysioNet/CinC Challenge 2012 — Dataset Configuration
+# ============================================================
+# This file controls PhysioNet-specific settings.
+# Final channel selection MUST be made after dataset audit.
+# ============================================================
+
+dataset:
+  name: "PhysioNet CinC Challenge 2012"
+  version: "1.0.0"
+  url: "https://physionet.org/content/challenge-2012/1.0.0/"
+  citation: "Silva et al., 2012"
+
+# ============================================================
+# RECORD FORMAT
+# ============================================================
+record:
+  format: "long"          # Time, Parameter, Value
+  time_column: "Time"
+  parameter_column: "Parameter"
+  value_column: "Value"
+  time_format: "HH:MM"   # elapsed time since ICU admission
+  missing_sentinel: -1   # PhysioNet uses -1 for unavailable measurements
+  header_line: "Time,Parameter,Value"
+
+# ============================================================
+# METADATA FIELDS
+# These are NOT physiological sensor channels.
+# They are patient descriptors present at t=00:00.
+# ============================================================
+metadata_fields:
+  - "RecordID"
+  - "Age"
+  - "Gender"
+  - "Height"
+  - "Weight"
+  - "ICUType"
+
+# ============================================================
+# PARAMETER CLASSIFICATION
+# (Preliminary — to be validated by audit)
+# ============================================================
+parameter_classification:
+
+  # High-frequency vital signs (primary candidates)
+  physiological_vital:
+    - "HR"
+    - "RespRate"
+    - "SpO2"
+    - "Temp"
+    - "SysABP"
+    - "DiasABP"
+    - "MAP"
+    - "NISysABP"
+    - "NIDiasABP"
+    - "NIMAP"
+
+  # Laboratory values (intermittent)
+  laboratory:
+    - "BUN"
+    - "Creatinine"
+    - "Glucose"
+    - "HCO3"
+    - "HCT"
+    - "Mg"
+    - "Na"
+    - "K"
+    - "WBC"
+    - "Platelets"
+    - "Lactate"
+    - "ALT"
+    - "AST"
+    - "Bilirubin"
+    - "TroponinI"
+    - "TroponinT"
+    - "PaCO2"
+    - "PaO2"
+    - "pH"
+    - "FiO2"
+    - "Urine"
+
+  # Clinical scores
+  clinical_score:
+    - "GCS"
+    - "MechVent"
+
+# ============================================================
+# CANDIDATE CHANNELS FOR CSCM
+# (PRELIMINARY — confirmed after audit)
+# NOTE: Final selection requires coverage > threshold AND
+#       physiological relevance AND graph-formable relationships.
+# ============================================================
+candidate_channels:
+  primary: []           # Populated after audit
+  secondary: []         # Populated after audit
+  coverage_threshold: 0.70   # Minimum record-coverage fraction for consideration
+
+# ============================================================
+# WINDOWING (candidate — not finalized until Phase 3)
+# ============================================================
+windowing:
+  window_size_hours: 1     # Candidate starting window
+  stride_hours: 0.5
+  temporal_resolution_minutes: 60   # Grid resolution for irregular-to-grid
+  max_interpolation_gap_minutes: 120  # Max gap before marking as missing
+
+# ============================================================
+# NORMALIZATION (Phase 5 — training data only)
+# ============================================================
+normalization:
+  method: "z_score"     # Fitted on training records only
+  clip_outliers: true
+  clip_std_range: 5.0
+
+# ============================================================
+# SPLITTING
+# ============================================================
+splitting:
+  strategy: "record_level"    # No record appears in multiple splits
+  train_fraction: 0.70
+  val_fraction: 0.15
+  test_fraction: 0.15
+  random_seed: 42

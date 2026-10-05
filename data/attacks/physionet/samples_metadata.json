@@ -1,0 +1,1163 @@
+[
+  {
+    "attack_family": "additive",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 42,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": -10.134842872619629
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 0
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 43,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.05
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 1
+  },
+  {
+    "attack_family": "drift",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 44,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": 7.935371398925781
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 2
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 45,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "1": 0.05
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "2": -0.05
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 3
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 46,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "0": 10.134842872619629
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "deltas": {
+              "1": -12.016399383544922
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "2": 7.935371398925781
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "AdditiveShiftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 4
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 47,
+    "attacked_channels": [],
+    "window_index": 5
+  },
+  {
+    "attack_family": "additive",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 48,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": -20.269685745239258
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 6
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 49,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": -0.1
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 7
+  },
+  {
+    "attack_family": "drift",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 50,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": 15.870742797851562
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 8
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 51,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "max_deltas": {
+              "1": -24.032798767089844
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "max_deltas": {
+              "2": 15.870742797851562
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "TemporalDriftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 9
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 52,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "0": 20.269685745239258
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "deltas": {
+              "1": -24.032798767089844
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "2": 15.870742797851562
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "AdditiveShiftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 10
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 53,
+    "attacked_channels": [],
+    "window_index": 11
+  },
+  {
+    "attack_family": "additive",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 54,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": -40.539371490478516
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 12
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 55,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.2
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 13
+  },
+  {
+    "attack_family": "drift",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 56,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": -31.741485595703125
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 14
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 57,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "max_deltas": {
+              "1": -48.06559753417969
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "max_deltas": {
+              "2": 31.741485595703125
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "TemporalDriftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 15
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 58,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "0": 0.2
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.2
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "2": -0.2
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 16
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 59,
+    "attacked_channels": [],
+    "window_index": 17
+  },
+  {
+    "attack_family": "additive",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 60,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": -10.134842872619629
+      }
+    },
+    "is_plausible": true,
+    "window_index": 18
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 61,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": -0.05
+      }
+    },
+    "is_plausible": true,
+    "window_index": 19
+  },
+  {
+    "attack_family": "drift",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 62,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": -7.935371398925781
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 20
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 63,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.05
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "2": 0.05
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 21
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 64,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "max_deltas": {
+              "0": 10.134842872619629
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "max_deltas": {
+              "1": -12.016399383544922
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "max_deltas": {
+              "2": 7.935371398925781
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "TemporalDriftAttack"
+    },
+    "is_plausible": true,
+    "window_index": 22
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 65,
+    "attacked_channels": [],
+    "window_index": 23
+  },
+  {
+    "attack_family": "additive",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 66,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": 20.269685745239258
+      }
+    },
+    "is_plausible": true,
+    "window_index": 24
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 67,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.1
+      }
+    },
+    "is_plausible": true,
+    "window_index": 25
+  },
+  {
+    "attack_family": "drift",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 68,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": -15.870742797851562
+      }
+    },
+    "is_plausible": true,
+    "window_index": 26
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 69,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.1
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "2": 0.1
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 27
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 70,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "0": 20.269685745239258
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "deltas": {
+              "1": -24.032798767089844
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "deltas": {
+              "2": -15.870742797851562
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "AdditiveShiftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 28
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 71,
+    "attacked_channels": [],
+    "window_index": 29
+  },
+  {
+    "attack_family": "additive",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 72,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": 40.539371490478516
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 30
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 73,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.2
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 31
+  },
+  {
+    "attack_family": "drift",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 74,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": -31.741485595703125
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 32
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 75,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "positive",
+          "meta": {
+            "deltas": {
+              "1": 48.06559753417969
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "deltas": {
+              "2": -31.741485595703125
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "AdditiveShiftAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 33
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 76,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "0": 0.2
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.2
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "2": 0.2
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 34
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 77,
+    "attacked_channels": [],
+    "window_index": 35
+  },
+  {
+    "attack_family": "additive",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 78,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": 10.134842872619629
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 36
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 79,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": -0.05
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 37
+  },
+  {
+    "attack_family": "drift",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 80,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": 7.935371398925781
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 38
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 81,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.05
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "2": 0.05
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 39
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "low",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 82,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "0": 0.05
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "1": -0.05
+            }
+          }
+        },
+        "2": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "2": 0.05
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack",
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 40
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 83,
+    "attacked_channels": [],
+    "window_index": 41
+  },
+  {
+    "attack_family": "additive",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 84,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": 20.269685745239258
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 42
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 85,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.1
+      }
+    },
+    "is_plausible": true,
+    "window_index": 43
+  },
+  {
+    "attack_family": "drift",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 86,
+    "attacked_channels": [
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "max_deltas": {
+        "2": 15.870742797851562
+      }
+    },
+    "is_plausible": true,
+    "window_index": 44
+  },
+  {
+    "attack_family": "coordinated_2",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 87,
+    "attacked_channels": [
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "1": {
+          "direction": "positive",
+          "meta": {
+            "alphas": {
+              "1": 0.1
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "alphas": {
+              "2": -0.1
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "MultiplicativeBiasAttack"
+    },
+    "is_plausible": true,
+    "window_index": 45
+  },
+  {
+    "attack_family": "coordinated_3",
+    "severity": "medium",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 88,
+    "attacked_channels": [
+      "HR",
+      "NISysABP",
+      "NIDiasABP"
+    ],
+    "strategy_meta": {
+      "coordinated": {
+        "0": {
+          "direction": "positive",
+          "meta": {
+            "max_deltas": {
+              "0": 20.269685745239258
+            }
+          }
+        },
+        "1": {
+          "direction": "negative",
+          "meta": {
+            "max_deltas": {
+              "1": -24.032798767089844
+            }
+          }
+        },
+        "2": {
+          "direction": "negative",
+          "meta": {
+            "max_deltas": {
+              "2": -15.870742797851562
+            }
+          }
+        }
+      },
+      "coordinated_strategy": "TemporalDriftAttack"
+    },
+    "is_plausible": true,
+    "window_index": 46
+  },
+  {
+    "attack_family": "clean",
+    "severity": "none",
+    "attack_start": 0,
+    "attack_end": 0,
+    "seed": 89,
+    "attacked_channels": [],
+    "window_index": 47
+  },
+  {
+    "attack_family": "additive",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 90,
+    "attacked_channels": [
+      "HR"
+    ],
+    "strategy_meta": {
+      "deltas": {
+        "0": 40.539371490478516
+      }
+    },
+    "is_plausible": true,
+    "window_index": 48
+  },
+  {
+    "attack_family": "multiplicative",
+    "severity": "high",
+    "attack_start": 2,
+    "attack_end": 4,
+    "seed": 91,
+    "attacked_channels": [
+      "NISysABP"
+    ],
+    "strategy_meta": {
+      "alphas": {
+        "1": 0.2
+      },
+      "plausibility_violation": "Contains NaN values"
+    },
+    "is_plausible": false,
+    "window_index": 49
+  }
+]

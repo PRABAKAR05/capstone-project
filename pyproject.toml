@@ -1,0 +1,44 @@
+[project]
+name = "cscm-iomt"
+version = "0.1.0"
+description = "Coordinated Multi-Channel False Data Injection Attack Detection Using Physiology-Aware Cross-Sensor Consistency Modeling in IoMT"
+authors = [
+    { name = "PRABAKAR", email = "" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = [
+    "IoMT",
+    "cybersecurity",
+    "false-data-injection",
+    "physiological-signals",
+    "graph-neural-networks",
+    "anomaly-detection",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Security",
+]
+
+[project.urls]
+Repository = "https://github.com/PRABAKAR/cscm-iomt"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+log_cli = true
+log_cli_level = "WARNING"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "scripts/*"]
+
+[tool.coverage.report]
+show_missing = true

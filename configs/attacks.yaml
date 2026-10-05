@@ -1,0 +1,101 @@
+# CSCM-IoMT Phase 4 Attack Configuration
+
+version: "1.0"
+seeds: [42, 123, 2024]
+
+# Severity levels configure the scaling factor for perturbation.
+# These scales are multiplied by the train-derived standard deviation (or IQR) of the channel.
+severity:
+  low:
+    scale: 0.5
+  medium:
+    scale: 1.0
+  high:
+    scale: 2.0
+
+# Direction configures whether the perturbation is positive, negative, or bidirectional (randomized per sample)
+directions: ["positive", "negative", "bidirectional"]
+
+# Duration configures what fraction of the window is attacked.
+# E.g., 0.5 means the last 50% of the window is modified.
+duration:
+  fraction: 0.5
+
+# Composition of the generated benchmark (for sample generation, we will just cycle through these)
+# These represent the desired final proportions
+composition:
+  clean: 0.25
+  single_channel: 0.25
+  coordinated_2: 0.25
+  coordinated_3: 0.25
+
+# PhysioNet specific attack configuration
+physionet:
+  relationships:
+    primary:
+      - name: "Sys_Dia_MAP_Inconsistency"
+        type: "coordinated_2"
+        channels: ["NISysABP", "NIDiasABP"]
+        rationale: "Perturb Sys and Dia in opposite directions, or same direction but large magnitude, explicitly violating observed MAP without modifying MAP itself."
+    exploratory:
+      - name: "HR_Temp_Systemic"
+        type: "coordinated_2"
+        channels: ["HR", "Temp"]
+        rationale: "Perturb HR and Temp to break their natural systemic correlation."
+        
+  plausibility_bounds:
+    HR: {min: 30.0, max: 220.0}
+    NISysABP: {min: 40.0, max: 250.0}
+    NIDiasABP: {min: 20.0, max: 150.0}
+    NIMAP: {min: 30.0, max: 180.0}
+    Temp: {min: 30.0, max: 42.0}
+
+# WESAD specific attack configuration
+wesad:
+  relationships:
+    primary:
+      - name: "ECG_BVP_Timing"
+        type: "coordinated_2"
+        channels: ["chest_ECG", "wrist_BVP"]
+        rationale: "Perturb ECG and BVP (e.g. drift) to desynchronize their expected pulse transit time relationship."
+      - name: "EDA_EDA_Systemic"
+        type: "coordinated_2"
+        channels: ["chest_EDA", "wrist_EDA"]
+        rationale: "Perturb EDA at both sites to break their systemic sympathetic response correlation."
+        # EDA is positive-definite: [0, 50] physiological floor.
+        # Opposite-direction policy causes ~50% bound violations because wrist_EDA
+        # baseline is near 0. Instead use magnitude_asymmetry policy:
+        #   channel_0 (chest_EDA): +scale*sigma  (large upward push)
+        #   channel_1 (wrist_EDA): +small_frac*scale*sigma  (small same-direction push)
+        # The asymmetry (large vs small shift on two channels that naturally track
+        # each other at r~0.97) breaks the tight correlation while both stay positive.
+        # small_frac=0.05 keeps wrist_EDA perturbation at ~5% of chest_EDA perturbation.
+        coordinated_policy: "magnitude_asymmetry"
+        policy_params:
+          direction: "positive"     # both channels go up
+          channel_0_scale: 1.0      # multiplier on severity scale for channel_0
+          channel_1_scale: 0.05     # multiplier on severity scale for channel_1
+    exploratory:
+      - name: "ACC_ACC_Motion"
+        type: "coordinated_3"  # Just testing a 3-channel idea, e.g. chest_ACC_0, wrist_ACC_0, chest_ECG
+        channels: ["chest_ACC_0", "wrist_ACC_0", "chest_ECG"]
+        rationale: "Break motion correlation and its expected effect on heart rate."
+        
+  plausibility_bounds:
+    # Very permissive bounds for WESAD sample since it's already normalized/scaled in some cases
+    # We will refine these based on sample outputs if needed
+    chest_ECG: {min: -5.0, max: 5.0}
+    chest_EDA: {min: 0.0, max: 50.0}
+    chest_EMG: {min: -5.0, max: 5.0}
+    chest_Resp: {min: -50.0, max: 50.0}
+    chest_Temp: {min: 25.0, max: 40.0}
+    wrist_BVP: {min: -500.0, max: 500.0}
+    wrist_EDA: {min: 0.0, max: 50.0}
+    wrist_TEMP: {min: 25.0, max: 40.0}
+    # ACC channels
+    chest_ACC_0: {min: -100.0, max: 100.0}
+    chest_ACC_1: {min: -100.0, max: 100.0}
+    chest_ACC_2: {min: -100.0, max: 100.0}
+    wrist_ACC_0: {min: -200.0, max: 200.0}
+    wrist_ACC_1: {min: -200.0, max: 200.0}
+    wrist_ACC_2: {min: -200.0, max: 200.0}

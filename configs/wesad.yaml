@@ -1,0 +1,168 @@
+# ============================================================
+# WESAD — Wearable Stress and Affect Detection
+# Dataset Configuration
+# ============================================================
+# Schmidt et al., 2018.
+# Source: https://ub-madoc.bib.uni-mannheim.de/45817/
+# ============================================================
+
+dataset:
+  name: "WESAD"
+  version: "1.0"
+  citation: "Schmidt et al., 2018"
+
+# ============================================================
+# SUBJECTS
+# ============================================================
+subjects:
+  total_enrolled: 17
+  available: ["S2","S3","S4","S5","S6","S7","S8","S9","S10","S11","S13","S14","S15","S16","S17"]
+  absent: ["S1", "S12"]
+  absent_reason: "Sensor malfunction during data collection (documented in WESAD readme)"
+
+# ============================================================
+# SENSOR DEVICES
+# ============================================================
+devices:
+  chest:
+    name: "RespiBAN Professional"
+    location: "chest"
+    modalities:
+      ACC:
+        axes: 3
+        unit: "m/s^2"
+        sampling_rate_hz: 700
+        shape_per_sample: [3]
+      ECG:
+        axes: 1
+        unit: "mV"
+        sampling_rate_hz: 700
+        shape_per_sample: [1]
+      EDA:
+        axes: 1
+        unit: "microsiemens"
+        sampling_rate_hz: 700
+        shape_per_sample: [1]
+      EMG:
+        axes: 1
+        unit: "mV"
+        sampling_rate_hz: 700
+        shape_per_sample: [1]
+      RESP:
+        axes: 1
+        unit: "normalized"
+        sampling_rate_hz: 700
+        shape_per_sample: [1]
+      Temp:
+        axes: 1
+        unit: "degrees_celsius"
+        sampling_rate_hz: 700
+        shape_per_sample: [1]
+
+  wrist:
+    name: "Empatica E4"
+    location: "wrist"
+    modalities:
+      ACC:
+        axes: 3
+        unit: "g"
+        sampling_rate_hz: 32
+        shape_per_sample: [3]
+      BVP:
+        axes: 1
+        unit: "normalized"
+        sampling_rate_hz: 64
+        shape_per_sample: [1]
+      EDA:
+        axes: 1
+        unit: "microsiemens"
+        sampling_rate_hz: 4
+        shape_per_sample: [1]
+      TEMP:
+        axes: 1
+        unit: "degrees_celsius"
+        sampling_rate_hz: 4
+        shape_per_sample: [1]
+
+# ============================================================
+# LABELS
+# ============================================================
+labels:
+  # Synchronized at RespiBAN rate (700 Hz)
+  sampling_rate_hz: 700
+  mapping:
+    0: "transient"    # Transitional/undefined
+    1: "baseline"     # Baseline condition
+    2: "stress"       # Stress condition (TSST)
+    3: "amusement"    # Amusement condition (watching funny videos)
+    4: "meditation"   # Meditation condition
+    5: "ignored"      # Per WESAD documentation — discard
+    6: "ignored"
+    7: "ignored"
+  valid_labels: [0, 1, 2, 3, 4]
+  ignored_labels: [5, 6, 7]
+  # NOTE: Labels 0 (transient) handling is configurable in preprocessing.
+  # NOTE: These are EXPERIMENTAL CONDITION labels, NOT cybersecurity labels.
+
+# ============================================================
+# PKL FILE STRUCTURE (expected)
+# ============================================================
+pkl_structure:
+  expected_top_keys: ["subject", "signal", "label"]
+  signal_keys: ["chest", "wrist"]
+  # Chest key names as they appear in the pkl
+  chest_key_names:
+    - "ACC"
+    - "ECG"
+    - "EDA"
+    - "EMG"
+    - "RESP"
+    - "Temp"    # Note: Capital T, lowercase emp in WESAD pkl
+  wrist_key_names:
+    - "ACC"
+    - "BVP"
+    - "EDA"
+    - "TEMP"   # All caps in wrist
+
+# ============================================================
+# CANDIDATE CHANNELS FOR CSCM
+# (Preliminary — confirmed after audit)
+# ============================================================
+candidate_channels:
+  chest: []      # Populated after audit
+  wrist: []      # Populated after audit
+
+# ============================================================
+# WINDOWING (candidate — not finalized until Phase 3)
+# ============================================================
+windowing:
+  window_size_seconds: 60
+  stride_seconds: 30
+  # At 700 Hz chest rate: 60s = 42,000 samples per window
+  min_valid_label_fraction: 0.80   # Minimum fraction of window with single label
+
+# ============================================================
+# RESAMPLING (Phase 5)
+# Target rate for multi-modal alignment — TBD after audit
+# ============================================================
+resampling:
+  target_rate_hz: null   # Will be determined in Phase 3
+  strategy: "decimation"  # Preferred over interpolation for high-rate signals
+
+# ============================================================
+# NORMALIZATION (Phase 5 — training subjects only)
+# ============================================================
+normalization:
+  method: "z_score"
+  fit_on: "training_subjects_only"  # NEVER on validation or test subjects
+
+# ============================================================
+# SPLITTING
+# ============================================================
+splitting:
+  strategy: "subject_level"    # No subject appears in multiple splits
+  train_subjects: []   # Populated after audit
+  val_subjects: []
+  test_subjects: []
+  # Recommended: GroupKFold or leave-subject-out for 15 subjects
+  random_seed: 42
