@@ -4,61 +4,57 @@ import numpy as np
 import os
 
 def generate_thesis_screenshots():
-    print("Generating Figure 11.3 and 11.4 for the thesis...")
+    print("Generating updated Figure 11.3 and 11.4 for Review 2...")
     
     os.makedirs("figures", exist_ok=True)
     
-    # 1. Load an attacked sample from the final dataset
-    h5_path = "data/generated_attacks/physionet/physionet_attacks.h5"
+    # We use WESAD because its longer windows (14 steps) look better in graphs than PhysioNet (5 steps)
+    h5_path = "data/generated_attacks/wesad/wesad_attacks.h5"
     
     try:
         with h5py.File(h5_path, "r") as f:
-            # Load first window from test set
-            X_clean = f["test"]["clean_data"][0]      # shape: [C, 2, T]
-            X_attacked = f["test"]["attacked_data"][0] # shape: [C, 2, T]
-            y_mask = f["test"]["attack_mask"][0]       # shape: [C, T]
+            # We explicitly found that Window 5, Channel 80 contains a very clear, massive FDI attack
+            X_clean = f["test"]["clean_data"][5, 80, :]
+            X_attacked = f["test"]["attacked_data"][5, 80, :]
+            y_mask = f["test"]["attack_mask"][5, 80, :].astype(int)
+                
+            time_steps = np.arange(len(X_clean))
             
-            # Select the first channel (e.g. HR)
-            channel_1_clean = X_clean[0, :]
-            channel_1_attacked = X_attacked[0, :]
-            channel_1_mask = y_mask[0, :]
+            # --- Figure 11.3 & 11.4: Multi-panel FDI Attack Visualization ---
+            fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
             
-            time_steps = np.arange(len(channel_1_clean))
+            # Top: Clean vs Attacked
+            ax1.plot(time_steps, X_clean, label="Clean Signal", color="blue", alpha=0.6, marker="o", markersize=4)
+            ax1.plot(time_steps, X_attacked, label="Attacked Signal", color="red", linestyle="dashed", marker="x", markersize=4)
+            ax1.set_title("A. Clean vs. Attacked Signal")
+            ax1.set_ylabel("Normalized Value")
+            ax1.legend(loc="upper left")
+            ax1.grid(True, alpha=0.3)
             
-            # --- Figure 11.3: Clean vs Attacked ---
-            plt.figure(figsize=(10, 4))
-            plt.plot(time_steps, channel_1_clean, label="Clean Signal", color="blue", alpha=0.6)
-            plt.plot(time_steps, channel_1_attacked, label="Attacked Signal", color="red", linestyle="dashed")
-            plt.title("Figure 11.3: FDI Attack Generation")
-            plt.xlabel("Time Step")
-            plt.ylabel("Normalized Value")
-            plt.legend()
-            plt.grid(True, alpha=0.3)
+            # Middle: Difference (Attacked - Clean)
+            difference = X_attacked - X_clean
+            ax2.plot(time_steps, difference, color="purple", label="Difference (Attack Injection)")
+            ax2.axhline(0, color="black", linestyle="--", alpha=0.5)
+            ax2.set_title("B. Signal Difference (Attacked - Clean)")
+            ax2.set_ylabel("Value Difference")
+            ax2.grid(True, alpha=0.3)
+            
+            # Bottom: Binary Attack Mask
+            ax3.step(time_steps, y_mask, color="black", where="mid", linewidth=2)
+            ax3.fill_between(time_steps, 0, y_mask, step="mid", color="gray", alpha=0.3)
+            ax3.set_title("C. Binary Attack Mask")
+            ax3.set_xlabel("Time Step")
+            ax3.set_ylabel("Mask (0=Clean, 1=Attacked)")
+            ax3.set_yticks([0, 1])
+            ax3.set_ylim(-0.1, 1.1)
+            ax3.grid(True, alpha=0.3)
+            
+            fig.suptitle("Figure 11.3 & 11.4: Synthetic FDI Attack Generation and Attack Mask", fontsize=14, fontweight='bold')
             plt.tight_layout()
-            plt.savefig("figures/Figure_11_3_Attack_Generation.png")
+            plt.savefig("figures/Figure_11_3_and_11_4_FDI_Visualization.png", dpi=300)
             plt.close()
             
-            # --- Figure 11.4: Attack Mask Visualization ---
-            fig, ax1 = plt.subplots(figsize=(10, 4))
-            
-            ax1.plot(time_steps, channel_1_clean, label="Clean Signal", color="gray", alpha=0.5)
-            ax1.plot(time_steps, channel_1_attacked, label="Attacked Signal", color="red")
-            ax1.set_xlabel("Time Step")
-            ax1.set_ylabel("Signal Value", color="red")
-            ax1.tick_params(axis="y", labelcolor="red")
-            
-            ax2 = ax1.twinx()
-            ax2.fill_between(time_steps, 0, channel_1_mask, color="black", alpha=0.2, label="Binary Attack Mask")
-            ax2.set_ylabel("Mask (0=Clean, 1=Attacked)", color="black")
-            ax2.tick_params(axis="y", labelcolor="black")
-            
-            plt.title("Figure 11.4: Attack Mask Visualization")
-            fig.tight_layout()
-            plt.savefig("figures/Figure_11_4_Attack_Mask.png")
-            plt.close()
-            
-            print("Successfully saved Figure 11.3 and 11.4 to the 'figures/' folder!")
-            print("You can open them directly in VS Code to see them.")
+            print("Successfully saved updated multi-panel visualization to figures/Figure_11_3_and_11_4_FDI_Visualization.png")
             
     except Exception as e:
         print(f"Error generating plots: {e}")
