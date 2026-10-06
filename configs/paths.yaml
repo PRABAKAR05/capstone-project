@@ -45,7 +45,7 @@ datasets:
     # WESAD — Wearable Stress and Affect Detection
     # Official source: https://ub-madoc.bib.uni-mannheim.de/45817/
     # Available subjects: S2-S17 (S1, S12 absent — sensor malfunction per documentation)
-    root: "data/raw/WESAD"
+    root: "data/raw/WESAD/WESAD"
     available_subjects:
       - "S2"
       - "S3"

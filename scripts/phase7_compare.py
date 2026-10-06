@@ -17,9 +17,9 @@ def compute_comparisons():
         for md in models:
             for sd in seeds:
                 if md == "ablation":
-                    metrics_path = f"experiments/phase7/{ds}/{md}/seed_{sd}/test_metrics.json"
+                    metrics_path = f"models/{ds}/{md}/seed_{sd}/test_metrics.json"
                 else:
-                    metrics_path = f"experiments/phase6/{ds}/{md}/seed_{sd}/test_metrics.json"
+                    metrics_path = f"models/{ds}/{md}/seed_{sd}/test_metrics.json"
                 
                 if not os.path.exists(metrics_path):
                     continue

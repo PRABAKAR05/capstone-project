@@ -54,7 +54,7 @@ def train(dataset_name, model_name, seed):
     criterion = nn.BCEWithLogitsLoss()
     
     # Store phase 7 models in experiments/phase7
-    out_dir = f"experiments/phase7/{dataset_name}/{model_name}/seed_{seed}"
+    out_dir = f"models/{dataset_name}/{model_name}/seed_{seed}"
     os.makedirs(out_dir, exist_ok=True)
     
     best_auprc = -1

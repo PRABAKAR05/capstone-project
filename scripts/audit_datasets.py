@@ -722,7 +722,7 @@ def write_physionet_md(audit: dict, path: Path) -> None:
         "",
         "> **AUDIT OBSERVATION** (not a final research design decision).",
         "",
-        "### High-Coverage Candidates (≥70% records)",
+        "### High-Coverage Candidates (>=70% records)",
         "",
     ]
     if high_cov_phys:
@@ -765,7 +765,7 @@ def write_physionet_md(audit: dict, path: Path) -> None:
         if len(errors) > 20:
             lines.append(f"  _(and {len(errors)-20} more — see physionet_audit.json)_")
     else:
-        lines.append("✅ No critical errors.")
+        lines.append("[PASS] No critical errors.")
     if warnings:
         lines += ["", f"**{min(len(warnings), 10)} of {len(warnings)} warnings:**"]
         for w in warnings[:10]:
@@ -859,8 +859,8 @@ def write_wesad_md(audit: dict, path: Path) -> None:
         wrist_mods = ", ".join(sorted((v.get("wrist") or {}).keys())) or "—"
         label_warnings = len(labels.get("warnings", []))
         err_count = len(s.get("errors", []))
-        dir_ok = "✅" if s.get("dir_exists") else "❌"
-        pkl_ok = "✅" if (s.get("files", {}).get("pkl", {}).get("exists")) else "❌"
+        dir_ok = "[PASS]" if s.get("dir_exists") else "[FAIL]"
+        pkl_ok = "[PASS]" if (s.get("files", {}).get("pkl", {}).get("exists")) else "[FAIL]"
         lines.append(
             f"| {subj_id} | {dir_ok} | {pkl_ok} | "
             f"{s.get('pkl_size_mb', 'N/A')} | {dur} | "
@@ -992,7 +992,7 @@ def write_wesad_md(audit: dict, path: Path) -> None:
                 f"[{err.get('error_type', '?')}] {err.get('message', '?')}"
             )
     else:
-        lines.append("✅ No critical errors.")
+        lines.append("[PASS] No critical errors.")
     if warnings:
         lines += ["", f"**{len(warnings)} warnings:**"]
         for w in warnings[:15]:
@@ -1123,7 +1123,7 @@ def write_combined_md(
         "",
         "## 5. PhysioNet Parameter Coverage",
         "",
-        "> ⬆️ marks parameters with ≥70% record coverage.",
+        "> ⬆️ marks parameters with >=70% record coverage.",
         "",
         "| Parameter | Category | Coverage% | Total Obs | Sentinel Count |",
         "|-----------|----------|-----------|-----------|----------------|",
@@ -1209,7 +1209,7 @@ def write_combined_md(
         "> Final channel selection requires review of coverage, physiological meaning,",
         "> graph formability, and attack-generation compatibility.",
         "",
-        "### PhysioNet — High-Coverage Candidates (≥70%)",
+        "### PhysioNet — High-Coverage Candidates (>=70%)",
         "",
     ]
     if high_cov_phys:
@@ -1300,7 +1300,7 @@ def write_combined_md(
         if len(pn_warnings) > 15:
             lines.append(f"- _(and {len(pn_warnings)-15} more — see physionet_audit.json)_")
     else:
-        lines.append("✅ No significant warnings.")
+        lines.append("[PASS] No significant warnings.")
 
     lines += ["", "### WESAD", ""]
     ws_warnings = (wesad_audit or {}).get("warnings", [])
@@ -1310,7 +1310,7 @@ def write_combined_md(
         if len(ws_warnings) > 15:
             lines.append(f"- _(and {len(ws_warnings)-15} more — see wesad_audit.json)_")
     else:
-        lines.append("✅ No significant warnings.")
+        lines.append("[PASS] No significant warnings.")
 
     lines += [
         "",
@@ -1556,7 +1556,7 @@ def main() -> int:
         print(f"  Records failed      : {pn_sum.get('records_failed', 0)}")
         print(f"  Unique parameters   : {pn_sum.get('unique_parameters', 'N/A')}")
         print(f"  Physiological params: {len(pn_sum.get('physiological_params', []))}")
-        print(f"  High-coverage (≥70%): {len([p for p,s in pn_audit.get('parameters',{}).items() if s.get('high_coverage')])}")
+        print(f"  High-coverage (>=70%): {len([p for p,s in pn_audit.get('parameters',{}).items() if s.get('high_coverage')])}")
 
     if run_wesad and wesad_audit:
         print(f"\nWESAD:")
@@ -1586,7 +1586,7 @@ def main() -> int:
 
     # Phase 2 gate
     phase_pass = total_errors == 0
-    print(f"\nPhase 2 status: {'✅ PASS' if phase_pass else '❌ FAIL'}")
+    print(f"\nPhase 2 status: {'[PASS] PASS' if phase_pass else '[FAIL] FAIL'}")
     if phase_pass:
         print("Ready for Phase 3: preprocessing design.")
     else:

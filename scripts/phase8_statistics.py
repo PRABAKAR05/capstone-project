@@ -8,9 +8,9 @@ import scipy.stats
 
 def load_predictions(dataset, model, seed):
     if model == "ablation":
-        path = f"experiments/phase7/{dataset}/{model}/seed_{seed}/test_predictions.csv"
+        path = f"models/{dataset}/{model}/seed_{seed}/test_predictions.csv"
     else:
-        path = f"experiments/phase6/{dataset}/{model}/seed_{seed}/test_predictions.csv"
+        path = f"models/{dataset}/{model}/seed_{seed}/test_predictions.csv"
         
     df = pd.read_csv(path)
     return df

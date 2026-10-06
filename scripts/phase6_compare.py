@@ -14,7 +14,7 @@ def compute_aggregates():
         for md in models:
             f1s, auprcs, aurocs = [], [], []
             for sd in seeds:
-                metrics_path = f"experiments/phase6/{ds}/{md}/seed_{sd}/test_metrics.json"
+                metrics_path = f"models/{ds}/{md}/seed_{sd}/test_metrics.json"
                 if not os.path.exists(metrics_path):
                     print(f"Missing {metrics_path}")
                     continue

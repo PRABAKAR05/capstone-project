@@ -49,17 +49,17 @@ def evaluate(dataset_name, model_name, seed):
     
     if model_name == "naive":
         model = NaiveMultiChannelModel(num_channels=len(channels), fusion_dim=fusion_dim)
+        out_dir = f"models/{dataset_name}/naive/seed_{seed}"
     elif model_name == "cscm":
         model = CSCM(dataset_name=dataset_name, num_channels=len(channels), relation_dim=config["model"]["relation_dim"])
+        out_dir = f"models/{dataset_name}/cscm/seed_{seed}"
     elif model_name == "ablation":
         from src.models.cscm_ablation import GraphOnlyAblation
         model = GraphOnlyAblation(dataset_name=dataset_name, num_channels=len(channels), relation_dim=config["model"]["relation_dim"])
-        out_dir = f"experiments/phase7/{dataset_name}/{model_name}/seed_{seed}"
+        # ablation checkpoints are stored under graph_only/ on disk
+        out_dir = f"models/{dataset_name}/graph_only/seed_{seed}"
     else:
         raise ValueError(f"Unknown model_name: {model_name}")
-        
-    if model_name != "ablation":
-        out_dir = f"experiments/phase6/{dataset_name}/{model_name}/seed_{seed}"
     model.load_state_dict(torch.load(os.path.join(out_dir, "checkpoint.pt"), map_location=device))
     model = model.to(device)
     model.eval()

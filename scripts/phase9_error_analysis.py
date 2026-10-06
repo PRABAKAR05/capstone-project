@@ -20,11 +20,11 @@ def load_data(dataset):
     c_preds = []
     
     for s in seeds:
-        df_b = pd.read_csv(f"experiments/phase7/{dataset}/ablation/seed_{s}/test_predictions.csv")
+        df_b = pd.read_csv(f"models/{dataset}/ablation/seed_{s}/test_predictions.csv")
         df_b["seed_run"] = s
         b_preds.append(df_b)
         
-        df_c = pd.read_csv(f"experiments/phase6/{dataset}/cscm/seed_{s}/test_predictions.csv")
+        df_c = pd.read_csv(f"models/{dataset}/cscm/seed_{s}/test_predictions.csv")
         df_c["seed_run"] = s
         c_preds.append(df_c)
         

@@ -55,7 +55,7 @@ def train(dataset_name, model_name, seed):
     optimizer = optim.Adam(model.parameters(), lr=config["training"]["learning_rate"], weight_decay=config["training"]["weight_decay"])
     criterion = nn.BCEWithLogitsLoss()
     
-    out_dir = f"experiments/phase6/{dataset_name}/{model_name}/seed_{seed}"
+    out_dir = f"models/{dataset_name}/{model_name}/seed_{seed}"
     os.makedirs(out_dir, exist_ok=True)
     
     best_auprc = -1
