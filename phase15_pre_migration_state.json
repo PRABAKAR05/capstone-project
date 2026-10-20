@@ -1,0 +1,113 @@
+{
+  "hmac_signature": "9e7b2366bffdde24c22756845e8895f9c0557cac7b5fc3c363e38459e378696b",
+  "data": {
+    "timestamp": "2026-10-19T17:23:07.882744+00:00",
+    "profiles": {
+      "70000000-0000-0000-0000-000000000003": {
+        "id": "70000000-0000-0000-0000-000000000003",
+        "role": "receptionist",
+        "full_name": "Receptionist 1",
+        "email": "rec1@aegis.example.com",
+        "is_active": true
+      },
+      "11111111-0003-0000-0000-000000000032": {
+        "id": "11111111-0003-0000-0000-000000000032",
+        "role": "receptionist",
+        "full_name": "SYN Lead Receptionist",
+        "email": "syn.receptionist@carebridge.test",
+        "is_active": true
+      }
+    },
+    "care_tasks": {
+      "adccabde-d110-4c02-bf79-1d13e4766fb6": {
+        "id": "adccabde-d110-4c02-bf79-1d13e4766fb6",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "79420389-ca3f-4fe3-8be0-d1ee37e9d812": {
+        "id": "79420389-ca3f-4fe3-8be0-d1ee37e9d812",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "78b10e2c-a745-4124-938a-95bbca85de7b": {
+        "id": "78b10e2c-a745-4124-938a-95bbca85de7b",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "ae34fd34-259d-4c3f-9712-a59f1bc938e4": {
+        "id": "ae34fd34-259d-4c3f-9712-a59f1bc938e4",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "74c03ce0-b2b0-4250-b8c7-011cd38ac6dd": {
+        "id": "74c03ce0-b2b0-4250-b8c7-011cd38ac6dd",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "3a66d07c-2ebb-4a5c-aa32-07e5bf36600a": {
+        "id": "3a66d07c-2ebb-4a5c-aa32-07e5bf36600a",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "dd710815-a413-4f86-9fb7-a43aaafdb56f": {
+        "id": "dd710815-a413-4f86-9fb7-a43aaafdb56f",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "130fa067-4693-4741-b8ad-fcfa20ba3e9b": {
+        "id": "130fa067-4693-4741-b8ad-fcfa20ba3e9b",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "5f0ba0c0-6c7b-49de-ab17-9d4bf8f6ae82": {
+        "id": "5f0ba0c0-6c7b-49de-ab17-9d4bf8f6ae82",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "c47acb44-af7b-404b-937f-72a7d2363ab8": {
+        "id": "c47acb44-af7b-404b-937f-72a7d2363ab8",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      },
+      "d541c0d8-f0b2-48b3-96b5-c78dd15a1391": {
+        "id": "d541c0d8-f0b2-48b3-96b5-c78dd15a1391",
+        "title": "Cardiology Consultation Referral",
+        "task_type": "specialist_referral",
+        "assigned_role": "receptionist",
+        "description": "INTERNAL NOTE: Patient has intermittent palpitations; review Holter before appointment.",
+        "status": "pending"
+      }
+    },
+    "patient_accounts": {}
+  }
+}

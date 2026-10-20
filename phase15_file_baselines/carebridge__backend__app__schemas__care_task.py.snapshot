@@ -1,0 +1,79 @@
+from uuid import UUID
+from datetime import datetime
+from typing import Optional, Literal
+from pydantic import BaseModel, Field
+
+TaskType = Literal[
+    "discharge_follow_up",
+    "post_op_check",
+    "medication_reconciliation",
+    "specialist_referral",
+    "lab_review",
+    "patient_outreach",
+    "caregiver_briefing",
+    "other",
+]
+
+TaskPriority = Literal["urgent", "high", "routine", "low"]
+TaskStatus = Literal["pending", "claimed", "in_progress", "completed", "cancelled"]
+AssignedRole = Literal["doctor", "nurse", "case_manager", "receptionist", "any_staff"]
+
+
+class CareTaskCreateRequest(BaseModel):
+    patient_id: UUID
+    encounter_id: Optional[UUID] = None
+    task_type: TaskType
+    priority: TaskPriority = "routine"
+    title: str = Field(..., min_length=3, max_length=200)
+    description: str = Field(..., min_length=5)
+    patient_instructions: Optional[str] = None
+    assigned_role: AssignedRole = "any_staff"
+    assigned_to: Optional[UUID] = None
+    due_date: Optional[datetime] = None
+
+
+class CareTaskCompleteRequest(BaseModel):
+    completion_notes: str = Field(
+        ...,
+        min_length=10,
+        description="Mandatory task resolution notes documenting clinical context or outreach summary",
+    )
+
+
+class CareTaskCancelRequest(BaseModel):
+    cancellation_reason: str = Field(
+        ...,
+        min_length=5,
+        description="Clinical rationale for cancellation",
+    )
+
+
+class CareTaskResponse(BaseModel):
+    id: UUID
+    hospital_id: UUID
+    patient_id: UUID
+    encounter_id: Optional[UUID] = None
+    task_type: TaskType
+    priority: TaskPriority
+    status: TaskStatus
+    title: str
+    description: Optional[str] = None  # None for patient/caregiver callers
+    patient_instructions: Optional[str] = None
+    assigned_role: AssignedRole
+    assigned_to: Optional[UUID] = None
+    due_date: Optional[datetime] = None
+    completed_by: Optional[UUID] = None
+    completed_at: Optional[datetime] = None
+    completion_notes: Optional[str] = None  # None for patient/caregiver callers
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class CareTaskPendingCountsResponse(BaseModel):
+    urgent_count: int
+    high_count: int
+    total_pending: int
+    claimed_by_me_count: int

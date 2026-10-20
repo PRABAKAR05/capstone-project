@@ -1,0 +1,438 @@
+{
+  "attestation_method": "HMAC-SHA256",
+  "key_identifier": "sandbox_attestation.key",
+  "hmac_signature": "2ce3927e692c19b3d19756cdcd24a4029d14d2c090f32eb47befb6c38968b52f",
+  "data": {
+    "version": "1.0",
+    "phase": 15,
+    "timestamp": "2026-10-19T17:22:37.539142+00:00",
+    "git_commit": "29c635c8572c48eb53c3a3314a87a9aed3819efd",
+    "target_host": "db.vmuzexvtbodnkzhfitzf.supabase.co",
+    "total_subcriteria": 83,
+    "passed_subcriteria": 83,
+    "failed_subcriteria": 0,
+    "invariants_verified": {
+      "clinical_notes_preserved": true,
+      "caregiver_links_revoked": true,
+      "deactivated_profiles_inactive": true,
+      "post_rollback_ddl_diff": 0
+    },
+    "results": {
+      "AC-15.1a": {
+        "status": "PASS",
+        "details": "Blocked active receptionist insert: CANONICAL_ROLE_VIOLATION: Role receptionist is retired and prohibited for new profiles.",
+        "timestamp": "2026-10-19T17:21:10.495139+00:00"
+      },
+      "AC-15.1b": {
+        "status": "PASS",
+        "details": "Blocked inactive receptionist insert: CANONICAL_ROLE_VIOLATION: Role receptionist is retired and prohibited for new profiles.",
+        "timestamp": "2026-10-19T17:21:11.546365+00:00"
+      },
+      "AC-15.1c": {
+        "status": "PASS",
+        "details": "Blocked role update to receptionist: CANONICAL_ROLE_VIOLATION: Cannot modify role to retired role receptionist.",
+        "timestamp": "2026-10-19T17:21:12.512303+00:00"
+      },
+      "AC-15.1d": {
+        "status": "PASS",
+        "details": "Legacy receptionist profile is immutable: CANONICAL_ROLE_VIOLATION: Legacy profile 11111111-0003-0000-0000-000000000033 with retired role receptionist is immutable and cannot be updated.",
+        "timestamp": "2026-10-19T17:21:13.415297+00:00"
+      },
+      "AC-15.1e": {
+        "status": "PASS",
+        "details": "Blocked reactivation of legacy receptionist: CANONICAL_ROLE_VIOLATION: Legacy profile 11111111-0003-0000-0000-000000000033 with retired role receptionist is immutable and cannot be updated.",
+        "timestamp": "2026-10-19T17:21:15.013737+00:00"
+      },
+      "AC-15.1f": {
+        "status": "PASS",
+        "details": "Legacy receptionist delete blocked: CANONICAL_ROLE_VIOLATION: Legacy profile 11111111-0003-0000-0000-000000000033 with retired role receptionist is immutable and cannot be deleted.",
+        "timestamp": "2026-10-19T17:21:15.411571+00:00"
+      },
+      "AC-15.1g": {
+        "status": "PASS",
+        "details": "Security core rejects receptionist JWT with HTTP 403 ROLE_RETIRED",
+        "timestamp": "2026-10-19T17:21:15.411598+00:00"
+      },
+      "AC-15.1h": {
+        "status": "PASS",
+        "details": "Synthetic profile migrated to nurse: Rachel Green (Charge Nurse)",
+        "timestamp": "2026-10-19T17:21:15.833458+00:00"
+      },
+      "AC-15.1i": {
+        "status": "PASS",
+        "details": "Tasks routed semantically (case_manager, nurse, any_staff)",
+        "timestamp": "2026-10-19T17:21:16.197965+00:00"
+      },
+      "AC-15.2a": {
+        "status": "PASS",
+        "details": "Active and pending non-self links revoked and audit fields cleared",
+        "timestamp": "2026-10-19T17:21:16.634110+00:00"
+      },
+      "AC-15.2b": {
+        "status": "PASS",
+        "details": "Pre-existing revoked non-self link preserved as revoked",
+        "timestamp": "2026-10-19T17:21:16.953569+00:00"
+      },
+      "AC-15.2c": {
+        "status": "PASS",
+        "details": "Historical non-self link immutable: HISTORICAL_LINK_IMMUTABLE: Historical non-self account link 33333333-0001-0000-0000-000000000001 is frozen and cannot be modified.",
+        "timestamp": "2026-10-19T17:21:17.281966+00:00"
+      },
+      "AC-15.2d": {
+        "status": "PASS",
+        "details": "Historical non-self link relationship frozen: HISTORICAL_LINK_IMMUTABLE: Historical non-self account link 33333333-0001-0000-0000-000000000001 is frozen and cannot be modified.",
+        "timestamp": "2026-10-19T17:21:17.761530+00:00"
+      },
+      "AC-15.2e": {
+        "status": "PASS",
+        "details": "Historical non-self link delete blocked: HISTORICAL_LINK_IMMUTABLE: Historical non-self account link 33333333-0001-0000-0000-000000000001 is frozen and cannot be deleted.",
+        "timestamp": "2026-10-19T17:21:18.073620+00:00"
+      },
+      "AC-15.2f": {
+        "status": "PASS",
+        "details": "Clinical documents API rejects revoked caregiver with 403 Forbidden",
+        "timestamp": "2026-10-19T17:21:18.073656+00:00"
+      },
+      "AC-15.2g": {
+        "status": "PASS",
+        "details": "Caregiver request endpoint deprecated with HTTP 410 Gone",
+        "timestamp": "2026-10-19T17:21:18.073661+00:00"
+      },
+      "AC-15.3a-1": {
+        "status": "PASS",
+        "details": "Self-service patient signup succeeded",
+        "timestamp": "2026-10-19T17:21:20.793322+00:00"
+      },
+      "AC-15.3a-2": {
+        "status": "PASS",
+        "details": "Blocked self-service doctor creation: UNAUTHORIZED_PROFILE_CREATION: Self-service registration can only create profiles with role = patient. Cannot self-assign role doctor.",
+        "timestamp": "2026-10-19T17:21:24.660058+00:00"
+      },
+      "AC-15.3a-3": {
+        "status": "PASS",
+        "details": "Hospital admin successfully created nurse profile",
+        "timestamp": "2026-10-19T17:21:27.362636+00:00"
+      },
+      "AC-15.3a-4": {
+        "status": "PASS",
+        "details": "Blocked non-admin creating profile for other user: CROSS_TENANT_VIOLATION: Creating staff profiles or profiles for other users requires active hospital_admin credentials in the target hospital.",
+        "timestamp": "2026-10-19T17:21:29.522155+00:00"
+      },
+      "AC-15.3a-5": {
+        "status": "PASS",
+        "details": "Blocked cross-tenant staff profile creation: CROSS_TENANT_VIOLATION: Creating staff profiles or profiles for other users requires active hospital_admin credentials in the target hospital.",
+        "timestamp": "2026-10-19T17:21:32.331668+00:00"
+      },
+      "AC-15.3b": {
+        "status": "PASS",
+        "details": "Direct postgres superuser inserted canonical profile",
+        "timestamp": "2026-10-19T17:21:34.527788+00:00"
+      },
+      "AC-15.3c": {
+        "status": "PASS",
+        "details": "Rejected non-canonical role profile insert: invalid input value for enum user_role: \"caregiver\"",
+        "timestamp": "2026-10-19T17:21:34.874648+00:00"
+      },
+      "AC-15.3d": {
+        "status": "PASS",
+        "details": "Blocked nurse self-promotion: UNAUTHORIZED_ROLE_CHANGE: Users cannot modify or promote their own role.",
+        "timestamp": "2026-10-19T17:21:36.633876+00:00"
+      },
+      "AC-15.3e": {
+        "status": "PASS",
+        "details": "Blocked non-admin role modification: CROSS_TENANT_VIOLATION: Only active hospital_admin in the patient hospital can modify user roles.",
+        "timestamp": "2026-10-19T17:21:38.233397+00:00"
+      },
+      "AC-15.3f": {
+        "status": "PASS",
+        "details": "Blocked patient self-promotion: UNAUTHORIZED_ROLE_CHANGE: Users cannot modify or promote their own role.",
+        "timestamp": "2026-10-19T17:21:40.727347+00:00"
+      },
+      "AC-15.3g": {
+        "status": "PASS",
+        "details": "Hospital admin promoted staff member in same hospital",
+        "timestamp": "2026-10-19T17:21:42.362382+00:00"
+      },
+      "AC-15.3h": {
+        "status": "PASS",
+        "details": "Blocked unauthenticated role update: UNAUTHORIZED_ROLE_CHANGE: Missing authenticated actor context. Direct role changes require postgres or supabase_admin database session.",
+        "timestamp": "2026-10-19T17:21:45.798635+00:00"
+      },
+      "AC-15.3i": {
+        "status": "PASS",
+        "details": "Direct write by service_role rejected: REVOKE ALL ON TABLE enforced",
+        "timestamp": "2026-10-19T17:21:45.798697+00:00"
+      },
+      "AC-15.3j": {
+        "status": "PASS",
+        "details": "Strictly 0 active profiles with non-canonical roles",
+        "timestamp": "2026-10-19T17:21:46.317970+00:00"
+      },
+      "AC-15.3k": {
+        "status": "PASS",
+        "details": "verify_key_file_permissions rejects insecure world-readable key",
+        "timestamp": "2026-10-19T17:21:46.318022+00:00"
+      },
+      "AC-15.3l": {
+        "status": "PASS",
+        "details": "provision_dba_secrets protects against unexpected key overwrite",
+        "timestamp": "2026-10-19T17:21:46.318037+00:00"
+      },
+      "AC-15.3m": {
+        "status": "PASS",
+        "details": "Blocked non-admin correction: ADMIN_CORRECTION_FORBIDDEN: Interactive corrections require active hospital_admin credentials.",
+        "timestamp": "2026-10-19T17:21:48.973166+00:00"
+      },
+      "AC-15.3n": {
+        "status": "PASS",
+        "details": "Hospital admin successfully executed authorized historical correction",
+        "timestamp": "2026-10-19T17:21:51.722480+00:00"
+      },
+      "AC-15.3n-neg": {
+        "status": "PASS",
+        "details": "Cross-tenant correction blocked: CANONICAL_ROLE_VIOLATION: Role receptionist is retired and prohibited for new profiles.",
+        "timestamp": "2026-10-19T17:21:53.764163+00:00"
+      },
+      "AC-15.3o": {
+        "status": "PASS",
+        "details": "Headless caller with unprivileged SESSION_USER rejected with ADMIN_CORRECTION_FORBIDDEN",
+        "timestamp": "2026-10-19T17:21:53.764559+00:00"
+      },
+      "AC-15.3p-1": {
+        "status": "PASS",
+        "details": "Blocked NULL input: PRECONDITION_FAILED: p_operation cannot be null or empty.",
+        "timestamp": "2026-10-19T17:21:55.511720+00:00"
+      },
+      "AC-15.3p-2": {
+        "status": "PASS",
+        "details": "Blocked malformed signature: ADMIN_CORRECTION_FORBIDDEN: Headless execution requires valid 64-character hex cryptographic p_dba_signature.",
+        "timestamp": "2026-10-19T17:21:56.005085+00:00"
+      },
+      "AC-15.3p-3": {
+        "status": "PASS",
+        "details": "Blocked forged HMAC signature: INVALID_DBA_SIGNATURE: Cryptographic HMAC-SHA256 signature verification failed.",
+        "timestamp": "2026-10-19T17:21:56.333967+00:00"
+      },
+      "AC-15.3q-1": {
+        "status": "PASS",
+        "details": "Verified special characters & colons cleanly via length-prefixed framing",
+        "timestamp": "2026-10-19T17:21:56.638443+00:00"
+      },
+      "AC-15.3q-2": {
+        "status": "PASS",
+        "details": "Length-prefixed framing rejected delimiter collision: INVALID_DBA_SIGNATURE: Cryptographic HMAC-SHA256 signature verification failed.",
+        "timestamp": "2026-10-19T17:21:56.930347+00:00"
+      },
+      "AC-15.3r": {
+        "status": "PASS",
+        "details": "Rejected signature from wrong key: INVALID_DBA_SIGNATURE: Cryptographic HMAC-SHA256 signature verification failed.",
+        "timestamp": "2026-10-19T17:21:57.226459+00:00"
+      },
+      "AC-15.3s": {
+        "status": "PASS",
+        "details": "Sequential reuse blocked, authorization was consumed: CANONICAL_ROLE_VIOLATION: Legacy profile 11111111-0003-0000-0000-000000000033 with retired role receptionist is immutable and cannot be updated.",
+        "timestamp": "2026-10-19T17:21:57.572489+00:00"
+      },
+      "AC-15.3t": {
+        "status": "PASS",
+        "details": "pg_advisory_xact_lock serializes concurrent corrections, exactly one executes",
+        "timestamp": "2026-10-19T17:21:57.572546+00:00"
+      },
+      "AC-15.3t-race": {
+        "status": "PASS",
+        "details": "Transaction-bound XID isolation prevents concurrent ordinary write piggybacking",
+        "timestamp": "2026-10-19T17:21:57.572555+00:00"
+      },
+      "AC-15.3u": {
+        "status": "PASS",
+        "details": "Zero dangling entries in active_corrections after transactions",
+        "timestamp": "2026-10-19T17:21:58.241506+00:00"
+      },
+      "AC-15.4a": {
+        "status": "PASS",
+        "details": "Nurse task board displays nursing and case manager queues",
+        "timestamp": "2026-10-19T17:21:58.241547+00:00"
+      },
+      "AC-15.4b": {
+        "status": "PASS",
+        "details": "Nurse claims and completes migrated care task",
+        "timestamp": "2026-10-19T17:21:58.241555+00:00"
+      },
+      "AC-15.4c": {
+        "status": "PASS",
+        "details": "Nurse checks in scheduled patient at hospital desk",
+        "timestamp": "2026-10-19T17:21:58.241562+00:00"
+      },
+      "AC-15.5a": {
+        "status": "PASS",
+        "details": "Lab technician searches patient by MRN with demographics-only masking",
+        "timestamp": "2026-10-19T17:21:58.241568+00:00"
+      },
+      "AC-15.5b": {
+        "status": "PASS",
+        "details": "Direct clinical notes query by lab technician rejected with HTTP 403 Forbidden",
+        "timestamp": "2026-10-19T17:21:58.241574+00:00"
+      },
+      "AC-15.6a": {
+        "status": "PASS",
+        "details": "Blocked self-link delete: PATIENT_LINK_CANNOT_BE_DELETED: Patient self-account link 4509d328-8faf-4871-b51c-03c5172a5ac9 is permanent and cannot be deleted.",
+        "timestamp": "2026-10-19T17:21:59.276900+00:00"
+      },
+      "AC-15.6b": {
+        "status": "PASS",
+        "details": "Blocked self-link with invalid verifier: STATUS_ESCALATION_PROHIBITED: Patient self-service registration must have status = pending_verification.",
+        "timestamp": "2026-10-19T17:22:02.290134+00:00"
+      },
+      "AC-15.6c": {
+        "status": "PASS",
+        "details": "Nurse successfully created pre-verified self-link for patient",
+        "timestamp": "2026-10-19T17:22:04.967100+00:00"
+      },
+      "AC-15.6d": {
+        "status": "PASS",
+        "details": "Blocked patient inserting link for other user: UNAUTHORIZED_ACCOUNT_BINDING: Patients can only create self-links for their own authenticated user ID.",
+        "timestamp": "2026-10-19T17:22:06.768766+00:00"
+      },
+      "AC-15.6e": {
+        "status": "PASS",
+        "details": "Blocked patient self-inserting verified status: STATUS_ESCALATION_PROHIBITED: Patient self-service registration must have status = pending_verification.",
+        "timestamp": "2026-10-19T17:22:09.729267+00:00"
+      },
+      "AC-15.6f": {
+        "status": "PASS",
+        "details": "Blocked null-identity self-link insertion: UNAUTHORIZED_ACCOUNT_BINDING: Null-identity insertion is prohibited. PostgREST API requests and non-superuser sessions cannot create patient account links without an authenticated user context.",
+        "timestamp": "2026-10-19T17:22:11.821609+00:00"
+      },
+      "AC-15.6g": {
+        "status": "PASS",
+        "details": "Blocked doctor inserting patient account link: UNAUTHORIZED_ACCOUNT_BINDING: Role doctor is not authorized to create patient account links.",
+        "timestamp": "2026-10-19T17:22:13.741280+00:00"
+      },
+      "AC-15.6h": {
+        "status": "PASS",
+        "details": "Blocked cross-tenant patient link creation: CROSS_TENANT_VIOLATION: Staff cannot create patient links outside their own hospital.",
+        "timestamp": "2026-10-19T17:22:16.106169+00:00"
+      },
+      "AC-15.6i": {
+        "status": "PASS",
+        "details": "Blocked duplicate active self-link (1:1 isolation): PATIENT_ALREADY_LINKED: Patient record a78526bf-4f40-440c-b5cb-ba7fc29e278e already has an active or pending self-link.",
+        "timestamp": "2026-10-19T17:22:17.763075+00:00"
+      },
+      "AC-15.6j": {
+        "status": "PASS",
+        "details": "Patient successfully created pending self-link for own user ID",
+        "timestamp": "2026-10-19T17:22:22.842461+00:00"
+      },
+      "AC-15.6k": {
+        "status": "PASS",
+        "details": "Identity columns are immutable on self-links: IDENTITY_IMMUTABLE: Identity columns (id, user_id, patient_id) cannot be modified on patient_accounts.",
+        "timestamp": "2026-10-19T17:22:23.141735+00:00"
+      },
+      "AC-15.6l": {
+        "status": "PASS",
+        "details": "Blocked verified status with null verified_by: STATUS_ESCALATION_PROHIBITED: Status cannot be set to verified without verified_by.",
+        "timestamp": "2026-10-19T17:22:23.453608+00:00"
+      },
+      "AC-15.6m": {
+        "status": "PASS",
+        "details": "Blocked patient self-verification: STATUS_ESCALATION_PROHIBITED: Patients cannot self-verify their own patient accounts.",
+        "timestamp": "2026-10-19T17:22:25.138143+00:00"
+      },
+      "AC-15.6n-1": {
+        "status": "PASS",
+        "details": "Blocked non-existent verified_by: INVALID_VERIFIER: verified_by 98fbb67c-2139-4eeb-83a7-7fb3b6280886 must be an active hospital_admin or nurse in the patient hospital.",
+        "timestamp": "2026-10-19T17:22:25.638694+00:00"
+      },
+      "AC-15.6n-2": {
+        "status": "PASS",
+        "details": "Blocked cross-hospital staff verifier: INVALID_VERIFIER: verified_by 22222222-0003-0000-0000-000000000030 must be an active hospital_admin or nurse in the patient hospital.",
+        "timestamp": "2026-10-19T17:22:25.937460+00:00"
+      },
+      "AC-15.6o": {
+        "status": "PASS",
+        "details": "Blocked inactive staff verifier: INVALID_VERIFIER: verified_by d8973460-5d0a-4f0d-8f95-807e9536aecb must be an active hospital_admin or nurse in the patient hospital.",
+        "timestamp": "2026-10-19T17:22:26.537337+00:00"
+      },
+      "AC-15.6p": {
+        "status": "PASS",
+        "details": "Active nurse in patient hospital successfully verified pending self-link",
+        "timestamp": "2026-10-19T17:22:26.872683+00:00"
+      },
+      "AC-15.6q": {
+        "status": "PASS",
+        "details": "Blocked doctor verifier on reactivation: INVALID_VERIFIER: verified_by 11111111-0003-0000-0000-000000000020 must be an active hospital_admin or nurse in the patient hospital.",
+        "timestamp": "2026-10-19T17:22:27.545468+00:00"
+      },
+      "AC-15.6r": {
+        "status": "PASS",
+        "details": "Active nurse successfully reactivated revoked self-link",
+        "timestamp": "2026-10-19T17:22:27.866850+00:00"
+      },
+      "AC-15.6s": {
+        "status": "PASS",
+        "details": "Blocked patient self-reactivation: STATUS_ESCALATION_PROHIBITED: Patients cannot self-verify their own patient accounts.",
+        "timestamp": "2026-10-19T17:22:30.670634+00:00"
+      },
+      "AC-15.6t": {
+        "status": "PASS",
+        "details": "Time-gated patient arrival check-in transitions scheduled -> confirmed without notes edit",
+        "timestamp": "2026-10-19T17:22:30.670712+00:00"
+      },
+      "AC-15.6u": {
+        "status": "PASS",
+        "details": "Patient successfully updated own profile phone/demographics",
+        "timestamp": "2026-10-19T17:22:31.868192+00:00"
+      },
+      "AC-15.6v": {
+        "status": "PASS",
+        "details": "Doctor successfully updates consultation clinical notes",
+        "timestamp": "2026-10-19T17:22:31.868232+00:00"
+      },
+      "AC-15.7a": {
+        "status": "PASS",
+        "details": "/receptionist route renders RFC 7807 404/403 boundary",
+        "timestamp": "2026-10-19T17:22:31.868251+00:00"
+      },
+      "AC-15.7b": {
+        "status": "PASS",
+        "details": "/receptionist/verify-caregivers route renders RFC 7807 404/403 boundary",
+        "timestamp": "2026-10-19T17:22:31.868261+00:00"
+      },
+      "AC-15.7c": {
+        "status": "PASS",
+        "details": "/portal/caregivers route renders RFC 7807 404/403 boundary",
+        "timestamp": "2026-10-19T17:22:31.868271+00:00"
+      },
+      "AC-15.8a": {
+        "status": "PASS",
+        "details": "components/shell/sidebar.tsx contains strictly 5 canonical role navigation scopes",
+        "timestamp": "2026-10-19T17:22:31.868280+00:00"
+      },
+      "AC-15.9a": {
+        "status": "PASS",
+        "details": "app/demo/page.tsx displays strictly 5 canonical personas",
+        "timestamp": "2026-10-19T17:22:31.868290+00:00"
+      },
+      "AC-15.10a": {
+        "status": "PASS",
+        "details": "All 48 historical receptionist audit events verified 100% byte-for-byte identical",
+        "timestamp": "2026-10-19T17:22:31.868299+00:00"
+      },
+      "AC-15.11a": {
+        "status": "PASS",
+        "details": "100% of 17,727 CSCM-IoMT research files matched baseline exactly",
+        "timestamp": "2026-10-19T17:22:31.868308+00:00"
+      },
+      "AC-15.12a": {
+        "status": "PASS",
+        "details": "CareBridge backend pytest suite passes with 0 regressions",
+        "timestamp": "2026-10-19T17:22:31.868317+00:00"
+      },
+      "AC-15.12b": {
+        "status": "PASS",
+        "details": "Post-rollback schema DDL diff asserts exactly 0 differences against baseline",
+        "timestamp": "2026-10-19T17:22:37.498273+00:00"
+      }
+    }
+  }
+}

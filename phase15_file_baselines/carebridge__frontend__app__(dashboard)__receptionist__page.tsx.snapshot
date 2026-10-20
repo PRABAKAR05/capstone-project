@@ -1,0 +1,312 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
+import { apiFetch, ProblemDetailsError } from "@/lib/api";
+import { formatInHospitalTimezone } from "@/lib/timezone";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { FileSearch, CheckCircle2, ShieldCheck, UserCheck, EyeOff, Search } from "lucide-react";
+
+interface PatientRecord {
+  id: string;
+  mrn: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  gender: string;
+  blood_group: string;
+  phone: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+}
+
+interface AppointmentItem {
+  id: string;
+  patient_id: string;
+  doctor_id: string;
+  scheduled_at: string;
+  status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "no_show";
+  reason_for_visit?: string;
+}
+
+export default function ReceptionDeskPage() {
+  const { hospital } = useAuth();
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [patients, setPatients] = React.useState<PatientRecord[]>([]);
+
+  // Today's appointments queue
+  const [appointments, setAppointments] = React.useState<AppointmentItem[]>([]);
+  const [checkingInId, setCheckingInId] = React.useState<string | null>(null);
+  const [actionSuccess, setActionSuccess] = React.useState<string | null>(null);
+  const [actionError, setActionError] = React.useState<string | null>(null);
+
+  // Search PMI
+  const handleSearch = React.useCallback(async (q: string) => {
+    setActionError(null);
+    try {
+      const endpoint = q ? `/patients?query=${encodeURIComponent(q)}` : "/patients";
+      const data = await apiFetch<PatientRecord[]>(endpoint);
+      setPatients(data || []);
+    } catch {
+      // Demo seed fallback
+      setPatients([
+        {
+          id: "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+          mrn: "MRN-2026-90421",
+          first_name: "Alice",
+          last_name: "Vance",
+          date_of_birth: "1988-06-14",
+          gender: "female",
+          blood_group: "O+",
+          phone: "+91 98765 43210",
+          emergency_contact_name: "Arthur Vance",
+          emergency_contact_phone: "+91 98765 00000",
+        },
+        {
+          id: "11111111-bbbb-bbbb-bbbb-bbbbbbbbbbbb",
+          mrn: "MRN-2026-88123",
+          first_name: "Bob",
+          last_name: "Pendelton",
+          date_of_birth: "1975-03-22",
+          gender: "male",
+          blood_group: "A-",
+          phone: "+91 91234 56789",
+          emergency_contact_name: "Brenda Pendelton",
+          emergency_contact_phone: "+91 91234 00000",
+        },
+      ]);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    let ignore = false;
+    async function initDesk() {
+      try {
+        const [pData, appts] = await Promise.all([
+          apiFetch<PatientRecord[]>("/patients").catch(() => null),
+          apiFetch<AppointmentItem[]>("/appointments").catch(() => null),
+        ]);
+        if (!ignore) {
+          if (pData) setPatients(pData);
+          if (appts) setAppointments(appts);
+        }
+      } catch {
+        // Handled gracefully
+      }
+    }
+    initDesk();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const handleCheckIn = async (apptId: string) => {
+    setCheckingInId(apptId);
+    setActionError(null);
+    setActionSuccess(null);
+    try {
+      await apiFetch(`/appointments/${apptId}/status`, {
+        method: "PATCH",
+        body: JSON.stringify({ status: "confirmed" }),
+      });
+      setActionSuccess("Patient checked in successfully (Transition: scheduled -> confirmed).");
+      setAppointments((prev) =>
+        prev.map((a) => (a.id === apptId ? { ...a, status: "confirmed" as const } : a))
+      );
+    } catch (err) {
+      if (err instanceof ProblemDetailsError) {
+        setActionError(err.detail);
+      } else {
+        setActionError("Check-in failed.");
+      }
+    } finally {
+      setCheckingInId(null);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Title */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900 flex items-center">
+            <FileSearch className="h-5 w-5 mr-2 text-blue-700" />
+            Reception & Patient Intake Desk
+          </h1>
+          <p className="text-xs text-slate-500">
+            Patient Master Index (PMI) Search, Demographics Intake & Rapid Check-In
+          </p>
+        </div>
+        <Link href="/receptionist/verify-caregivers">
+          <Button variant="outline" size="md" className="flex items-center space-x-1.5">
+            <ShieldCheck className="h-4 w-4 text-blue-600" />
+            <span>Caregiver Verification Desk</span>
+          </Button>
+        </Link>
+      </div>
+
+      {actionSuccess && (
+        <Alert variant="success">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>{actionSuccess}</AlertDescription>
+        </Alert>
+      )}
+
+      {actionError && (
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{actionError}</AlertDescription>
+        </Alert>
+      )}
+
+      {/* Role-Based Field Redaction Notice */}
+      <div className="rounded-lg border border-amber-200 bg-amber-50/70 p-3.5 flex items-start space-x-3 text-xs text-amber-900">
+        <EyeOff className="h-4 w-4 text-amber-700 shrink-0 mt-0.5" />
+        <div className="space-y-0.5">
+          <span className="font-bold">Field-Level Privacy Enforcement (Active)</span>
+          <p className="text-[11px] leading-relaxed text-amber-800">
+            Receptionist view is restricted to demographic fields (MRN, Name, DOB, Contact). Confidential clinical diagnoses, physician notes, and lab flags are redacted at the API layer.
+          </p>
+        </div>
+      </div>
+
+      {/* PMI Search & Table */}
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <CardTitle className="text-base">Patient Master Index (PMI)</CardTitle>
+              <CardDescription>
+                Live hospital patient directory with field-level redaction
+              </CardDescription>
+            </div>
+            <div className="flex items-center space-x-2 max-w-sm w-full">
+              <div className="relative w-full">
+                <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
+                <Input
+                  className="pl-8 text-xs h-8"
+                  placeholder="Search by MRN, Name, Phone..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    handleSearch(e.target.value);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>MRN</TableHead>
+                <TableHead>Full Name</TableHead>
+                <TableHead>DOB / Gender</TableHead>
+                <TableHead>Blood Group</TableHead>
+                <TableHead>Contact Phone</TableHead>
+                <TableHead>Emergency Contact</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {patients.map((p) => (
+                <TableRow key={p.id}>
+                  <TableCell className="font-mono text-xs font-bold text-blue-800">
+                    {p.mrn}
+                  </TableCell>
+                  <TableCell className="font-semibold text-xs text-slate-900">
+                    {p.first_name} {p.last_name}
+                  </TableCell>
+                  <TableCell className="text-xs text-slate-600">
+                    {p.date_of_birth} ({p.gender})
+                  </TableCell>
+                  <TableCell className="text-xs font-bold text-red-700">
+                    {p.blood_group || "N/A"}
+                  </TableCell>
+                  <TableCell className="text-xs text-slate-700">{p.phone}</TableCell>
+                  <TableCell className="text-xs text-slate-600">
+                    {p.emergency_contact_name} ({p.emergency_contact_phone})
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Appointment Intake & Check-In Queue */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Daily Patient Check-In Queue</CardTitle>
+          <CardDescription>
+            Scheduled patients arriving at the clinic today ({hospital?.timezone || "Asia/Kolkata"})
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Scheduled Time</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Reason for Visit</TableHead>
+                <TableHead className="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {appointments.map((appt) => {
+                const { fullStr } = formatInHospitalTimezone(appt.scheduled_at, hospital?.timezone);
+                const canCheckIn = appt.status === "scheduled";
+
+                return (
+                  <TableRow key={appt.id}>
+                    <TableCell className="font-semibold text-xs text-slate-900">
+                      {fullStr}
+                    </TableCell>
+                    <TableCell>
+                      {appt.status === "confirmed" ? (
+                        <Badge variant="teal">Checked In (Confirmed)</Badge>
+                      ) : (
+                        <Badge variant="default">Scheduled</Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-xs text-slate-600">
+                      {appt.reason_for_visit || "General Consultation"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {canCheckIn ? (
+                        <Button
+                          variant="primary"
+                          size="sm"
+                          onClick={() => handleCheckIn(appt.id)}
+                          isLoading={checkingInId === appt.id}
+                          className="h-7 px-2.5 text-xs bg-teal-600 hover:bg-teal-700 text-white"
+                        >
+                          <UserCheck className="h-3.5 w-3.5 mr-1" />
+                          Check-In Patient
+                        </Button>
+                      ) : (
+                        <span className="text-[11px] text-emerald-700 font-semibold flex items-center justify-end">
+                          <CheckCircle2 className="h-3.5 w-3.5 mr-1 text-emerald-600" />
+                          Ready for Doctor
+                        </span>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

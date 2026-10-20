@@ -1,0 +1,80 @@
+from fastapi import FastAPI, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from app.core.config import settings
+
+# Import v1 routers
+from app.api.v1.organization import router as org_router
+from app.api.v1.doctors import router as doctors_router
+from app.api.v1.patients import router as patients_router
+from app.api.v1.caregiver import router as caregiver_router
+from app.api.v1.appointments import router as appointments_router
+from app.api.v1.agent import router as agent_router
+from app.api.v1.documents import router as documents_router
+from app.api.v1.conflicts import router as conflicts_router
+from app.api.v1.care_tasks import router as care_tasks_router
+from app.api.v1.prescriptions import router as prescriptions_router
+from app.api.v1.chat import router as chat_router
+from app.api.v1.insurance import router as insurance_router
+from app.api.v1.analytics import router as analytics_router
+from app.api.v1.cscm import router as cscm_router
+
+app = FastAPI(
+    title="CareBridge AI — Backend",
+    description="Hospital operations and care coordination API",
+    version="0.12.0",
+    docs_url="/docs" if settings.DEBUG else None,
+    redoc_url="/redoc" if settings.DEBUG else None,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount API v1 Routers
+api_v1_prefix = "/api/v1"
+app.include_router(org_router, prefix=api_v1_prefix)
+app.include_router(doctors_router, prefix=api_v1_prefix)
+app.include_router(patients_router, prefix=api_v1_prefix)
+app.include_router(caregiver_router, prefix=api_v1_prefix)
+app.include_router(appointments_router, prefix=api_v1_prefix)
+app.include_router(agent_router, prefix=api_v1_prefix)
+app.include_router(documents_router, prefix=api_v1_prefix)
+app.include_router(conflicts_router, prefix=api_v1_prefix)
+app.include_router(care_tasks_router, prefix=api_v1_prefix)
+app.include_router(prescriptions_router, prefix=api_v1_prefix)
+app.include_router(chat_router, prefix=api_v1_prefix)
+app.include_router(insurance_router, prefix=api_v1_prefix)
+app.include_router(analytics_router, prefix=api_v1_prefix)
+app.include_router(cscm_router, prefix=api_v1_prefix)
+
+
+
+@app.get("/health", tags=["system"])
+async def health_check():
+    return {"status": "ok", "service": "carebridge-backend", "version": "0.3.0"}
+
+
+@app.get("/", tags=["system"])
+async def root():
+    return {"message": "CareBridge AI Backend", "docs": "/docs"}
+
+
+# RFC 7807 Exception Handlers
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    # Log internal error safely
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={
+            "type": "https://carebridge.health/errors/internal-error",
+            "title": "Internal Server Error",
+            "status": 500,
+            "detail": "An unexpected error occurred. Please contact hospital system administrator.",
+            "instance": request.url.path,
+        },
+    )

@@ -1,0 +1,184 @@
+diff --git a/.gitignore b/.gitignore
+index c48c4f5..f0f37c1 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -84,4 +84,19 @@ htmlcov/
+ # ENVIRONMENT / SECRETS
+ # ============================================================
+ .env
++.env.*
++!.env.example
+ *.secret
++*.pem
++*.key
++
++# ============================================================
++# JAVASCRIPT / NODE / NEXT.JS
++# ============================================================
++node_modules/
++.next/
++out/
++build/
++*.tsbuildinfo
++next-env.d.ts
++
+diff --git a/22MIS0527_Review-1.docx b/22MIS0527_Review-1.docx
+index d963165..10353d6 100644
+--- a/22MIS0527_Review-1.docx
++++ b/22MIS0527_Review-1.docx
+@@ -5,16 +5,16 @@
+                 Department of Software and Systems Engineering
+                SWE3004 - Software Design and Development Project
+                                   Review -1	
+-                                Date: 13.8.2026
++                               Date: 07.10.2026
+   Coordinated Multi-Channel FDI Detection Using Physiology-Aware CSCM in IoMT
+                            22MIS0527  -  PRABAKAR P	
+                              Under the Guidance of
+-                          PRABHU J
+-Professor Grade 1
++                        Dr. PRABHU J
++Professor Grade 2
+                                      SCORE
+ 
+      Guide Signature with date
+-     PRABHU J
++     Dr. PRABHU J
+ 
+                  Internal Examiner -1 				Internal Examiner-2
+                            Signature						Signature
+@@ -22,7 +22,7 @@ Professor Grade 1
+ 
+ ABSTRACT:
+ Internet of Medical Things (IoMT) devices continuously transmit patient vital signs, making them attractive targets for False Data Injection (FDI) attacks that falsify sensor readings and threaten patient safety. Existing physiology-aware detection methods validate each physiological channel independently against plausible medical ranges, leaving a blind spot: a coordinated adversary can manipulate multiple correlated vital-sign channels simultaneously, keeping each individual reading physiologically plausible while the combination violates known relationships between vital signs. This coordinated multi-channel FDI threat has received limited attention and remains insufficiently addressed in existing IoMT security literature. To address this gap, the project proposes a Cross-Sensor Consistency Modeling (CSCM) framework that jointly analyzes relationships among vital-sign channels using a physiology-aware graph attention approach informed by known clinical correlations. The framework will be implemented and evaluated on public ICU and wearable physiological datasets, including PhysioNet/CinC-2012, MIMIC-III Waveform, and WESAD, using physiological variables available in each dataset, and benchmarked against single-channel baselines to assess effectiveness against coordinated attacks while preserving performance on conventional scenarios. This research aims to contribute: (i) a coordinated multi-channel FDI attack model, (ii) a physiology-aware CSCM framework for coordinated attack detection, and (iii) an experimental evaluation across multiple public healthcare datasets, addressing an underexplored security vulnerability in medical IoT networks.
+-KEYWORDS: Internet of Medical Things (IoMT),False Data Injection Attack (FDIA), Coordinated Multi-Channel Attack, Physiology-Aware Detection, Cross-Sensor Consistency Modeling, Graph Attention Network (GAT), Cyber-Physical Systems (CPS) Security, Intrusion Detection System (IDS)
++KEYWORDS: Internet of Medical Things (IoMT),False Data Injection Attack (FDIA), Coordinated Multi-Channel Attack, Physiology-Aware Detection, Cross-Sensor Consistency Modelling, Graph Attention Network (GAT), Cyber-Physical Systems (CPS) Security, Intrusion Detection System (IDS)
+ 
+ 
+ 
+@@ -279,6 +279,90 @@ The development and execution of the CSCM-IoMT project were structured into a ri
+  Phase 8 (Statistical Analysis): Evaluation of model differences using hierarchical paired bootstrap resampling at the RecordID level for PhysioNet and SubjectID level for WESAD, together with supplementary McNemar analysis.
+  Phase 9 (Final Consolidation): Granular error analysis and generation of final visualizations.
+ 11.2 SAMPLE CODE
++1. Physiological Graph Rules Engine
++class PhysiologicalGraph:
++    """
++    Defines the physiological graphs for PhysioNet and WESAD datasets.
++    Graph definitions are fixed prior knowledge and explicitly undirected.
++    """
++    
++    @staticmethod
++    def get_physionet_edges() -> List[Tuple[str, str]]:
++        """
++        Returns the undirected physiological edges for PhysioNet.
++        HR-Temp is exploratory.
++        """
++        return [
++            ("NISysABP", "NIDiasABP"),
++            ("NISysABP", "NIMAP"),
++            ("NIDiasABP", "NIMAP"),
++            ("HR", "Temp")  # Exploratory edge
++        ]
++        
++    @staticmethod
++    def get_wesad_edges() -> List[Tuple[str, str]]:
++        """
++        Returns the undirected physiological edges for WESAD.
++        Maintains cross-device relationships (Chest <-> Wrist).
++        """
++        return [
++            ("chest_ECG", "wrist_BVP"),
++            ("chest_EDA", "wrist_EDA"),
++            ("chest_ACC_0", "wrist_ACC_0"),
++            ("chest_ACC_1", "wrist_ACC_1"),
++            ("chest_ACC_2", "wrist_ACC_2")
++        ]
++2. CSCM Graph Message Passing Logic
++# 3. Cross-Sensor Consistency Graph Message Passing
++E = self.edge_index.shape[1]
++
++if E > 0:
++    src_idx = self.edge_index[0]  # Source nodes
++    dst_idx = self.edge_index[1]  # Target nodes
++    
++    # Extract temporal embeddings for edge endpoints
++    z_src = z[:, src_idx, :]  # (B, E, 256)
++    z_dst = z[:, dst_idx, :]  # (B, E, 256)
++    
++    # Compute relation features r_ij using PairwiseConsistencyModule
++    r_ij = self.consistency_module(z_src, z_dst)  # (B, E, relation_dim)
++    
++    # Aggregate relations for each target node
++    aggregated_relations = torch.zeros(B, C, r_ij.shape[-1], device=x.device, dtype=r_ij.dtype)
++    
++    # Expand dst_idx to match dimensions and scatter-add relationships
++    scatter_idx = dst_idx.unsqueeze(0).unsqueeze(-1).expand(B, E, r_ij.shape[-1])
++    aggregated_relations.scatter_add_(dim=1, index=scatter_idx, src=r_ij)
++    
++    # 4. Node Update with Residual Connection
++    z_concat = torch.cat([z, aggregated_relations], dim=-1)  
++    z_updated = self.node_update(z_concat)  
++    z = z + z_updated
++
++3. Missingness Mask & Tensor Generation
++# Build normalized (C, 2, T) tensors where Dim 1 handles Missingness
++N, T, C = data.shape
++x_processed = np.zeros((N, C, 2, T), dtype=np.float32)
++
++for c_idx, ch_name in enumerate(all_channels):
++    ch_data = data[:, :, c_idx]
++    
++    # Extract Phase 3 Z-score normalization stats
++    ch_stats = norm_stats.get("statistics", {}).get(ch_name, {}).get("zscore", {})
++    mean, std = ch_stats.get("mean", 0.0), ch_stats.get("std", 1.0)
++    
++    # Apply normalization: (x - mean) / std. NaNs remain NaNs.
++    norm_data = (ch_data - mean) / std
++    
++    # Generate missingness mask (1 if observation is missing, 0 otherwise)
++    missing_mask = np.isnan(norm_data).astype(np.float32)
++    
++    # Replace NaN with 0.0 for neural network stability
++    norm_data = np.nan_to_num(norm_data, nan=0.0)
++    
++    # Channel 0: Normalized Values | Channel 1: Binary Missingness Mask
++    x_processed[:, c_idx, 0, :] = norm_data
++    x_processed[:, c_idx, 1, :] = missing_mask
+ 11.3 TESTING STRATEGIES
+ To guarantee the reliability of the anomaly detection pipeline, comprehensive testing strategies were integrated throughout the project lifecycle:
+  Unit Testing: Automated unit tests utilizing the pytest framework were implemented to validate data loaders and configuration parsing.
+@@ -289,14 +373,31 @@ To guarantee the reliability of the anomaly detection pipeline, comprehensive te
+  Threshold Calibration: Classification thresholds for discrete binary predictions were dynamically optimized strictly on the isolated validation splits to prevent test-set leakage.
+  Statistical Validation: Model differences were rigorously evaluated via hierarchical paired bootstrapping at the RecordID level for PhysioNet and SubjectID level for WESAD to ensure differences were statistically meaningful and accounted for intra-patient correlation.
+ 
++
++
++
++
++
++
++
+ 11.4 SAMPLE SCREENSHOTS
+- 
++1. Dataset Audit  -  Displays the complete dataset validation results, including the number of PhysioNet records discovered and parsed, WESAD subjects loaded, physiological modalities, and data-quality status.
+   
+-
+- 
++                          Figure 11.1: Dataset Audit
++2. Processed HDF5 Dataset Structure  -  Displays the processed test datasets for PhysioNet and WESAD, including HDF5 arrays, test window dimensions, channel counts, and total test windows.
++  
++                 Figure 11.2: Processed HDF5 Dataset Structure
++3. Synthetic FDI Attack Generation and Attack Mask  -  Displays the clean and attacked physiological signals, signal difference, and binary attack mask identifying the time steps modified by the synthetic FDI attack.
++         
++Figure 11.3: Synthetic FDI Attack Generation and Attack Mask
++4. Final Model Performance  -  Displays the F1-score, AUPRC, and AUROC performance of the Naive, Graph-only, and CSCM models across the PhysioNet and WESAD datasets.
++                     Figure 11.4: Final Model Performance
+ 
+ 
++5. Statistical Effect Analysis  -  Displays the performance differences and 95% confidence intervals for Graph-only versus Naive and CSCM versus Graph-only comparisons.
+ 
++     
++Figure 11.5: Statistical Effect Sizes with 95% Confidence Intervals
+ [12] SUMMARY:
+ The proposed project, "Coordinated Multi-Channel False Data Injection Attack Detection Using Physiology-Aware Cross-Sensor Consistency Modeling in IoMT," focuses on improving the security and reliability of physiological data transmitted by Internet of Medical Things (IoMT) devices. Medical monitoring systems continuously collect vital signs such as heart rate, oxygen saturation, blood pressure, respiratory rate, and temperature, making these systems potential targets for False Data Injection (FDI) attacks. Existing detection approaches often evaluate individual sensor channels independently or focus mainly on network-level intrusions. This creates a potential vulnerability where an attacker can simultaneously manipulate multiple correlated physiological signals while keeping each individual value within a medically plausible range. Although the manipulated values may appear normal separately, their combined pattern may violate expected physiological relationships. The project therefore aims to formally model this coordinated multi-channel FDI threat and experimentally evaluate the vulnerability of existing detection approaches using real physiological datasets.
+ To address this limitation, the project proposes a Cross-Sensor Consistency Modeling (CSCM) framework that jointly analyzes relationships among multiple physiological channels. The system will preprocess public physiological datasets such as PhysioNet/CinC-2012, WESAD, and MIMIC-III Waveform where accessible, generate controlled coordinated FDI attacks, and compare the proposed approach with appropriate baseline detection methods. A physiology-informed graph attention network will represent relationships between vital-sign channels and learn patterns of cross-sensor consistency for attack detection. The proposed system will be evaluated using metrics such as sensitivity, specificity, precision, F1-score, false-positive rate, and AUROC, together with statistical significance testing, ablation studies, and attention-based interpretability analysis. The expected outcome is a reproducible detection framework capable of identifying coordinated attacks that may evade independent sensor-level validation while maintaining performance against conventional attacks. The project aims to contribute a coordinated multi-channel attack model, a physiology-aware cross-sensor detection framework, and a comprehensive experimental evaluation for improving the security and reliability of IoMT physiological monitoring systems.

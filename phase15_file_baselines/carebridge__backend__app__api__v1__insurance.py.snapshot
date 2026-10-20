@@ -1,0 +1,82 @@
+from uuid import UUID
+from typing import List, Optional
+from fastapi import APIRouter, Depends, Query, status
+
+from app.core.security import get_security_context, SecurityContext
+from app.schemas.insurance import (
+    InsurancePolicyCreate,
+    InsurancePolicyResponse,
+    PreAuthEstimateRequest,
+    PreAuthEstimateResponse,
+    ClaimSubmitRequest,
+    ClaimAdjudicateRequest,
+    ClaimResponse,
+)
+from app.insurance.service import (
+    register_patient_policy,
+    get_patient_policies,
+    generate_preauth_estimate,
+    submit_claim,
+    adjudicate_claim,
+    list_claims,
+)
+
+router = APIRouter(prefix="/insurance", tags=["insurance"])
+
+
+@router.post("/policies", response_model=InsurancePolicyResponse, status_code=status.HTTP_201_CREATED)
+def create_policy(
+    payload: InsurancePolicyCreate,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Registers a patient insurance policy with sum insured, deductible, and exclusion rules."""
+    return register_patient_policy(context, payload)
+
+
+@router.get("/policies/{patient_id}", response_model=List[InsurancePolicyResponse])
+def get_policies(
+    patient_id: UUID,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Retrieves verified insurance policies for a patient. Enforces tenant and patient ownership."""
+    return get_patient_policies(context, patient_id)
+
+
+@router.post("/pre-auth/estimate", response_model=PreAuthEstimateResponse)
+def get_estimate(
+    payload: PreAuthEstimateRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Generates an explainable, deterministic insurance coverage and co-pay estimate using synthetic policy rules."""
+    return generate_preauth_estimate(context, payload)
+
+
+@router.post("/claims", response_model=ClaimResponse, status_code=status.HTTP_201_CREATED)
+def create_claim(
+    payload: ClaimSubmitRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Submits an insurance pre-authorization request or claim."""
+    return submit_claim(context, payload)
+
+
+@router.patch("/claims/{claim_id}/adjudicate", response_model=ClaimResponse)
+def adjudicate(
+    claim_id: UUID,
+    payload: ClaimAdjudicateRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Staff endpoint to adjudicate, approve, or deny pre-authorizations and record settlement references.
+    Strictly barred from patient and caregiver roles.
+    """
+    return adjudicate_claim(context, claim_id, payload)
+
+
+@router.get("/claims", response_model=List[ClaimResponse])
+def get_claims_list(
+    patient_id: Optional[UUID] = Query(None),
+    status: Optional[str] = Query(None),
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Lists insurance claims and pre-authorizations within the hospital tenant."""
+    return list_claims(context, patient_id=patient_id, status_filter=status)

@@ -1,0 +1,27 @@
+Category,Criterion_ID,Scenario_Description,Role_Scope,Expected_Result,Actual_Result,Status,Evidence_Reference
+Authentication,AUTH-01,Hospital Admin Authentication (CB-ADMIN-01..04),hospital_admin,HTTP 200 with signed HS256 JWT,HTTP 200 with valid JWT and profile,PASS,screenshots/01-hospital-admin/01-admin-dashboard.png
+Authentication,AUTH-02,Attending Doctor Authentication (CB-DOCTOR-01..04),doctor,HTTP 200 with signed HS256 JWT,HTTP 200 with valid JWT and profile,PASS,screenshots/02-doctor/02-doctor-queue.png
+Authentication,AUTH-03,Lead Clinical Nurse Authentication (CB-NURSE-01..04),nurse,HTTP 200 with signed HS256 JWT,HTTP 200 with valid JWT and profile,PASS,screenshots/03-nurse/03-nurse-intake-desk.png
+Authentication,AUTH-04,Lab Technician Authentication (CB-LAB-01..04),lab_technician,HTTP 200 with signed HS256 JWT,HTTP 200 with valid JWT and profile,PASS,screenshots/04-lab-technician/04-lab-diagnostics-desk.png
+Authentication,AUTH-05,Authoritative Patient Authentication (CB-PATIENT-01..04),patient,HTTP 200 with signed HS256 JWT,HTTP 200 with valid JWT and profile,PASS,screenshots/05-patient/05-patient-portal-home.png
+Security,AUTH-SEC-01,Invalid Password Rejection,Public,HTTP 401 Unauthorized,HTTP 401 with Invalid email or password,PASS,screenshots/08-errors-and-defects/08-invalid-login-rejection.png
+Security,AUTH-SEC-02,Non-Existent User Rejection,Public,HTTP 401 Unauthorized,HTTP 401 with Invalid email or password,PASS,test-results/api-results/auth-verification-summary.json
+Security,AUTH-SEC-03,Retired Role Rejection (receptionist),receptionist,HTTP 403 Forbidden (ROLE_RETIRED),HTTP 403 Forbidden with ROLE_RETIRED,PASS,test-results/api-results/auth-verification-summary.json
+Security,AUTH-SEC-04,Retired Role Rejection (caregiver),caregiver,HTTP 403 Forbidden (ROLE_RETIRED),HTTP 403 Forbidden with ROLE_RETIRED,PASS,test-results/api-results/auth-verification-summary.json
+Workflows,WORKFLOW-01,Doctor Consultation Queue & Patient Detail,doctor,Queue renders with encounters and vitals,Active consultation queue loaded,PASS,screenshots/02-doctor/02-doctor-queue.png
+Workflows,WORKFLOW-02,Clinical Contradiction Detection (HbA1c 6.2% vs 8.5%),doctor,High priority discrepancy alert banner,Contradiction banner rendered in doctor view,PASS,screenshots/06-cross-role-workflows/06-conflict-detection-banner.png
+Workflows,WORKFLOW-03,Clinical Conflict Reconciliation Workflow,doctor,Interactive modal for clinician review,Modal displays baseline and conflicting sources,PASS,screenshots/06-cross-role-workflows/06-conflict-resolution-flow.png
+Workflows,WORKFLOW-04,Nurse Rapid OPD Intake Desk,nurse,Rapid check-in and vitals recording,Intake queue and rapid check-in loaded,PASS,screenshots/03-nurse/03-nurse-rapid-checkin.png
+Workflows,WORKFLOW-05,Multi-Disciplinary Care Tasks Coordination,nurse/doctor,Care tasks board renders priorities and statuses,Care task board rendered with reconciliations,PASS,screenshots/06-cross-role-workflows/06-care-task-coordination.png
+Workflows,WORKFLOW-06,Demographics-Masked Specimen Accessioning,lab_technician,MRN displayed without patient PII/demographics,Demographics masked verification verified,PASS,screenshots/04-lab-technician/04-lab-demographics-masked.png
+Workflows,WORKFLOW-07,Patient 3-Step Appointment Booking Wizard,patient,Guided booking wizard (Dept / Doctor / Slot),Wizard rendered with interactive steps,PASS,screenshots/05-patient/05-patient-booking-wizard.png
+Workflows,WORKFLOW-08,Patient Personal Health & Clinical Records,patient,List of verified documents and lab reports,Clinical records list rendered,PASS,screenshots/05-patient/05-patient-records.png
+Workflows,WORKFLOW-09,Cryptographic QR Prescription Verification,Public,Verification page validates digital seal,Prescription verification page rendered,PASS,screenshots/06-cross-role-workflows/06-prescription-verification.png
+Multi-Tenancy,SEC-TENANT-01,Cross-Tenant Resource Isolation Barrier,Cross-tenant,HTTP 404 on foreign tenant patient/record,RFC 7807 HTTP 404 returned,PASS,screenshots/07-security-tests/07-cross-tenant-isolation-404.png
+Security,SEC-ROLE-01,Horizontal & Vertical RBAC Barriers,patient,Access denied to admin operations (403/redirect),Restricted boundary enforced,PASS,screenshots/07-security-tests/07-unauthorized-role-boundary-403.png
+Decommissioning,SEC-DECOM-01,Decommissioned Receptionist Route,Public,Route /receptionist renders HTTP 404,RFC 7807 404 page rendered,PASS,screenshots/07-security-tests/07-decommissioned-receptionist-404.png
+Decommissioning,SEC-DECOM-02,Decommissioned Caregiver Route,Public,Route /portal/caregivers renders HTTP 404,RFC 7807 404 page rendered,PASS,screenshots/07-security-tests/07-decommissioned-caregiver-404.png
+Error Handling,SEC-RFC-01,RFC 7807 Problem Details Error Schema,Public,JSON error format with type/title/status/detail,RFC 7807 compliant error format,PASS,screenshots/08-errors-and-defects/08-rfc7807-error-response.png
+Responsiveness,UI-RESP-01,Mobile Responsive Viewports (375x667),All Roles,Responsive mobile layout across all 5 roles,Mobile screenshots captured cleanly,PASS,screenshots/00-landing-mobile.png
+Integrity,INVAR-01,CSCM-IoMT 17727 Research Assets Parity,System,100% SHA-256 match with baseline hashes,17727 files matched bit-for-bit,PASS,verify_phase15_post_audit.py
+Integrity,INVAR-02,Historical Receptionist Audit Log Immutability,System,48 historical receptionist events byte-identical,48 lines verified 100% identical,PASS,verify_phase15_post_audit.py

@@ -1,0 +1,1658 @@
+{
+  "appointments": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "doctor_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "department_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "scheduled_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": null
+      },
+      "ends_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": null
+      },
+      "status": {
+        "type": "USER-DEFINED",
+        "nullable": "NO",
+        "default": "'scheduled'::appointment_status"
+      },
+      "reason_for_visit": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "clinical_notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "departments",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "departments",
+        "id"
+      ],
+      [
+        "department_id",
+        "departments",
+        "hospital_id"
+      ],
+      [
+        "department_id",
+        "departments",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "doctors",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "doctors",
+        "id"
+      ],
+      [
+        "doctor_id",
+        "doctors",
+        "hospital_id"
+      ],
+      [
+        "doctor_id",
+        "doctors",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "care_tasks": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "encounter_id": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "task_type": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "priority": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'pending'::text"
+      },
+      "title": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "description": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_instructions": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "assigned_role": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "assigned_to": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "due_date": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "completed_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "completed_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "completion_notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "encounter_id",
+        "appointments",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "clinical_conflict_sources": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "conflict_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "document_id": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "entity_id": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "role_in_conflict": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "citation_text": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "clinical_conflicts",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "clinical_conflicts",
+        "id"
+      ],
+      [
+        "conflict_id",
+        "clinical_conflicts",
+        "hospital_id"
+      ],
+      [
+        "conflict_id",
+        "clinical_conflicts",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "clinical_documents",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "clinical_documents",
+        "id"
+      ],
+      [
+        "document_id",
+        "clinical_documents",
+        "hospital_id"
+      ],
+      [
+        "document_id",
+        "clinical_documents",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "extracted_entities",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "extracted_entities",
+        "id"
+      ],
+      [
+        "entity_id",
+        "extracted_entities",
+        "hospital_id"
+      ],
+      [
+        "entity_id",
+        "extracted_entities",
+        "id"
+      ]
+    ]
+  },
+  "clinical_conflicts": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "conflict_type": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "review_priority": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "title": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "clinical_summary": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_friendly_summary": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "resolution_status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'unresolved'::text"
+      },
+      "acknowledged_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "acknowledged_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "clinician_rationale": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "clinical_documents": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "uploaded_by": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "document_type": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "file_name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "mime_type": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "file_size_bytes": {
+        "type": "integer",
+        "nullable": "NO",
+        "default": null
+      },
+      "storage_path": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "ocr_status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'pending'::text"
+      },
+      "raw_text": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "error_code": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "departments": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "code": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "head_of_department": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  },
+  "doctors": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "profile_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "department_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "license_number": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "specialization": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "qualification": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "opd_room": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "consultation_fee": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": "0.00"
+      },
+      "is_available": {
+        "type": "boolean",
+        "nullable": "NO",
+        "default": "true"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "departments",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "departments",
+        "id"
+      ],
+      [
+        "department_id",
+        "departments",
+        "hospital_id"
+      ],
+      [
+        "department_id",
+        "departments",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "id"
+      ],
+      [
+        "profile_id",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "profile_id",
+        "profiles",
+        "id"
+      ]
+    ]
+  },
+  "extracted_entities": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "document_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "entity_category": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "extracted_data": {
+        "type": "jsonb",
+        "nullable": "NO",
+        "default": null
+      },
+      "confidence_score": {
+        "type": "numeric",
+        "nullable": "YES",
+        "default": null
+      },
+      "verification_status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'pending'::text"
+      },
+      "verified_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "verified_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "doctor_notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "clinical_documents",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "clinical_documents",
+        "id"
+      ],
+      [
+        "document_id",
+        "clinical_documents",
+        "hospital_id"
+      ],
+      [
+        "document_id",
+        "clinical_documents",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "hospitals": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "slug": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "license_number": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "address": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "contact_email": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "contact_phone": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "is_active": {
+        "type": "boolean",
+        "nullable": "NO",
+        "default": "true"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "timezone": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'Asia/Kolkata'::text"
+      }
+    },
+    "fks": []
+  },
+  "insurance_claims": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "policy_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "appointment_id": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "claim_type": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": null
+      },
+      "requested_amount_inr": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": null
+      },
+      "approved_amount_inr": {
+        "type": "numeric",
+        "nullable": "YES",
+        "default": "0.00"
+      },
+      "patient_copay_amount_inr": {
+        "type": "numeric",
+        "nullable": "YES",
+        "default": "0.00"
+      },
+      "adjudication_status": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": "'draft'::character varying"
+      },
+      "denial_reason": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "settlement_reference": {
+        "type": "character varying",
+        "nullable": "YES",
+        "default": null
+      },
+      "adjudicated_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "adjudicated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "rule_version": {
+        "type": "character varying",
+        "nullable": "YES",
+        "default": "'v1.0'::character varying"
+      },
+      "calculation_breakdown": {
+        "type": "jsonb",
+        "nullable": "YES",
+        "default": "'{}'::jsonb"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "appointment_id",
+        "appointments",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ],
+      [
+        "policy_id",
+        "patient_insurance_policies",
+        "id"
+      ]
+    ]
+  },
+  "medication_adherence_logs": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "prescription_item_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "scheduled_time": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": null
+      },
+      "taken_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "prescription_items",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "prescription_items",
+        "id"
+      ],
+      [
+        "prescription_item_id",
+        "prescription_items",
+        "hospital_id"
+      ],
+      [
+        "prescription_item_id",
+        "prescription_items",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  },
+  "patient_accounts": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "user_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "relationship": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'self'::text"
+      },
+      "status": {
+        "type": "USER-DEFINED",
+        "nullable": "NO",
+        "default": "'pending_verification'::account_link_status"
+      },
+      "verified_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "verified_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "id"
+      ],
+      [
+        "user_id",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "user_id",
+        "profiles",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "profiles",
+        "id"
+      ],
+      [
+        "verified_by",
+        "profiles",
+        "hospital_id"
+      ],
+      [
+        "verified_by",
+        "profiles",
+        "id"
+      ]
+    ]
+  },
+  "patient_insurance_policies": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "provider_name": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": null
+      },
+      "policy_number": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": null
+      },
+      "policy_holder_name": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": null
+      },
+      "relation_to_patient": {
+        "type": "character varying",
+        "nullable": "YES",
+        "default": "'self'::character varying"
+      },
+      "sum_insured_inr": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": "500000.00"
+      },
+      "remaining_balance_inr": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": "500000.00"
+      },
+      "copay_percentage": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": "10.00"
+      },
+      "deductible_inr": {
+        "type": "numeric",
+        "nullable": "NO",
+        "default": "0.00"
+      },
+      "exclusions": {
+        "type": "jsonb",
+        "nullable": "NO",
+        "default": "'[]'::jsonb"
+      },
+      "valid_from": {
+        "type": "date",
+        "nullable": "NO",
+        "default": null
+      },
+      "valid_until": {
+        "type": "date",
+        "nullable": "NO",
+        "default": null
+      },
+      "status": {
+        "type": "character varying",
+        "nullable": "NO",
+        "default": "'active'::character varying"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ]
+    ]
+  },
+  "patients": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "mrn": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "first_name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "last_name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "date_of_birth": {
+        "type": "date",
+        "nullable": "NO",
+        "default": null
+      },
+      "gender": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "blood_group": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "phone": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "email": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "address": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "emergency_contact_name": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "emergency_contact_phone": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  },
+  "prescription_items": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "prescription_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "drug_name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "therapeutic_class": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "dosage": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "route": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'oral'::text"
+      },
+      "frequency": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "duration_days": {
+        "type": "integer",
+        "nullable": "NO",
+        "default": null
+      },
+      "instructions": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "refills_remaining": {
+        "type": "integer",
+        "nullable": "NO",
+        "default": "0"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "prescriptions",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "prescriptions",
+        "id"
+      ],
+      [
+        "prescription_id",
+        "prescriptions",
+        "hospital_id"
+      ],
+      [
+        "prescription_id",
+        "prescriptions",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  },
+  "prescriptions": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": "gen_random_uuid()"
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "patient_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "doctor_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "encounter_id": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "status": {
+        "type": "text",
+        "nullable": "NO",
+        "default": "'prescribed'::text"
+      },
+      "diagnosis_context": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "discontinuation_rationale": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "verification_hash": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "issued_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "valid_until": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": null
+      },
+      "dispensed_by": {
+        "type": "uuid",
+        "nullable": "YES",
+        "default": null
+      },
+      "dispensed_at": {
+        "type": "timestamp with time zone",
+        "nullable": "YES",
+        "default": null
+      },
+      "dispensing_notes": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "hospital_id",
+        "patients",
+        "id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "hospital_id"
+      ],
+      [
+        "patient_id",
+        "patients",
+        "id"
+      ],
+      [
+        "encounter_id",
+        "appointments",
+        "id"
+      ],
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  },
+  "profiles": {
+    "columns": {
+      "id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "hospital_id": {
+        "type": "uuid",
+        "nullable": "NO",
+        "default": null
+      },
+      "role": {
+        "type": "USER-DEFINED",
+        "nullable": "NO",
+        "default": "'patient'::user_role"
+      },
+      "full_name": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "email": {
+        "type": "text",
+        "nullable": "NO",
+        "default": null
+      },
+      "phone": {
+        "type": "text",
+        "nullable": "YES",
+        "default": null
+      },
+      "is_active": {
+        "type": "boolean",
+        "nullable": "NO",
+        "default": "true"
+      },
+      "created_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      },
+      "updated_at": {
+        "type": "timestamp with time zone",
+        "nullable": "NO",
+        "default": "timezone('utc'::text, now())"
+      }
+    },
+    "fks": [
+      [
+        "hospital_id",
+        "hospitals",
+        "id"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "timestamp": "20261016_215134",
+  "database_host": "db.vmuzexvtbodnkzhfitzf.supabase.co",
+  "table_count": 17,
+  "total_rows": 258,
+  "tables": {
+    "appointments": 2,
+    "care_tasks": 46,
+    "clinical_conflict_sources": 0,
+    "clinical_conflicts": 0,
+    "clinical_documents": 5,
+    "departments": 4,
+    "doctors": 1,
+    "extracted_entities": 24,
+    "hospitals": 2,
+    "insurance_claims": 7,
+    "medication_adherence_logs": 9,
+    "patient_accounts": 1,
+    "patient_insurance_policies": 1,
+    "patients": 3,
+    "prescription_items": 82,
+    "prescriptions": 64,
+    "profiles": 7
+  }
+}

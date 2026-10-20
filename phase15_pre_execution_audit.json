@@ -1,0 +1,312 @@
+{
+  "audit_version": "1.0",
+  "phase": 15,
+  "recorded_at": "2026-10-19T16:23:24.639572+00:00",
+  "workspace_root": "C:\\Users\\PRABAKAR\\Documents\\capstone_PRABAKAR",
+  "cscm_research_assets": {
+    "baseline_reference_file": "carebridge\\backend\\app\\cscm\\research_comprehensive_baseline_hashes.json",
+    "total_files": 17727,
+    "checked_files": 17727,
+    "missing_count": 0,
+    "mismatch_count": 0,
+    "status": "PASS"
+  },
+  "audit_log": {
+    "file_path": "carebridge\\backend\\logs\\audit.jsonl",
+    "file_sha256": "80e50c84785695d1749af6234db2b9a8ad4c8ad0cb014387eb4340d0e507a339",
+    "total_lines": 548,
+    "receptionist_events_count": 48,
+    "receptionist_events": [
+      {
+        "line_number": 1,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-14T18:28:27.550211+00:00",
+        "sha256_line": "0bcacc0f13dae27c04519dbade291415790d845e137b37f5646813f8b3f4e7ac"
+      },
+      {
+        "line_number": 5,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-14T18:34:15.856491+00:00",
+        "sha256_line": "745df678d85e69bf93a5f61d8c3d5b4b19add9aed3ee886c1fd6c1fa2920db10"
+      },
+      {
+        "line_number": 7,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-14T18:38:15.793289+00:00",
+        "sha256_line": "9e665675cb81d82ada1e233597b3247ce7abbb05a0a46a5ddab6211d3c3119ae"
+      },
+      {
+        "line_number": 9,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-14T18:38:55.792511+00:00",
+        "sha256_line": "f87c4a66680f2dc5baf467e4469ea16776913296a39c4c8fb74b6895c1598259"
+      },
+      {
+        "line_number": 14,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-14T18:44:47.386823+00:00",
+        "sha256_line": "abe07e1b0b97d6a18fe41ea63a4d951b6046f47c562f1c72c7c8c2cb8b264b22"
+      },
+      {
+        "line_number": 16,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-14T18:45:25.785690+00:00",
+        "sha256_line": "113cb67cccfcbc10e5f345f29512f29663c70f4423ce739b86181bae3440ed94"
+      },
+      {
+        "line_number": 22,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-14T19:28:56.409517+00:00",
+        "sha256_line": "690e01439b755f7ffb14f835e8cf059310dc448fe7bdca74c2464a37296795ae"
+      },
+      {
+        "line_number": 24,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-14T19:29:55.897624+00:00",
+        "sha256_line": "d58cddfd8123251bf08a33458a192905f84b1fc8646a60817ac283319c81fd48"
+      },
+      {
+        "line_number": 44,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-15T15:06:20.253408+00:00",
+        "sha256_line": "9680127aa52561debbeb3927b6b916064f2d29d6ed4ec33f14ce77e5fb77ecd4"
+      },
+      {
+        "line_number": 46,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-15T15:07:49.913112+00:00",
+        "sha256_line": "5bf6e5f12f152b524162e7d115b49bef114f700624f7ed73c930951fed805168"
+      },
+      {
+        "line_number": 75,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T17:44:22.166448+00:00",
+        "sha256_line": "ed0bd4e405cde24441c5ec4f7b350519313f69d020122e29b4c0cfdabffe6e4b"
+      },
+      {
+        "line_number": 76,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T17:44:34.675756+00:00",
+        "sha256_line": "caa7c604d4cb322357ce6860a560498592439db1d9c332ed27f98730860ba4ea"
+      },
+      {
+        "line_number": 87,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T17:49:56.383512+00:00",
+        "sha256_line": "b878f846674b9ec22fba5fa8da14e57ab5dc7c472ba4a0f42ffe62a0a66025b6"
+      },
+      {
+        "line_number": 88,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T17:50:08.709866+00:00",
+        "sha256_line": "43a05dee2d215fe344603a6c750e45b78556774da38d5866a0b6a1f657a1db7b"
+      },
+      {
+        "line_number": 106,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T18:17:57.489238+00:00",
+        "sha256_line": "6276f97b2ffc4c4f4c3c7c17c944475920b8aa1cd49c9f76dc98a1203e2f6259"
+      },
+      {
+        "line_number": 107,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T18:18:06.450277+00:00",
+        "sha256_line": "7fe163d5bd6107095bd18e6bad9ee55a7852fd0ef3c19e6b7be014b946e635c4"
+      },
+      {
+        "line_number": 145,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T18:34:43.472327+00:00",
+        "sha256_line": "041adf638da6294cd23575d51903c96f966dcfd31526739792822be6dd4efc8b"
+      },
+      {
+        "line_number": 146,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T18:34:52.152665+00:00",
+        "sha256_line": "c68d1776b5a803c5bf63e19126ab8a280baa7b37f8e963cdb18066a05fd8c08d"
+      },
+      {
+        "line_number": 176,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T19:36:22.944976+00:00",
+        "sha256_line": "769bcbe3e9084df0dfa9b405103659602aae383fd9510ee0014a3589359af955"
+      },
+      {
+        "line_number": 177,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-15T19:36:31.525948+00:00",
+        "sha256_line": "6b67a96a499aefe9add871880167f49ccaf3dfe60850cadaa36ad90033434fe5"
+      },
+      {
+        "line_number": 215,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T08:53:29.791788+00:00",
+        "sha256_line": "bf7bbda1d392916306ebaade09737e93e05a228a2f3d07cd9742735579139193"
+      },
+      {
+        "line_number": 216,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T08:53:36.941143+00:00",
+        "sha256_line": "80bc3c866c36f02adb8efb326e71278631b7016a649dcd07f310603382f8d354"
+      },
+      {
+        "line_number": 238,
+        "event_type": "OPERATIONS_ANALYTICS_VIEWED",
+        "timestamp": "2026-10-16T09:31:49.099272+00:00",
+        "sha256_line": "46e1841b753418e79d3b7e2006948044bd686c2683b3edf284e53b0b207097a3"
+      },
+      {
+        "line_number": 270,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T09:46:50.868678+00:00",
+        "sha256_line": "6fb75104869545aad8974c22707c1b1ad6ed2b056b758e028dcfa3d7133d4ad3"
+      },
+      {
+        "line_number": 278,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T11:32:29.338764+00:00",
+        "sha256_line": "3080ffb91d6e2f6431129b7e300a1b075e49dd5d84e96ae471f6985b13357811"
+      },
+      {
+        "line_number": 281,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T11:36:18.754355+00:00",
+        "sha256_line": "4a2e6de912e25291bc90df0a793e4a02f2292b260f62206eda14ef3ed68e8185"
+      },
+      {
+        "line_number": 283,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-16T11:36:53.497021+00:00",
+        "sha256_line": "7400e823edb723eb68a6213550ec410fc05ab09936a4134176409c140d7d0f7f"
+      },
+      {
+        "line_number": 308,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T11:43:49.095954+00:00",
+        "sha256_line": "a385242dfda6fcb681832dfa2865fe1b8356514aaf17ddea46a1b2b6cc87baec"
+      },
+      {
+        "line_number": 309,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T11:43:58.310141+00:00",
+        "sha256_line": "78ab7f951bdd56cfbf539abb7ecda0be39204f1d5403958780127830b1cc0458"
+      },
+      {
+        "line_number": 336,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T11:54:06.967432+00:00",
+        "sha256_line": "086463e85ddcde114ebbba492fcdf0ad19e3cd0d66bd0e930fc16ef4d06641d8"
+      },
+      {
+        "line_number": 344,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T12:51:07.619517+00:00",
+        "sha256_line": "320097c48e86a9514a9f246b839f46a42d2fe089baeb533b7a054c5cd6a4ad85"
+      },
+      {
+        "line_number": 372,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T13:54:15.832611+00:00",
+        "sha256_line": "833ce42cc789401329fa4e5de45ca34348ce23d10086dbbbccd999c1224b77cf"
+      },
+      {
+        "line_number": 375,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T13:56:01.921062+00:00",
+        "sha256_line": "3fd6cbceacb028f4354a2b7a547b2e2a3771e189a20e31d00fa4648076c82cca"
+      },
+      {
+        "line_number": 377,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-16T13:56:41.405591+00:00",
+        "sha256_line": "a3ff9bfd9312223b9bdd481053f46f08dead2c94e64fefe4ab50804948c5a9f1"
+      },
+      {
+        "line_number": 402,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T14:03:31.915432+00:00",
+        "sha256_line": "b8bdd2e3b2a04fa3666aa42337afa8ff6bad7432a84a4e948feb332e330bc5ed"
+      },
+      {
+        "line_number": 403,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T14:03:40.190808+00:00",
+        "sha256_line": "f4c1c86d29d360cc8b2cd66bafbb5ebafaf505500e96cd2ab0633f9fca75a5c1"
+      },
+      {
+        "line_number": 421,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T14:53:48.687257+00:00",
+        "sha256_line": "b8376bcecaadff050f1f8d9d234a67d5f7c006821a90f4467dc2342409ff29dc"
+      },
+      {
+        "line_number": 422,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T14:53:57.108432+00:00",
+        "sha256_line": "d85b5eb3735caf13c0c180d7acc749e86bae6669bf3dbbb8ca4786686e7aaef4"
+      },
+      {
+        "line_number": 454,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T17:28:01.269053+00:00",
+        "sha256_line": "af1d21b0bb0bd64f1f797a788438571bdbc5e4c6056077080a450e409837d183"
+      },
+      {
+        "line_number": 457,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T17:29:39.174967+00:00",
+        "sha256_line": "771af40d783482a685a58beefb4f935613f7100f9c9aec9fd2adc41c77b13273"
+      },
+      {
+        "line_number": 459,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-16T17:30:13.632659+00:00",
+        "sha256_line": "3e0dcf6ccdea7a163f4e94b7eb5a82e1b13ca361a1b23384abdd23f92dd7bddd"
+      },
+      {
+        "line_number": 484,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T17:36:55.181736+00:00",
+        "sha256_line": "1407147ac7cc193d64b0a6ac460efc86bfaa0d89e6631226f3aad84b86754b50"
+      },
+      {
+        "line_number": 485,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T17:37:03.652266+00:00",
+        "sha256_line": "e0883886c9f51c0e1743c20459e393bdc1445336bf81cb259c3d9727cfd26d18"
+      },
+      {
+        "line_number": 512,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T17:46:36.363892+00:00",
+        "sha256_line": "3bef5ecffb824bb0a9d4e68a95882c56b2a13903166e6d399d1f4ac2c506835a"
+      },
+      {
+        "line_number": 515,
+        "event_type": "PATIENT_RECORD_ACCESSED",
+        "timestamp": "2026-10-16T17:48:10.521851+00:00",
+        "sha256_line": "1a8eb3b25ac8425b1f3336ecceec853df4b00d37e55ed61d61e9b6134c37bd3e"
+      },
+      {
+        "line_number": 517,
+        "event_type": "CAREGIVER_LINK_VERIFIED",
+        "timestamp": "2026-10-16T17:48:44.126518+00:00",
+        "sha256_line": "6ac272bf3c19c33ea04e2ff40c5ecbb6b493e7d503de06f65346f0c7c6e1c468"
+      },
+      {
+        "line_number": 542,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T17:55:19.320992+00:00",
+        "sha256_line": "abe47df3231660079b5f5a724fe7380ba4fd2c397aae240db799034ccd5dbc1c"
+      },
+      {
+        "line_number": 543,
+        "event_type": "PRESCRIPTION_DISPENSED",
+        "timestamp": "2026-10-16T17:55:26.842358+00:00",
+        "sha256_line": "f58278d068d28cf285bfdcd19b33b5445b5a2c27eae38b9781bef37e05834fb8"
+      }
+    ],
+    "status": "PASS"
+  },
+  "gate_status": "PASSED"
+}

@@ -1,0 +1,162 @@
+{
+  "timestamp": "20261019_162402",
+  "workspace_root": "C:\\Users\\PRABAKAR\\Documents\\capstone_PRABAKAR",
+  "uncommitted_patch": "pre_phase15_uncommitted_20261019_162402.patch",
+  "files_count": 26,
+  "files": {
+    "carebridge/backend/app/core/security.py": {
+      "exists": true,
+      "sha256": "92998323dcb66c550cfe24decb912e7f2fd7143b0babd75e4d0a0ea26c7e7637",
+      "bytes": 5328,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__core__security.py.snapshot"
+    },
+    "carebridge/backend/app/schemas/care_task.py": {
+      "exists": true,
+      "sha256": "a147010ce3a2ab546707337a20a56055aeab24efc35cad364d1d446099b4f999",
+      "bytes": 2284,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__schemas__care_task.py.snapshot"
+    },
+    "carebridge/backend/app/schemas/caregiver.py": {
+      "exists": true,
+      "sha256": "46cbdb61da752909ee35c0fe20e53f33bcd8dd3e1e346a5930cb6c78384c14f0",
+      "bytes": 1206,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__schemas__caregiver.py.snapshot"
+    },
+    "carebridge/backend/app/schemas/conflict.py": {
+      "exists": true,
+      "sha256": "017c7f4cf738b8727cd76c07e6faec825bde99b09fdd3fb71583e5f18563a1eb",
+      "bytes": 2200,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__schemas__conflict.py.snapshot"
+    },
+    "carebridge/backend/main.py": {
+      "exists": true,
+      "sha256": "a8a828cf84d099fa579af9b2d1e91069fdb36583a0c62f6a6642ca566a800067",
+      "bytes": 3122,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__main.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/caregiver.py": {
+      "exists": true,
+      "sha256": "bfc4f2f210a429adda835ad54b97a044e01d06d817f9fac0ee65adf7ef373670",
+      "bytes": 7753,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__caregiver.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/appointments.py": {
+      "exists": true,
+      "sha256": "b1f79e5ee763346cb8cdee4cddf91b242a8f4ca388575422c3287d8e993012cd",
+      "bytes": 14764,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__appointments.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/patients.py": {
+      "exists": true,
+      "sha256": "5fcbdc66f65c6409dc83c4379aaa5aef7df1bbcadbbc70b21985fc723b8f0f1a",
+      "bytes": 8310,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__patients.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/documents.py": {
+      "exists": true,
+      "sha256": "722dfba7895e8b12f8c2bb4bf0d24601ed343ab41ffeecc3ceafc5846fcd9b0d",
+      "bytes": 21243,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__documents.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/conflicts.py": {
+      "exists": true,
+      "sha256": "38dc0ecc677abde72dc626549d13fa2e661a038b55c525aa9980fa9e244e0759",
+      "bytes": 20250,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__conflicts.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/care_tasks.py": {
+      "exists": true,
+      "sha256": "a787fd37b80f2916b05c06254146fc38887020713ee7f22bddfb3062cd6c62f4",
+      "bytes": 20175,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__care_tasks.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/prescriptions.py": {
+      "exists": true,
+      "sha256": "4ded8fb8ef7ede51f7104241ec2a9f80ffdb7936f589727a869f6859a0fdb80a",
+      "bytes": 7683,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__prescriptions.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/insurance.py": {
+      "exists": true,
+      "sha256": "2c571459f1fee7c0f3c89c1bbd7c4bd3e1fa2c3b4d54e29c497b9040cca81f50",
+      "bytes": 2891,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__app__api__v1__insurance.py.snapshot"
+    },
+    "carebridge/backend/app/api/v1/chat/tools.py": {
+      "exists": false,
+      "sha256": null,
+      "snapshot": null
+    },
+    "carebridge/backend/app/api/v1/chat/engine.py": {
+      "exists": false,
+      "sha256": null,
+      "snapshot": null
+    },
+    "carebridge/backend/supabase/seed_15_records.py": {
+      "exists": true,
+      "sha256": "e4d5cc399ee52dec9f9b26c3afc3b3f42eb32b69b5450751c6518dc9fb6f1311",
+      "bytes": 19323,
+      "snapshot": "phase15_file_baselines\\carebridge__backend__supabase__seed_15_records.py.snapshot"
+    },
+    "carebridge/frontend/lib/auth-context.tsx": {
+      "exists": true,
+      "sha256": "809e7562dbefa5eb8db6f10f5443747c2687780fae4a2e39ec267135f453eed0",
+      "bytes": 8324,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__lib__auth-context.tsx.snapshot"
+    },
+    "carebridge/frontend/components/shell/sidebar.tsx": {
+      "exists": true,
+      "sha256": "7cdb1c2752092059f5795b6161c821fe927adc7054b164cea5818707683b509c",
+      "bytes": 3896,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__components__shell__sidebar.tsx.snapshot"
+    },
+    "carebridge/frontend/components/shell/tenant-header.tsx": {
+      "exists": true,
+      "sha256": "a4e1b44beafcebeb2d93487c01b1a83615de7304333ccaa101e55b49fcd58734",
+      "bytes": 6971,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__components__shell__tenant-header.tsx.snapshot"
+    },
+    "carebridge/frontend/components/prescriptions/prescription-detail-modal.tsx": {
+      "exists": true,
+      "sha256": "16bc0d5ecbffa48dc3e2f9111548f7d2575570ffeb4c49809c56d24563f0e500",
+      "bytes": 13113,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__components__prescriptions__prescription-detail-modal.tsx.snapshot"
+    },
+    "carebridge/frontend/app/demo/page.tsx": {
+      "exists": true,
+      "sha256": "c4b1331044063e7fea36ccbc45458294833cb390a99f76de5083d0e22d083b6d",
+      "bytes": 19796,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__demo__page.tsx.snapshot"
+    },
+    "carebridge/frontend/app/(dashboard)/page.tsx": {
+      "exists": true,
+      "sha256": "15077574226ec5a51e53d8fa184e34ee139426a40f50afd41021df42b29f6ff2",
+      "bytes": 1148,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__(dashboard)__page.tsx.snapshot"
+    },
+    "carebridge/frontend/app/(dashboard)/tasks/page.tsx": {
+      "exists": true,
+      "sha256": "2db4348af65a4b3e19d43fd942a5d7e011be3ad0adbd64f0f3b5bd0bec3b750c",
+      "bytes": 23070,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__(dashboard)__tasks__page.tsx.snapshot"
+    },
+    "carebridge/frontend/app/(dashboard)/receptionist/page.tsx": {
+      "exists": true,
+      "sha256": "e370447b2d401d0afd005fea838bdf1826f1bed52a326a39438898e3251fc811",
+      "bytes": 11708,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__(dashboard)__receptionist__page.tsx.snapshot"
+    },
+    "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx": {
+      "exists": true,
+      "sha256": "a6cdb96ca7e5d8d50cb4a52770c831402569356f30f20e69c54c91f1e3d2cccc",
+      "bytes": 11250,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__(dashboard)__receptionist__verify-caregivers__page.tsx.snapshot"
+    },
+    "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx": {
+      "exists": true,
+      "sha256": "fb110b22c8a7a293ba90f26796cfaea77170b97559302a5f6f6c3e4df60011d8",
+      "bytes": 12804,
+      "snapshot": "phase15_file_baselines\\carebridge__frontend__app__(dashboard)__portal__caregivers__page.tsx.snapshot"
+    }
+  }
+}

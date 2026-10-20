@@ -1,0 +1,2246 @@
+{
+  "summary": {
+    "receptionist": {
+      "total_hits": 188,
+      "distinct_files_count": 44,
+      "files": {
+        "carebridge/backend/app/analytics/service.py": 2,
+        "carebridge/backend/app/api/v1/appointments.py": 2,
+        "carebridge/backend/app/api/v1/caregiver.py": 2,
+        "carebridge/backend/app/api/v1/patients.py": 3,
+        "carebridge/backend/app/schemas/care_task.py": 1,
+        "carebridge/backend/logs/audit.jsonl": 48,
+        "carebridge/backend/supabase/audit_roles_phase15.py": 1,
+        "carebridge/backend/supabase/capture_all_evidence.py": 2,
+        "carebridge/backend/supabase/enums.json": 1,
+        "carebridge/backend/supabase/migrations/0001_phase2_schema.sql": 4,
+        "carebridge/backend/supabase/migrations/0005_phase8_care_tasks.sql": 1,
+        "carebridge/backend/supabase/seed_15_records.py": 4,
+        "carebridge/backend/tests/test_phase13_security_e2e.py": 3,
+        "carebridge/backend/tests/test_phase3_workflows.py": 2,
+        "carebridge/backend/tests/test_phase8_care_tasks.py": 1,
+        "carebridge/frontend/app/(dashboard)/page.tsx": 2,
+        "carebridge/frontend/app/(dashboard)/receptionist/page.tsx": 2,
+        "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx": 1,
+        "carebridge/frontend/app/(dashboard)/tasks/page.tsx": 1,
+        "carebridge/frontend/app/demo/page.tsx": 8,
+        "carebridge/frontend/app/page.tsx": 1,
+        "carebridge/frontend/components/shell/sidebar.tsx": 6,
+        "carebridge/frontend/components/shell/tenant-header.tsx": 1,
+        "carebridge/frontend/lib/auth-context.tsx": 5,
+        "docs/ARCHITECTURE.md": 9,
+        "docs/ARCHIVAL_AUDIT.md": 1,
+        "docs/LOCAL_SETUP.md": 1,
+        "docs/VIVA_DEMO_GUIDE.md": 6,
+        "docs/phase-plans/PHASE_10_PLAN.md": 1,
+        "docs/phase-plans/PHASE_13_PLAN.md": 6,
+        "docs/phase-plans/PHASE_14_PLAN.md": 5,
+        "docs/phase-plans/PHASE_2_PLAN.md": 9,
+        "docs/phase-plans/PHASE_3_PLAN.md": 12,
+        "docs/phase-plans/PHASE_4_PLAN.md": 4,
+        "docs/phase-plans/PHASE_8_PLAN.md": 5,
+        "docs/phase-plans/PHASE_9_PLAN.md": 3,
+        "docs/phase-reports/PHASE_10_REPORT.md": 1,
+        "docs/phase-reports/PHASE_12_REPORT.md": 2,
+        "docs/phase-reports/PHASE_13_REPORT.md": 5,
+        "docs/phase-reports/PHASE_14_REPORT.md": 3,
+        "docs/phase-reports/PHASE_4_REPORT.md": 7,
+        "docs/phase-reports/PHASE_6_REPORT.md": 2,
+        "docs/phase-reports/PHASE_8_REPORT.md": 1,
+        "docs/phase-reports/PHASE_9_REPORT.md": 1
+      }
+    },
+    "caregiver": {
+      "total_hits": 209,
+      "distinct_files_count": 52,
+      "files": {
+        "carebridge/backend/app/api/v1/care_tasks.py": 7,
+        "carebridge/backend/app/api/v1/caregiver.py": 4,
+        "carebridge/backend/app/api/v1/conflicts.py": 4,
+        "carebridge/backend/app/api/v1/documents.py": 7,
+        "carebridge/backend/app/api/v1/insurance.py": 1,
+        "carebridge/backend/app/api/v1/prescriptions.py": 2,
+        "carebridge/backend/app/chat/engine.py": 1,
+        "carebridge/backend/app/chat/tools.py": 5,
+        "carebridge/backend/app/insurance/service.py": 6,
+        "carebridge/backend/app/prescriptions/service.py": 3,
+        "carebridge/backend/app/schemas/care_task.py": 2,
+        "carebridge/backend/app/schemas/caregiver.py": 1,
+        "carebridge/backend/app/schemas/conflict.py": 1,
+        "carebridge/backend/main.py": 1,
+        "carebridge/backend/supabase/audit_roles_phase15.py": 1,
+        "carebridge/backend/supabase/migrations/0001_phase2_schema.sql": 2,
+        "carebridge/backend/supabase/migrations/0002_phase3_hospital_timezone.sql": 2,
+        "carebridge/backend/tests/test_phase3_workflows.py": 9,
+        "carebridge/frontend/app/(dashboard)/page.tsx": 1,
+        "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx": 16,
+        "carebridge/frontend/app/(dashboard)/receptionist/page.tsx": 1,
+        "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx": 7,
+        "carebridge/frontend/app/(dashboard)/tasks/page.tsx": 1,
+        "carebridge/frontend/app/demo/page.tsx": 3,
+        "carebridge/frontend/app/page.tsx": 1,
+        "carebridge/frontend/components/prescriptions/prescription-detail-modal.tsx": 1,
+        "carebridge/frontend/components/shell/sidebar.tsx": 5,
+        "carebridge/frontend/components/shell/tenant-header.tsx": 1,
+        "carebridge/frontend/lib/auth-context.tsx": 8,
+        "docs/ARCHITECTURE.md": 4,
+        "docs/ARCHIVAL_AUDIT.md": 1,
+        "docs/VIVA_DEMO_GUIDE.md": 8,
+        "docs/phase-plans/PHASE_10_PLAN.md": 1,
+        "docs/phase-plans/PHASE_11_PLAN.md": 2,
+        "docs/phase-plans/PHASE_12_PLAN.md": 1,
+        "docs/phase-plans/PHASE_13_PLAN.md": 5,
+        "docs/phase-plans/PHASE_14_PLAN.md": 4,
+        "docs/phase-plans/PHASE_2_PLAN.md": 6,
+        "docs/phase-plans/PHASE_3_PLAN.md": 19,
+        "docs/phase-plans/PHASE_4_PLAN.md": 20,
+        "docs/phase-plans/PHASE_5_PLAN.md": 3,
+        "docs/phase-plans/PHASE_6_PLAN.md": 4,
+        "docs/phase-plans/PHASE_7_PLAN.md": 2,
+        "docs/phase-plans/PHASE_8_PLAN.md": 1,
+        "docs/phase-plans/PHASE_9_PLAN.md": 5,
+        "docs/phase-reports/PHASE_13_REPORT.md": 3,
+        "docs/phase-reports/PHASE_14_REPORT.md": 2,
+        "docs/phase-reports/PHASE_2_REPORT.md": 1,
+        "docs/phase-reports/PHASE_3_REPORT.md": 4,
+        "docs/phase-reports/PHASE_4_REPORT.md": 7,
+        "docs/phase-reports/PHASE_5_REPORT.md": 1,
+        "docs/phase-reports/PHASE_6_REPORT.md": 1
+      }
+    },
+    "lab_tech": {
+      "total_hits": 1,
+      "distinct_files_count": 1,
+      "files": {
+        "carebridge/backend/supabase/audit_roles_phase15.py": 1
+      }
+    },
+    "lab_technician": {
+      "total_hits": 11,
+      "distinct_files_count": 7,
+      "files": {
+        "carebridge/backend/app/api/v1/appointments.py": 1,
+        "carebridge/backend/app/api/v1/patients.py": 2,
+        "carebridge/backend/supabase/audit_roles_phase15.py": 1,
+        "carebridge/backend/supabase/enums.json": 1,
+        "carebridge/backend/supabase/migrations/0001_phase2_schema.sql": 2,
+        "docs/phase-plans/PHASE_13_PLAN.md": 1,
+        "docs/phase-plans/PHASE_2_PLAN.md": 3
+      }
+    },
+    "account_link_status": {
+      "total_hits": 9,
+      "distinct_files_count": 6,
+      "files": {
+        "carebridge/backend/supabase/audit_roles_phase15.py": 1,
+        "carebridge/backend/supabase/enums.json": 1,
+        "carebridge/backend/supabase/migrations/0001_phase2_down.sql": 1,
+        "carebridge/backend/supabase/migrations/0001_phase2_schema.sql": 2,
+        "carebridge/backend/supabase/schema_dump.json": 1,
+        "docs/phase-plans/PHASE_2_PLAN.md": 3
+      }
+    }
+  },
+  "details": {
+    "receptionist": [
+      {
+        "file": "carebridge/backend/app/analytics/service.py",
+        "line_num": 16,
+        "line": "if context.role not in (\"hospital_admin\", \"receptionist\"):"
+      },
+      {
+        "file": "carebridge/backend/app/analytics/service.py",
+        "line_num": 138,
+        "line": "if context.role not in (\"hospital_admin\", \"doctor\", \"receptionist\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/appointments.py",
+        "line_num": 146,
+        "line": "clinical_notes=r[9] if context.role not in (\"receptionist\", \"lab_technician\") else None,"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/appointments.py",
+        "line_num": 187,
+        "line": "elif context.role == \"receptionist\":"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 65,
+        "line": "context: SecurityContext = Depends(require_role([\"hospital_admin\", \"receptionist\"])),"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 144,
+        "line": "if context.role in (\"hospital_admin\", \"receptionist\", \"doctor\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/patients.py",
+        "line_num": 22,
+        "line": "context: SecurityContext = Depends(require_role([\"hospital_admin\", \"doctor\", \"receptionist\"])),"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/patients.py",
+        "line_num": 105,
+        "line": "if context.role in (\"receptionist\", \"lab_technician\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/patients.py",
+        "line_num": 168,
+        "line": "if context.role in (\"receptionist\", \"lab_technician\"):"
+      },
+      {
+        "file": "carebridge/backend/app/schemas/care_task.py",
+        "line_num": 19,
+        "line": "AssignedRole = Literal[\"doctor\", \"nurse\", \"case_manager\", \"receptionist\", \"any_staff\"]"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 1,
+        "line": "{\"timestamp\": \"2026-10-14T18:28:27.550211+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 5,
+        "line": "{\"timestamp\": \"2026-10-14T18:34:15.856491+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 7,
+        "line": "{\"timestamp\": \"2026-10-14T18:38:15.793289+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 9,
+        "line": "{\"timestamp\": \"2026-10-14T18:38:55.792511+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 14,
+        "line": "{\"timestamp\": \"2026-10-14T18:44:47.386823+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 16,
+        "line": "{\"timestamp\": \"2026-10-14T18:45:25.785690+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 22,
+        "line": "{\"timestamp\": \"2026-10-14T19:28:56.409517+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 24,
+        "line": "{\"timestamp\": \"2026-10-14T19:29:55.897624+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 44,
+        "line": "{\"timestamp\": \"2026-10-15T15:06:20.253408+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 46,
+        "line": "{\"timestamp\": \"2026-10-15T15:07:49.913112+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 75,
+        "line": "{\"timestamp\": \"2026-10-15T17:44:22.166448+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 76,
+        "line": "{\"timestamp\": \"2026-10-15T17:44:34.675756+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 87,
+        "line": "{\"timestamp\": \"2026-10-15T17:49:56.383512+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 88,
+        "line": "{\"timestamp\": \"2026-10-15T17:50:08.709866+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 106,
+        "line": "{\"timestamp\": \"2026-10-15T18:17:57.489238+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 107,
+        "line": "{\"timestamp\": \"2026-10-15T18:18:06.450277+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 145,
+        "line": "{\"timestamp\": \"2026-10-15T18:34:43.472327+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 146,
+        "line": "{\"timestamp\": \"2026-10-15T18:34:52.152665+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 176,
+        "line": "{\"timestamp\": \"2026-10-15T19:36:22.944976+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 177,
+        "line": "{\"timestamp\": \"2026-10-15T19:36:31.525948+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 215,
+        "line": "{\"timestamp\": \"2026-10-16T08:53:29.791788+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 216,
+        "line": "{\"timestamp\": \"2026-10-16T08:53:36.941143+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 238,
+        "line": "{\"timestamp\": \"2026-10-16T09:31:49.099272+00:00\", \"event_type\": \"OPERATIONS_ANALYTICS_VIEWED\", \"actor_id\": \"70000000-0000-0000-0000-00000000"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 270,
+        "line": "{\"timestamp\": \"2026-10-16T09:46:50.868678+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 278,
+        "line": "{\"timestamp\": \"2026-10-16T11:32:29.338764+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 281,
+        "line": "{\"timestamp\": \"2026-10-16T11:36:18.754355+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 283,
+        "line": "{\"timestamp\": \"2026-10-16T11:36:53.497021+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 308,
+        "line": "{\"timestamp\": \"2026-10-16T11:43:49.095954+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 309,
+        "line": "{\"timestamp\": \"2026-10-16T11:43:58.310141+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 336,
+        "line": "{\"timestamp\": \"2026-10-16T11:54:06.967432+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 344,
+        "line": "{\"timestamp\": \"2026-10-16T12:51:07.619517+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 372,
+        "line": "{\"timestamp\": \"2026-10-16T13:54:15.832611+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 375,
+        "line": "{\"timestamp\": \"2026-10-16T13:56:01.921062+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 377,
+        "line": "{\"timestamp\": \"2026-10-16T13:56:41.405591+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 402,
+        "line": "{\"timestamp\": \"2026-10-16T14:03:31.915432+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 403,
+        "line": "{\"timestamp\": \"2026-10-16T14:03:40.190808+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 421,
+        "line": "{\"timestamp\": \"2026-10-16T14:53:48.687257+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 422,
+        "line": "{\"timestamp\": \"2026-10-16T14:53:57.108432+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 454,
+        "line": "{\"timestamp\": \"2026-10-16T17:28:01.269053+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 457,
+        "line": "{\"timestamp\": \"2026-10-16T17:29:39.174967+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 459,
+        "line": "{\"timestamp\": \"2026-10-16T17:30:13.632659+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 484,
+        "line": "{\"timestamp\": \"2026-10-16T17:36:55.181736+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 485,
+        "line": "{\"timestamp\": \"2026-10-16T17:37:03.652266+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 512,
+        "line": "{\"timestamp\": \"2026-10-16T17:46:36.363892+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 515,
+        "line": "{\"timestamp\": \"2026-10-16T17:48:10.521851+00:00\", \"event_type\": \"PATIENT_RECORD_ACCESSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 517,
+        "line": "{\"timestamp\": \"2026-10-16T17:48:44.126518+00:00\", \"event_type\": \"CAREGIVER_LINK_VERIFIED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003"
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 542,
+        "line": "{\"timestamp\": \"2026-10-16T17:55:19.320992+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/logs/audit.jsonl",
+        "line_num": 543,
+        "line": "{\"timestamp\": \"2026-10-16T17:55:26.842358+00:00\", \"event_type\": \"PRESCRIPTION_DISPENSED\", \"actor_id\": \"70000000-0000-0000-0000-000000000003\""
+      },
+      {
+        "file": "carebridge/backend/supabase/audit_roles_phase15.py",
+        "line_num": 32,
+        "line": "patterns = ['receptionist', 'caregiver', 'lab_tech', 'lab_technician', 'account_link_status']"
+      },
+      {
+        "file": "carebridge/backend/supabase/capture_all_evidence.py",
+        "line_num": 17,
+        "line": "(\"08_receptionist_queue_desktop.png\", \"http://localhost:3000/receptionist\"),"
+      },
+      {
+        "file": "carebridge/backend/supabase/capture_all_evidence.py",
+        "line_num": 18,
+        "line": "(\"09_receptionist_verify_desktop.png\", \"http://localhost:3000/receptionist/verify-caregivers\"),"
+      },
+      {
+        "file": "carebridge/backend/supabase/enums.json",
+        "line_num": 19,
+        "line": "\"receptionist\","
+      },
+      {
+        "file": "carebridge/backend/supabase/seed_15_records.py",
+        "line_num": 56,
+        "line": "print(\"\\n--- 3. Seeding Auth Users & Profiles (15 Doctors + 15 Patients + Admin + Receptionist) ---\")"
+      },
+      {
+        "file": "carebridge/backend/supabase/seed_15_records.py",
+        "line_num": 83,
+        "line": "# Admin (UID 31), Receptionist (UID 32)"
+      },
+      {
+        "file": "carebridge/backend/supabase/seed_15_records.py",
+        "line_num": 89,
+        "line": "cur.execute(user_sql, (rec_uid, \"syn.receptionist@carebridge.test\"))"
+      },
+      {
+        "file": "carebridge/backend/supabase/seed_15_records.py",
+        "line_num": 90,
+        "line": "cur.execute(profile_sql, (rec_uid, HOSP_ID, \"receptionist\", \"SYN Lead Receptionist\", \"syn.receptionist@carebridge.test\", \"+1-555-0402\", True"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 15,
+        "line": "'receptionist',"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 230,
+        "line": "AND p.role IN ('hospital_admin', 'doctor', 'nurse', 'receptionist', 'lab_technician')"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 393,
+        "line": "AND public.get_auth_role() IN ('hospital_admin', 'receptionist', 'doctor')"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 401,
+        "line": "AND public.get_auth_role() IN ('hospital_admin', 'receptionist', 'doctor')"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0005_phase8_care_tasks.sql",
+        "line_num": 30,
+        "line": "assigned_role TEXT NOT NULL CHECK (assigned_role IN ('doctor', 'nurse', 'case_manager', 'receptionist', 'any_staff')),"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase13_security_e2e.py",
+        "line_num": 13,
+        "line": "- Full multi-hop persona journey (Patient, Receptionist, Doctor, Admin)"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase13_security_e2e.py",
+        "line_num": 384,
+        "line": "\"\"\"Validates complete synthetic operational workflow across Patient, Receptionist, Doctor, and Admin.\"\"\""
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase13_security_e2e.py",
+        "line_num": 410,
+        "line": "# 2. Receptionist: Inspects patient roster"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 47,
+        "line": "(\"70000000-0000-0000-0000-000000000003\", HOSPITAL_1_ID, \"receptionist\", \"Receptionist 1\", \"rec1@aegis.example.com\", True),"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 174,
+        "line": "\"\"\"TEST-PRIVACY-01: Receptionist receives demographic fields only.\"\"\""
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase8_care_tasks.py",
+        "line_num": 220,
+        "line": "\"assigned_role\": \"receptionist\","
+      },
+      {
+        "file": "carebridge/frontend/app/page.tsx",
+        "line_num": 33,
+        "line": "case \"receptionist\": return \"/receptionist\";"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/page.tsx",
+        "line_num": 25,
+        "line": "case \"receptionist\":"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/page.tsx",
+        "line_num": 26,
+        "line": "router.replace(\"/receptionist\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/page.tsx",
+        "line_num": 146,
+        "line": "<Link href=\"/receptionist/verify-caregivers\">"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/page.tsx",
+        "line_num": 175,
+        "line": "Receptionist view is restricted to demographic fields (MRN, Name, DOB, Contact). Confidential clinical diagnoses, physician notes, and lab f"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 103,
+        "line": "<Link href=\"/receptionist\">"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/tasks/page.tsx",
+        "line_num": 519,
+        "line": "<option value=\"receptionist\">Receptionist</option>"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 33,
+        "line": "const [activeTab, setActiveTab] = React.useState<\"doctor\" | \"patient\" | \"receptionist\" | \"admin\">(\"doctor\");"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 110,
+        "line": "onClick={() => setActiveTab(\"receptionist\")}"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 112,
+        "line": "activeTab === \"receptionist\""
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 118,
+        "line": "<span>Receptionist OPD Queue</span>"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 269,
+        "line": "{/* Tab 3: Receptionist Preview */}"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 270,
+        "line": "{activeTab === \"receptionist\" && ("
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 300,
+        "line": "onClick={() => handleProtectedAction(\"Receptionist Desk\", \"/receptionist\")}"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 316,
+        "line": "onClick={() => handleProtectedAction(\"Receptionist Desk\", \"/receptionist\")}"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 65,
+        "line": "roles: [\"doctor\", \"receptionist\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 68,
+        "line": "// Receptionist"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 71,
+        "line": "href: \"/receptionist\","
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 73,
+        "line": "roles: [\"receptionist\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 77,
+        "line": "href: \"/receptionist/verify-caregivers\","
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 79,
+        "line": "roles: [\"receptionist\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/tenant-header.tsx",
+        "line_num": 35,
+        "line": "receptionist: \"warning\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 6,
+        "line": "export type UserRole = \"hospital_admin\" | \"doctor\" | \"receptionist\" | \"patient\" | \"caregiver\";"
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 45,
+        "line": "label: \"Front Desk Receptionist\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 47,
+        "line": "role: \"receptionist\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 151,
+        "line": ": acc.role === \"receptionist\""
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 218,
+        "line": ": account.role === \"receptionist\""
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 30,
+        "line": "UI_Receptionist[\"Receptionist Desk (/receptionist)\"]"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 96,
+        "line": "| `/receptionist` | Receptionist | Real-time OPD desk queue, patient check-in, walk-in management |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 97,
+        "line": "| `/receptionist/verify-caregivers` | Receptionist | KYC document verification desk to approve/reject caregiver relationships |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 165,
+        "line": "| **E-Prescriptions Authoring** | `doctor` | `nurse`, `receptionist`, `patient`, `hospital_admin` |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 166,
+        "line": "| **Caregiver KYC Verification** | `receptionist`, `hospital_admin` | `doctor`, `nurse`, `patient` |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 167,
+        "line": "| **Document OCR Upload** | `doctor`, `nurse`, `receptionist` | `patient` (restricted to own portal view) |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 168,
+        "line": "| **Operational Analytics** | `hospital_admin`, `receptionist` (OPD desk) | `doctor`, `nurse`, `patient` |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 169,
+        "line": "| **CSCM Telemetry Verification** | `doctor`, `hospital_admin` | `patient`, `nurse`, `receptionist` |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 176,
+        "line": "- `actor_role`: User role (`doctor`, `receptionist`, etc.)."
+      },
+      {
+        "file": "docs/ARCHIVAL_AUDIT.md",
+        "line_num": 54,
+        "line": "| **Viva Demonstration Guide** | [`docs/VIVA_DEMO_GUIDE.md`](file:///c:/Users/PRABAKAR/Documents/capstone_PRABAKAR/docs/VIVA_DEMO_GUIDE.md) "
+      },
+      {
+        "file": "docs/LOCAL_SETUP.md",
+        "line_num": 144,
+        "line": "- **Receptionist Desk**: `http://localhost:3000/receptionist`"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 30,
+        "line": "| **Receptionist** | `receptionist` | `recuser1@example.com` | Sarah Jenkins (OPD Desk Officer) | `/receptionist` |"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 63,
+        "line": "### Act 2: Caregiver Verification & Receptionist Check-In"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 70,
+        "line": "2. **Receptionist Desk Check-In**:"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 71,
+        "line": "- Log out and log in as Receptionist: `recuser1@example.com`."
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 72,
+        "line": "- The system redirects to `/receptionist`."
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 77,
+        "line": "- Click **Verify Caregivers** (`/receptionist/verify-caregivers`)."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_10_PLAN.md",
+        "line_num": 42,
+        "line": "| **Staff Assistant** | Helps doctors, nurses, and receptionists find unclaimed tasks, look up hospital operational metrics, and review sche"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 22,
+        "line": "| **2. Multi-Portal End-to-End Validation** | **Option A (Full Persona Multi-Hop Journeys)** | Automated synthetic lifecycle journeys spanni"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 53,
+        "line": "- Verified User Roles: `hospital_admin`, `doctor`, `nurse`, `receptionist`, `lab_technician`, `patient` (from `app.core.security` and `0001_"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 90,
+        "line": "- Vertical Privilege Escalation: Non-physician roles (`patient`, `receptionist`) attempting to sign consultation notes, issue e-prescription"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 120,
+        "line": "3. **Receptionist Journey**: Daily appointment roster -> Patient check-in -> Caregiver credential verification."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 130,
+        "line": "- **AC-13.3 (Vertical Privilege Barrier)**: Non-physician roles (`patient`, `receptionist`) cannot sign consultation notes, issue e-prescrip"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 138,
+        "line": "- **AC-13.11 (Full Multi-Portal E2E Persona Journeys)**: Automated test simulates complete journeys across Patient, Caregiver, Receptionist,"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 180,
+        "line": "- [ ] `/receptionist`: Real-time OPD check-in queue."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 181,
+        "line": "- [ ] `/receptionist/verify-caregivers`: Caregiver KYC desk."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 195,
+        "line": "2. **Receptionist Check-In**: Receptionist updates appointment status from `scheduled` to `confirmed` (in queue)."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 196,
+        "line": "3. **Caregiver Access Control**: Proxy caregiver requests dependent access $\\rightarrow$ blocked (`403`) until KYC approved by receptionist."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 249,
+        "line": "| **AC-14.8** | **Post-Login Role-Based Routing** | Logins for `doctor`, `receptionist`, `patient`, and `admin` route to their respective au"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 109,
+        "line": "'receptionist',"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 496,
+        "line": "AND p.role IN ('hospital_admin', 'doctor', 'nurse', 'receptionist', 'lab_technician')"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 672,
+        "line": "- **INSERT**: Hospital Admin, Receptionist, or Doctor within their hospital."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 678,
+        "line": "AND public.get_auth_role() IN ('hospital_admin', 'receptionist', 'doctor')"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 681,
+        "line": "- **UPDATE**: Hospital Admin, Receptionist, or Doctor within their hospital."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 687,
+        "line": "AND public.get_auth_role() IN ('hospital_admin', 'receptionist', 'doctor')"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 763,
+        "line": "- **INSERT**: Staff (Doctor, Receptionist, Admin), OR a verified patient booking an appointment for themselves."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 998,
+        "line": "| `SEC-TENANT-02`| **Cross-Hospital Write** | Receptionist at Hospital A attempts `INSERT` into Hospital B patients | **Blocked by RLS WITH "
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 1028,
+        "line": "- Receptionist John Watson \u2014 `reception.john@aegis-hospital.example.com`"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 129,
+        "line": "| *(New)* | `scheduled` | Patient, Caregiver, Receptionist, Doctor, Admin | Requested slot must be in future, doctor available, no overlappi"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 130,
+        "line": "| `scheduled` | `confirmed` | Receptionist, Doctor, Hospital Admin | Staff confirms patient attendance / pre-consultation readiness. | `APPO"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 131,
+        "line": "| `scheduled` | `cancelled` | Patient, Caregiver, Receptionist, Doctor, Admin | Allowed up to 2 hours before scheduled start time. Mandatory"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 133,
+        "line": "| `confirmed` | `cancelled` | Receptionist, Doctor, Hospital Admin | Allowed if emergency or doctor unavailable. Mandatory reason. | `APPOIN"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 134,
+        "line": "| `confirmed` | `no_show` | Receptionist, Assigned Doctor | Recorded if patient does not attend within 30 minutes of scheduled start. | `APP"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 172,
+        "line": "> **Important Security Boundary:** Submitting caregiver metadata, reference numbers, or an electronic declaration does **NOT** confer legal "
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 181,
+        "line": "- Only `hospital_admin` or `receptionist` in the same hospital can verify."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 206,
+        "line": "| Workflow Endpoint | Hospital Admin | Doctor | Nurse | Receptionist | Lab Tech | Patient | Verified Caregiver |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 225,
+        "line": "- `Clinical Fields` (`medical_history_notes`, `confidential_flags`): Redacted from Receptionist and Lab Tech responses."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 227,
+        "line": "- `clinical_notes`: Only assigned Doctor or Admin can edit. Field is stripped/rejected from Receptionist and Patient requests."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 313,
+        "line": "| `TEST-PRIVACY-01`| Field Redaction | Receptionist queries `GET /patients/{id}` | Clinical notes omitted from JSON |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 323,
+        "line": "| `TEST-APPT-02` | State Machine | Receptionist attempts `completed -> scheduled` | HTTP 422 Unprocessable Entity |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 58,
+        "line": "\u2502   \u2502   \u251c\u2500\u2500 receptionist/"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 133,
+        "line": "- Front Desk Receptionist: `rec1@aegis.example.com`"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 266,
+        "line": "| **AC 4.6** | Receptionist PMI view enforces field-level redaction | Verified clinical notes are hidden in receptionist UI and redacted by "
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 282,
+        "line": "5. **Step 4: Role Portals**: Implement Patient Booking Wizard, Caregiver Management, Doctor Roster, Receptionist PMI desk."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 65,
+        "line": "assigned_role TEXT NOT NULL CHECK (assigned_role IN ('doctor', 'nurse', 'case_manager', 'receptionist', 'any_staff')),"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 106,
+        "line": "| `POST` | `/api/v1/care-tasks` | `doctor`, `nurse`, `case_manager`, `receptionist`, `hospital_admin` | Create a new manual care coordinatio"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 109,
+        "line": "| `POST` | `/api/v1/care-tasks/{id}/claim` | `doctor`, `nurse`, `case_manager`, `receptionist`, `hospital_admin` | Claim an open task for th"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 110,
+        "line": "| `POST` | `/api/v1/care-tasks/{id}/complete` | `doctor`, `nurse`, `case_manager`, `receptionist`, `hospital_admin` | Mark task completed wi"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 112,
+        "line": "| `GET` | `/api/v1/care-tasks/notifications/pending-counts` | `doctor`, `nurse`, `case_manager`, `receptionist`, `hospital_admin` | Returns "
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 91,
+        "line": "- `prescribed` &rarr; `ready_for_pickup`: Allowed for `doctor`, `receptionist` (pharmacy tech), `hospital_admin`."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 92,
+        "line": "- `ready_for_pickup` &rarr; `dispensed`: Allowed for `doctor`, `receptionist`, `hospital_admin`. Requires recording `dispensed_by`, `dispens"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 215,
+        "line": "| `POST` | `/api/v1/prescriptions/{id}/dispense` | `doctor`, `receptionist`, `hospital_admin` | Transition status to `ready_for_pickup` or `"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_10_REPORT.md",
+        "line_num": 103,
+        "line": "- `app/(dashboard)/layout.tsx`: Integrated `ConversationalDrawer` across all dashboard vistas (admin, doctor, receptionist, patient portal)."
+      },
+      {
+        "file": "docs/phase-reports/PHASE_12_REPORT.md",
+        "line_num": 89,
+        "line": "\u251c \u25cb /receptionist"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_12_REPORT.md",
+        "line_num": 90,
+        "line": "\u251c \u25cb /receptionist/verify-caregivers"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 27,
+        "line": "9. **Multi-Portal End-to-End Persona Validation (AC-13.9)**: Verified end-to-end synthetic lifecycle journey across all 5 user roles (`patie"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 51,
+        "line": "| `AC-13.11` | `test_ac_13_11_multi_portal_e2e_persona_journey` | 5-persona journey: Patient $\\rightarrow$ Caregiver $\\rightarrow$ Reception"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 97,
+        "line": "\u251c \u25cb /receptionist"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 98,
+        "line": "\u251c \u25cb /receptionist/verify-caregivers"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 152,
+        "line": "- [x] **AC-13.11: Multi-Portal End-to-End Persona Journey (`test_ac_13_11_multi_portal_e2e_persona_journey`)**: Full synthetic persona journ"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_14_REPORT.md",
+        "line_num": 44,
+        "line": "| **AC-14.8** | **Post-Login Role-Based Routing** | Evaluation personas on `/login` route users to authorized workspaces. | **PASS** | Docto"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_14_REPORT.md",
+        "line_num": 94,
+        "line": "| `08_receptionist_queue_desktop.png` | 1280x800 | `/receptionist` | 76,083 | Real-time OPD check-in queue with token status indicators (`#O"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_14_REPORT.md",
+        "line_num": 95,
+        "line": "| `09_receptionist_verify_desktop.png` | 1280x800 | `/receptionist/verify-caregivers` | 71,826 | Front-desk KYC verification desk for review"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 17,
+        "line": "3. **Synthetic Demonstration Accounts**: Configured non-production demonstration accounts for all 5 hospital roles (`hospital_admin`, `docto"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 24,
+        "line": "- **Receptionist Desk**: Fast PMI search strictly redacting clinical notes, check-in queue management, and a dedicated **Caregiver Legal Ver"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 58,
+        "line": "| | [`carebridge/frontend/app/(dashboard)/receptionist/page.tsx`](file:///C:/Users/PRABAKAR/Documents/capstone_PRABAKAR/carebridge/frontend/"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 59,
+        "line": "| | [`carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx`](file:///C:/Users/PRABAKAR/Documents/capstone_PRABAKAR/ca"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 97,
+        "line": "\u251c \u25cb /receptionist"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 98,
+        "line": "\u2514 \u25cb /receptionist/verify-caregivers"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 155,
+        "line": "| **AC-4.5: Receptionist Field-Level Privacy** | Receptionist desk renders demographics (`first_name`, `phone`, `blood_group`); clinical not"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_6_REPORT.md",
+        "line_num": 161,
+        "line": "\u251c \u25cb /receptionist"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_6_REPORT.md",
+        "line_num": 162,
+        "line": "\u2514 \u25cb /receptionist/verify-caregivers"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_8_REPORT.md",
+        "line_num": 37,
+        "line": "- Updated [`sidebar.tsx`](file:///c:/Users/PRABAKAR/Documents/capstone_PRABAKAR/carebridge/frontend/components/shell/sidebar.tsx) with \"Care"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_9_REPORT.md",
+        "line_num": 51,
+        "line": "- Dispensing status transitions permitted for clinical and pharmacy staff (`receptionist`, `doctor`, `hospital_admin`)."
+      }
+    ],
+    "caregiver": [
+      {
+        "file": "carebridge/backend/main.py",
+        "line_num": 10,
+        "line": "from app.api.v1.caregiver import router as caregiver_router"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 7,
+        "line": "from app.schemas.caregiver import CaregiverRequest, CaregiverVerify, CaregiverResponse"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 9,
+        "line": "router = APIRouter(prefix=\"/patient-accounts\", tags=[\"caregiver\"])"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 83,
+        "line": "detail=\"Self-approval prohibited: Staff cannot verify their own caregiver links\","
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/caregiver.py",
+        "line_num": 141,
+        "line": "# 2. The caregiver user themselves"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 29,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 103,
+        "line": "\"\"\"List care coordination tasks. Patient and caregiver callers receive sanitized views.\"\"\""
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 107,
+        "line": "is_patient_caller = context.role in (\"patient\", \"caregiver\")"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 198,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 244,
+        "line": "is_patient_caller = context.role in (\"patient\", \"caregiver\")"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 287,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/care_tasks.py",
+        "line_num": 358,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/conflicts.py",
+        "line_num": 242,
+        "line": "\"\"\"List clinical conflicts. Patient and caregiver roles receive sanitized, patient-friendly summaries.\"\"\""
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/conflicts.py",
+        "line_num": 248,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/conflicts.py",
+        "line_num": 290,
+        "line": "is_patient_viewer = context.role in (\"patient\", \"caregiver\")"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/conflicts.py",
+        "line_num": 336,
+        "line": "is_patient_viewer = context.role in (\"patient\", \"caregiver\")"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 67,
+        "line": "# Check patient access for patient / caregiver callers"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 68,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 165,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 262,
+        "line": "# If patient/caregiver, verify access to patient"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 263,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 317,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/documents.py",
+        "line_num": 491,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/insurance.py",
+        "line_num": 70,
+        "line": "Strictly barred from patient and caregiver roles."
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/prescriptions.py",
+        "line_num": 95,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/prescriptions.py",
+        "line_num": 139,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/chat/engine.py",
+        "line_num": 114,
+        "line": "if any(w in lower for w in (\"staff\", \"shift\", \"overview\", \"unclaimed\", \"operations\", \"metric\")) and context.role not in (\"patient\", \"caregiv"
+      },
+      {
+        "file": "carebridge/backend/app/chat/tools.py",
+        "line_num": 221,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/chat/tools.py",
+        "line_num": 231,
+        "line": "# Check caregiver link if role is caregiver"
+      },
+      {
+        "file": "carebridge/backend/app/chat/tools.py",
+        "line_num": 232,
+        "line": "if context.role == \"caregiver\":"
+      },
+      {
+        "file": "carebridge/backend/app/chat/tools.py",
+        "line_num": 560,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/chat/tools.py",
+        "line_num": 824,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 24,
+        "line": "\"\"\"Ensures patient and caregiver callers only access authorized patient records.\"\"\""
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 25,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 31,
+        "line": "# Check caregiver assignment link"
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 32,
+        "line": "if context.role == \"caregiver\":"
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 286,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/insurance/service.py",
+        "line_num": 378,
+        "line": "if context.role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/prescriptions/service.py",
+        "line_num": 163,
+        "line": "if user_role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/prescriptions/service.py",
+        "line_num": 212,
+        "line": "if user_role in (\"patient\", \"caregiver\") and str(p[\"patient_id\"]) != str(user_id):"
+      },
+      {
+        "file": "carebridge/backend/app/prescriptions/service.py",
+        "line_num": 240,
+        "line": "if user_role in (\"patient\", \"caregiver\"):"
+      },
+      {
+        "file": "carebridge/backend/app/schemas/caregiver.py",
+        "line_num": 6,
+        "line": "CaregiverRelationship = Literal[\"self\", \"parent\", \"guardian\", \"caregiver\", \"spouse\"]"
+      },
+      {
+        "file": "carebridge/backend/app/schemas/care_task.py",
+        "line_num": 60,
+        "line": "description: Optional[str] = None  # None for patient/caregiver callers"
+      },
+      {
+        "file": "carebridge/backend/app/schemas/care_task.py",
+        "line_num": 67,
+        "line": "completion_notes: Optional[str] = None  # None for patient/caregiver callers"
+      },
+      {
+        "file": "carebridge/backend/app/schemas/conflict.py",
+        "line_num": 51,
+        "line": "clinical_summary: Optional[str] = None  # None for patient/caregiver views"
+      },
+      {
+        "file": "carebridge/backend/supabase/audit_roles_phase15.py",
+        "line_num": 32,
+        "line": "patterns = ['receptionist', 'caregiver', 'lab_tech', 'lab_technician', 'account_link_status']"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 138,
+        "line": "relationship TEXT NOT NULL DEFAULT 'self' CHECK (relationship IN ('self', 'parent', 'guardian', 'caregiver', 'spouse')),"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 235,
+        "line": "-- 4.4 Check Patient Access (Staff OR Verified Patient/Caregiver)"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0002_phase3_hospital_timezone.sql",
+        "line_num": 2,
+        "line": "-- Description: Add IANA timezone column to hospitals table with default 'Asia/Kolkata' and enable patient-owned caregiver revocation"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0002_phase3_hospital_timezone.sql",
+        "line_num": 28,
+        "line": "-- Update RLS policies on patient_accounts to permit patient-owned caregiver revocation and review"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 51,
+        "line": "(\"70000000-0000-0000-0000-000000000007\", HOSPITAL_1_ID, \"patient\", \"Caregiver User\", \"caregiver@example.com\", True),"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 74,
+        "line": "# Clean up any leftover test appointments and caregiver links from previous runs"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 191,
+        "line": "# 4. CAREGIVER LINKING & REVOCATION TESTS"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 196,
+        "line": "TEST-CAREGIVER-01 to 05:"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 198,
+        "line": "2. Pending caregiver cannot read patient (404)"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 204,
+        "line": "token_cg = make_jwt(caregiver_uid, \"caregiver@example.com\")"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 224,
+        "line": "# Step 2: Pending caregiver cannot access patient"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 245,
+        "line": "# Verified caregiver can now read patient"
+      },
+      {
+        "file": "carebridge/backend/tests/test_phase3_workflows.py",
+        "line_num": 258,
+        "line": "# Immediately cuts off caregiver access"
+      },
+      {
+        "file": "carebridge/frontend/app/page.tsx",
+        "line_num": 35,
+        "line": "case \"caregiver\":"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/page.tsx",
+        "line_num": 29,
+        "line": "case \"caregiver\":"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 20,
+        "line": "relationship: \"parent\" | \"guardian\" | \"caregiver\" | \"spouse\" | \"self\";"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 32,
+        "line": "relationship: \"caregiver\","
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 60,
+        "line": "setActionSuccess(\"Caregiver access revoked immediately. Subsequent access requests from this caregiver are denied.\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 69,
+        "line": "setActionSuccess(\"Caregiver access revoked successfully (Demonstration state updated).\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 100,
+        "line": "setActionSuccess(\"Caregiver link request submitted. Access remains pending until verified by hospital staff.\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 115,
+        "line": "relationship: relationship as \"parent\" | \"guardian\" | \"caregiver\" | \"spouse\" | \"self\","
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 121,
+        "line": "setActionSuccess(\"Caregiver link request registered in pending state.\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 135,
+        "line": "Caregiver & Dependent Access Management"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 147,
+        "line": "<span>Authorize New Caregiver</span>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 173,
+        "line": "As the authoritative patient, you hold unilateral revocation rights. Revoking a caregiver relationship immediately invalidates their access "
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 178,
+        "line": "{/* Active Caregiver Table */}"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 181,
+        "line": "<CardTitle className=\"text-base\">Authorized Caregiver Links</CardTitle>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 238,
+        "line": "{/* Authorize New Caregiver Dialog */}"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 242,
+        "line": "<DialogTitle>Request Caregiver Authorization</DialogTitle>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 250,
+        "line": "label=\"Caregiver Relationship\""
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx",
+        "line_num": 256,
+        "line": "<option value=\"caregiver\">Designated Caregiver</option>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/page.tsx",
+        "line_num": 149,
+        "line": "<span>Caregiver Verification Desk</span>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 58,
+        "line": "setErrorMsg(\"Self-approval prohibited: Staff cannot verify their own caregiver links.\");"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 74,
+        "line": "setActionSuccess(`Caregiver request for ${selectedRequest.relationship} verified successfully.`);"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 82,
+        "line": "setActionSuccess(`Caregiver request for ${selectedRequest.relationship} verified successfully (Demo verification recorded).`);"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 97,
+        "line": "Caregiver Legal Verification Desk"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 140,
+        "line": "Caregiver applications awaiting staff inspection"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 148,
+        "line": "<p className=\"text-xs\">All caregiver requests have been inspected and processed.</p>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx",
+        "line_num": 204,
+        "line": "<DialogTitle>Record Caregiver Verification</DialogTitle>"
+      },
+      {
+        "file": "carebridge/frontend/app/(dashboard)/tasks/page.tsx",
+        "line_num": 490,
+        "line": "<option value=\"caregiver_briefing\">Caregiver Briefing</option>"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 232,
+        "line": "Self-service appointment booking, care tasks, and family caregiver delegation"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 250,
+        "line": "<div className=\"text-xs font-bold text-slate-700\">Caregiver Access</div>"
+      },
+      {
+        "file": "carebridge/frontend/app/demo/page.tsx",
+        "line_num": 275,
+        "line": "Patient check-in, token assignment, and caregiver document KYC verification"
+      },
+      {
+        "file": "carebridge/frontend/components/prescriptions/prescription-detail-modal.tsx",
+        "line_num": 301,
+        "line": "{userRole !== \"patient\" && userRole !== \"caregiver\" && ("
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 28,
+        "line": "// Patient / Caregiver"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 33,
+        "line": "roles: [\"patient\", \"caregiver\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 39,
+        "line": "roles: [\"patient\", \"caregiver\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 45,
+        "line": "roles: [\"patient\", \"caregiver\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/sidebar.tsx",
+        "line_num": 51,
+        "line": "roles: [\"patient\", \"caregiver\", \"hospital_admin\"],"
+      },
+      {
+        "file": "carebridge/frontend/components/shell/tenant-header.tsx",
+        "line_num": 37,
+        "line": "caregiver: \"secondary\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 6,
+        "line": "export type UserRole = \"hospital_admin\" | \"doctor\" | \"receptionist\" | \"patient\" | \"caregiver\";"
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 48,
+        "line": "description: \"Patient Master Index (demographics only), rapid check-in, and caregiver verification desk.\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 54,
+        "line": "description: \"Self records, 3-step appointment booking wizard, and 1-click caregiver revocation.\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 57,
+        "line": "label: \"Authorized Caregiver\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 58,
+        "line": "email: \"caregiver@example.com\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 59,
+        "line": "role: \"caregiver\","
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 155,
+        "line": ": acc.role === \"caregiver\""
+      },
+      {
+        "file": "carebridge/frontend/lib/auth-context.tsx",
+        "line_num": 222,
+        "line": ": account.role === \"caregiver\""
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 92,
+        "line": "| `/portal/caregivers` | Patient / Caregiver | Dependent relationship registration and verification tracking |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 97,
+        "line": "| `/receptionist/verify-caregivers` | Receptionist | KYC document verification desk to approve/reject caregiver relationships |"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 117,
+        "line": "\u2502   \u2502   \u251c\u2500\u2500 caregivers.py     # Caregiver relationship management"
+      },
+      {
+        "file": "docs/ARCHITECTURE.md",
+        "line_num": 166,
+        "line": "| **Caregiver KYC Verification** | `receptionist`, `hospital_admin` | `doctor`, `nurse`, `patient` |"
+      },
+      {
+        "file": "docs/ARCHIVAL_AUDIT.md",
+        "line_num": 54,
+        "line": "| **Viva Demonstration Guide** | [`docs/VIVA_DEMO_GUIDE.md`](file:///c:/Users/PRABAKAR/Documents/capstone_PRABAKAR/docs/VIVA_DEMO_GUIDE.md) "
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 29,
+        "line": "| **Caregiver** | `patient` / `caregiver` | `caregiver1@example.com` | David Vance (Synthetic Caregiver) | `/portal/caregivers` |"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 63,
+        "line": "### Act 2: Caregiver Verification & Receptionist Check-In"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 64,
+        "line": "**Objective:** Demonstrate role segregation, caregiver KYC verification, and OPD queue management."
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 66,
+        "line": "1. **Caregiver Link Submission**:"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 68,
+        "line": "- Submit a request to register as caregiver for dependent `11111111-aaaa...` with synthetic relationship *\"Spouse\"*."
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 69,
+        "line": "- *Expected Result*: Status shows `pending_verification`. Caregiver cannot access medical records until approved."
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 76,
+        "line": "3. **Approve Caregiver KYC**:"
+      },
+      {
+        "file": "docs/VIVA_DEMO_GUIDE.md",
+        "line_num": 80,
+        "line": "- *Observed Result*: Relationship status updates to `approved`. The caregiver can now access dependent records."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_10_PLAN.md",
+        "line_num": 37,
+        "line": "| **Patient Chat** | Answers common hospital operational questions, department hours, insurance desk locations, and explains next steps in c"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_11_PLAN.md",
+        "line_num": 106,
+        "line": "- Test patient A cannot read patient B's policies or estimates; caregiver access is rechecked dynamically."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_11_PLAN.md",
+        "line_num": 162,
+        "line": "| **AC-11.7** | **Caregiver Relationship Validation** | Caregiver access is allowed only through a currently valid, explicitly scoped relati"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_12_PLAN.md",
+        "line_num": 61,
+        "line": "- Patient and caregiver roles attempting to access IoMT telemetry feeds or simulation APIs will receive `403 Forbidden`."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 22,
+        "line": "| **2. Multi-Portal End-to-End Validation** | **Option A (Full Persona Multi-Hop Journeys)** | Automated synthetic lifecycle journeys spanni"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 118,
+        "line": "1. **Patient Journey**: Registration -> OPD booking -> Caregiver delegation -> Document upload -> Chat inquiry -> E-prescription view -> Ins"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 119,
+        "line": "2. **Caregiver Journey**: Delegation invite acceptance -> Linked patient appointment & prescription view."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 120,
+        "line": "3. **Receptionist Journey**: Daily appointment roster -> Patient check-in -> Caregiver credential verification."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 138,
+        "line": "- **AC-13.11 (Full Multi-Portal E2E Persona Journeys)**: Automated test simulates complete journeys across Patient, Caregiver, Receptionist,"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 124,
+        "line": "| **6** | `patient_accounts` | ~1 | **15** | (20) | `(hospital_id, patient_id)`, `user_id` | Links 15 synthetic patient accounts with primar"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 178,
+        "line": "- [ ] `/portal/caregivers`: Caregiver verification desk."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 181,
+        "line": "- [ ] `/receptionist/verify-caregivers`: Caregiver KYC desk."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_14_PLAN.md",
+        "line_num": 196,
+        "line": "3. **Caregiver Access Control**: Proxy caregiver requests dependent access $\\rightarrow$ blocked (`403`) until KYC approved by receptionist."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 16,
+        "line": "1. **Eliminating contact-based identity heuristics** (no matching by phone or email) in favor of explicit, cryptographically verifiable `pat"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 52,
+        "line": "- `patient_accounts`: Explicit cryptographic patient/caregiver identity mapping (replaces contact heuristics)."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 274,
+        "line": "#### 6. `patient_accounts` (Explicit Identity & Caregiver Mapping)"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 282,
+        "line": "relationship TEXT NOT NULL DEFAULT 'self' CHECK (relationship IN ('self', 'parent', 'guardian', 'caregiver', 'spouse')),"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 1001,
+        "line": "| `SEC-PATIENT-02`| **Unverified Caregiver Read** | User with `status = 'pending_verification'` attempts patient access | **Blocked**: helpe"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 1002,
+        "line": "| `SEC-PATIENT-03`| **Verified Caregiver Access** | User with verified relationship queries linked patient's appointments | **Permitted**: r"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 17,
+        "line": "4. **Caregiver Identity & Legal Consent Verification** (standardized evidence enum, staff verification audit, patient-owned revocation)."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 129,
+        "line": "| *(New)* | `scheduled` | Patient, Caregiver, Receptionist, Doctor, Admin | Requested slot must be in future, doctor available, no overlappi"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 131,
+        "line": "| `scheduled` | `cancelled` | Patient, Caregiver, Receptionist, Doctor, Admin | Allowed up to 2 hours before scheduled start time. Mandatory"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 161,
+        "line": "## 6. Caregiver Identity, Legal Consent & Precise Revocation Permissions"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 163,
+        "line": "Caregiver access provides access to sensitive medical records. To avoid implementing binary document storage prematurely in Phase 3, caregiv"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 172,
+        "line": "> **Important Security Boundary:** Submitting caregiver metadata, reference numbers, or an electronic declaration does **NOT** confer legal "
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 175,
+        "line": "- `relationship`: Must be one of `'parent'`, `'guardian'`, `'caregiver'`, `'spouse'`."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 187,
+        "line": "Who can revoke a caregiver link (`PATCH /api/v1/patient-accounts/{id}/revoke`):"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 189,
+        "line": "- A patient who holds a verified account (`relationship = 'self'`) has authoritative ownership and can revoke **any** caregiver link associa"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 190,
+        "line": "2. **The Caregiver Themselves**:"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 198,
+        "line": "- Because all patient queries enforce `status = 'verified'`, subsequent read/write requests by the caregiver are instantly denied (0 rows re"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 206,
+        "line": "| Workflow Endpoint | Hospital Admin | Doctor | Nurse | Receptionist | Lab Tech | Patient | Verified Caregiver |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 315,
+        "line": "| `TEST-CAREGIVER-01`| Pending Access | Pending caregiver attempts patient read | HTTP 404 Not Found |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 316,
+        "line": "| `TEST-CAREGIVER-02`| Self-Verification | Caregiver attempts to approve own request | HTTP 403 Forbidden |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 317,
+        "line": "| `TEST-CAREGIVER-03`| Staff Approval | Staff verifies valid caregiver request with evidence | HTTP 200; access activated |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 318,
+        "line": "| `TEST-CAREGIVER-04`| Patient Revoke | Patient revokes caregiver link for themselves | HTTP 200; immediate access cutoff (404) |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 319,
+        "line": "| `TEST-CAREGIVER-05`| Foreign Revoke | Unlinked Patient B tries to revoke Patient A caregiver | HTTP 404 Not Found (denied) |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 343,
+        "line": "| **AC 3.6** | Caregiver self-approval blocked & patient revocation verified | `TEST-CAREGIVER-02`, `04`, `05` pass |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_3_PLAN.md",
+        "line_num": 355,
+        "line": "3. **Caregiver Evidence (Assumption Confirmed)**: Evidence is submitted as structured reference metadata (document registration IDs, issuing"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 19,
+        "line": "- **Patient & Caregiver Portal**: Demographics view, dynamic timezone-aware appointment booking wizard (with real-time conflict handling), a"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 21,
+        "line": "- **Reception & Check-in Desk**: Fast Patient Master Index (PMI) search (with demographic-only field redaction), patient check-in, and careg"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 28,
+        "line": "- **Real-Time Caregiver Revocation Enforcement**: Immediate access cutoff upon revocation, verified against active sessions."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 61,
+        "line": "\u2502   \u2502   \u2502       \u2514\u2500\u2500 page.tsx          # Caregiver evidence inspection & verification"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 92,
+        "line": "\u2502       \u2514\u2500\u2500 caregiver-request-form.tsx"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 135,
+        "line": "- Linked Dependent Caregiver: `caregiver@example.com`"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 156,
+        "line": "### 3.5 Caregiver Revocation & Active Session Invalidation"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 158,
+        "line": "- Caregiver authorization is not baked into a static JWT; it depends on a live database relationship in `public.patient_accounts`."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 161,
+        "line": "- Even if a revoked caregiver holds an active, unexpired Supabase login session, their subsequent API calls to `/api/v1/patients/{patient_id"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 164,
+        "line": "- When the caregiver portal encounters an HTTP 404 for a previously accessible dependent, the UI immediately clears the dependent from activ"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 177,
+        "line": "| `accent-teal` | `oklch(0.60 0.14 190)` (Clinical Teal) | Medical confirmations, verified caregiver badges |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 192,
+        "line": "### 5.1 Patient & Caregiver Portal"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 195,
+        "line": "- Explicit notification if viewing as a verified caregiver for a dependent."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 208,
+        "line": "- **Caregiver Linking & Revocation Manager**:"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 210,
+        "line": "- View all active caregiver links."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 211,
+        "line": "- **1-Click Patient-Owned Revocation**: Red \"Revoke Access\" button allows the patient to instantly terminate caregiver privileges."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 220,
+        "line": "- **Caregiver Verification Desk**:"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 221,
+        "line": "- Listing of all `pending_verification` caregiver requests for the hospital."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 265,
+        "line": "| **AC 4.5** | Real-time caregiver revocation cutoff | Revoking link immediately cuts off caregiver queries (404) even with active session |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_4_PLAN.md",
+        "line_num": 282,
+        "line": "5. **Step 4: Role Portals**: Implement Patient Booking Wizard, Caregiver Management, Doctor Roster, Receptionist PMI desk."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_5_PLAN.md",
+        "line_num": 43,
+        "line": "|   (Patient / Caregiver / Reception)   |"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_5_PLAN.md",
+        "line_num": 96,
+        "line": "- Enforces patient/caregiver identity validation. Fails with HTTP 409 if double-booked."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_5_PLAN.md",
+        "line_num": 98,
+        "line": "- Lists appointments belonging strictly to the authenticated patient or verified caregiver ward."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_6_PLAN.md",
+        "line_num": 157,
+        "line": "Every endpoint must enforce authentication, tenant isolation, patient/caregiver authorization, and role-specific permissions."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_6_PLAN.md",
+        "line_num": 206,
+        "line": "Patient and caregiver permissions must be checked by the backend for every request."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_6_PLAN.md",
+        "line_num": 210,
+        "line": "An unread-document task badge will appear in the doctor workstation queue when an authorized patient or caregiver uploads a relevant documen"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_6_PLAN.md",
+        "line_num": 270,
+        "line": "- RLS tests for cross-tenant access and patient/caregiver isolation."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_7_PLAN.md",
+        "line_num": 147,
+        "line": "| `GET` | `/api/v1/conflicts` | `doctor`, `hospital_admin`, `patient`, `caregiver` | Lists conflicts for an authorized patient. Patient call"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_7_PLAN.md",
+        "line_num": 148,
+        "line": "| `GET` | `/api/v1/conflicts/{id}` | `doctor`, `hospital_admin`, `patient`, `caregiver` | Retrieves full conflict record with relational sou"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_8_PLAN.md",
+        "line_num": 17,
+        "line": "In high-volume hospital environments, care coordination breakdowns represent a primary driver of preventable readmissions, treatment delays,"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 73,
+        "line": "- `'skipped'`: Explicitly marked skipped by patient/caregiver (counts against score as $C=0$)."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 94,
+        "line": "- Patient / Caregiver: **Strictly READ-ONLY**. Any mutation attempt on prescription headers, items, or status returns `HTTP 403 Forbidden`."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 103,
+        "line": "- Patients can only select their own prescriptions where `patient_id = auth.uid()` or via caregiver link."
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 217,
+        "line": "| `GET` | `/api/v1/prescriptions/adherence/{patient_id}` | `patient`, `caregiver`, `doctor`, `hospital_admin` | Get calculated 30-day adhere"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_9_PLAN.md",
+        "line_num": 218,
+        "line": "| `POST` | `/api/v1/prescriptions/adherence/log` | `patient`, `caregiver` | Log a dose as `taken` or `skipped`. |"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 27,
+        "line": "9. **Multi-Portal End-to-End Persona Validation (AC-13.9)**: Verified end-to-end synthetic lifecycle journey across all 5 user roles (`patie"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 51,
+        "line": "| `AC-13.11` | `test_ac_13_11_multi_portal_e2e_persona_journey` | 5-persona journey: Patient $\\rightarrow$ Caregiver $\\rightarrow$ Reception"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_13_REPORT.md",
+        "line_num": 152,
+        "line": "- [x] **AC-13.11: Multi-Portal End-to-End Persona Journey (`test_ac_13_11_multi_portal_e2e_persona_journey`)**: Full synthetic persona journ"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_14_REPORT.md",
+        "line_num": 90,
+        "line": "| `04_portal_patient_desktop.png` | 1280x800 | `/portal` | 52,612 | Patient dashboard showing upcoming cardiology visits, medication adheren"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_14_REPORT.md",
+        "line_num": 92,
+        "line": "| `06_portal_caregivers_desktop.png` | 1280x800 | `/portal/caregivers` | 71,882 | Family caregiver delegation portal with KYC verification s"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_2_REPORT.md",
+        "line_num": 16,
+        "line": "2. **Explicit Patient Identity Mapping**: Replaced email/phone matching with `patient_accounts` linking table enforcing verified relationshi"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_3_REPORT.md",
+        "line_num": 19,
+        "line": "5. **Caregiver Identity & Patient-Owned Revocation**: Standardized evidence references, explicit staff verification, self-approval preventio"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_3_REPORT.md",
+        "line_num": 37,
+        "line": "| | [`carebridge/backend/app/api/v1/caregiver.py`](file:///C:/Users/PRABAKAR/Documents/capstone_PRABAKAR/carebridge/backend/app/api/v1/careg"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_3_REPORT.md",
+        "line_num": 90,
+        "line": "| `test_caregiver_lifecycle_and_patient_revocation` | Full caregiver lifecycle & patient-owned revocation | Request -> unverified 404 -> sel"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_3_REPORT.md",
+        "line_num": 106,
+        "line": "| **AC 3.5** | Multi-party caregiver verification and authoritative patient-owned revocation | Verified via `test_caregiver_lifecycle_and_pa"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 17,
+        "line": "3. **Synthetic Demonstration Accounts**: Configured non-production demonstration accounts for all 5 hospital roles (`hospital_admin`, `docto"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 22,
+        "line": "- **Patient & Caregiver Portal**: Demographics, appointment status timeline, cancellation modal enforcing the 2-hour cutoff rule, caregiver "
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 24,
+        "line": "- **Receptionist Desk**: Fast PMI search strictly redacting clinical notes, check-in queue management, and a dedicated **Caregiver Legal Ver"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 57,
+        "line": "| | [`carebridge/frontend/app/(dashboard)/portal/caregivers/page.tsx`](file:///C:/Users/PRABAKAR/Documents/capstone_PRABAKAR/carebridge/fron"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 59,
+        "line": "| | [`carebridge/frontend/app/(dashboard)/receptionist/verify-caregivers/page.tsx`](file:///C:/Users/PRABAKAR/Documents/capstone_PRABAKAR/ca"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 156,
+        "line": "| **AC-4.6: Caregiver Self-Approval Block** | Invariant check in `verify-caregivers/page.tsx` prevents users from verifying their own caregi"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_4_REPORT.md",
+        "line_num": 157,
+        "line": "| **AC-4.7: Patient-Owned Caregiver Revocation** | Patient portal provides immediate 1-click revocation; severed links immediately block pro"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_5_REPORT.md",
+        "line_num": 64,
+        "line": "| **AC-5.4** | Appointment Booking under Caller `SecurityContext` | **PASSED** | `book_appointment` books appointments for authenticated pat"
+      },
+      {
+        "file": "docs/phase-reports/PHASE_6_REPORT.md",
+        "line_num": 18,
+        "line": "- Enforced patient/caregiver isolation: patients view only their authorized clinical records and cannot modify extraction or verification fi"
+      }
+    ],
+    "lab_tech": [
+      {
+        "file": "carebridge/backend/supabase/audit_roles_phase15.py",
+        "line_num": 32,
+        "line": "patterns = ['receptionist', 'caregiver', 'lab_tech', 'lab_technician', 'account_link_status']"
+      }
+    ],
+    "lab_technician": [
+      {
+        "file": "carebridge/backend/app/api/v1/appointments.py",
+        "line_num": 146,
+        "line": "clinical_notes=r[9] if context.role not in (\"receptionist\", \"lab_technician\") else None,"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/patients.py",
+        "line_num": 105,
+        "line": "if context.role in (\"receptionist\", \"lab_technician\"):"
+      },
+      {
+        "file": "carebridge/backend/app/api/v1/patients.py",
+        "line_num": 168,
+        "line": "if context.role in (\"receptionist\", \"lab_technician\"):"
+      },
+      {
+        "file": "carebridge/backend/supabase/audit_roles_phase15.py",
+        "line_num": 32,
+        "line": "patterns = ['receptionist', 'caregiver', 'lab_tech', 'lab_technician', 'account_link_status']"
+      },
+      {
+        "file": "carebridge/backend/supabase/enums.json",
+        "line_num": 20,
+        "line": "\"lab_technician\","
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 16,
+        "line": "'lab_technician',"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 230,
+        "line": "AND p.role IN ('hospital_admin', 'doctor', 'nurse', 'receptionist', 'lab_technician')"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_13_PLAN.md",
+        "line_num": 53,
+        "line": "- Verified User Roles: `hospital_admin`, `doctor`, `nurse`, `receptionist`, `lab_technician`, `patient` (from `app.core.security` and `0001_"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 110,
+        "line": "'lab_technician',"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 496,
+        "line": "AND p.role IN ('hospital_admin', 'doctor', 'nurse', 'receptionist', 'lab_technician')"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 823,
+        "line": "AND public.get_auth_role() IN ('hospital_admin', 'doctor', 'lab_technician')"
+      }
+    ],
+    "account_link_status": [
+      {
+        "file": "carebridge/backend/supabase/audit_roles_phase15.py",
+        "line_num": 32,
+        "line": "patterns = ['receptionist', 'caregiver', 'lab_tech', 'lab_technician', 'account_link_status']"
+      },
+      {
+        "file": "carebridge/backend/supabase/enums.json",
+        "line_num": 2,
+        "line": "\"account_link_status\": ["
+      },
+      {
+        "file": "carebridge/backend/supabase/schema_dump.json",
+        "line_num": 1122,
+        "line": "\"default\": \"'pending_verification'::account_link_status\""
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_down.sql",
+        "line_num": 19,
+        "line": "DROP TYPE IF EXISTS public.account_link_status;"
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 35,
+        "line": "CREATE TYPE public.account_link_status AS ENUM ("
+      },
+      {
+        "file": "carebridge/backend/supabase/migrations/0001_phase2_schema.sql",
+        "line_num": 139,
+        "line": "status public.account_link_status NOT NULL DEFAULT 'pending_verification',"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 161,
+        "line": "CREATE TYPE public.account_link_status AS ENUM ("
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 283,
+        "line": "status public.account_link_status NOT NULL DEFAULT 'pending_verification',"
+      },
+      {
+        "file": "docs/phase-plans/PHASE_2_PLAN.md",
+        "line_num": 975,
+        "line": "DROP TYPE IF EXISTS public.account_link_status;"
+      }
+    ]
+  }
+}

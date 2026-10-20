@@ -1,0 +1,469 @@
+from uuid import UUID, uuid4
+from datetime import datetime
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+
+from app.core.security import get_security_context, SecurityContext
+from app.core.database import get_db
+from app.core.audit import audit_event
+from app.schemas.conflict import (
+    ClinicalConflictResponse,
+    ClinicalConflictSourceResponse,
+    AcknowledgeConflictRequest,
+    ConflictScanResponse,
+    ConflictNotificationCountResponse,
+)
+from app.conflicts.detector import detect_conflicts_from_entities
+from app.care_tasks.service import auto_trigger_conflict_reconciliation_task
+
+router = APIRouter(prefix="/conflicts", tags=["conflicts"])
+
+
+def _fetch_sources_for_conflicts(cur, hospital_id: UUID, conflict_ids: List[UUID]) -> dict:
+    if not conflict_ids:
+        return {}
+    id_strs = [str(cid) for cid in conflict_ids]
+    placeholders = ",".join(["%s"] * len(id_strs))
+    cur.execute(f"""
+        SELECT id, hospital_id, conflict_id, document_id, entity_id, role_in_conflict, citation_text, created_at
+        FROM public.clinical_conflict_sources
+        WHERE hospital_id = %s AND conflict_id IN ({placeholders})
+        ORDER BY created_at ASC;
+    """, [str(hospital_id)] + id_strs)
+    
+    rows = cur.fetchall()
+    sources_map = {}
+    for r in rows:
+        cid = str(r[2])
+        if cid not in sources_map:
+            sources_map[cid] = []
+        sources_map[cid].append(
+            ClinicalConflictSourceResponse(
+                id=r[0],
+                hospital_id=r[1],
+                conflict_id=r[2],
+                document_id=r[3],
+                entity_id=r[4],
+                role_in_conflict=r[5],
+                citation_text=r[6],
+                created_at=r[7],
+            )
+        )
+    return sources_map
+
+
+@router.post("/scan/{patient_id}", response_model=ConflictScanResponse, status_code=status.HTTP_200_OK)
+def scan_patient_conflicts(
+    patient_id: UUID,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Triggers deterministic conflict scan across verified and pending records for a patient.
+    Restricted to doctor and hospital_admin roles.
+    """
+    if context.role not in ("doctor", "hospital_admin"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Conflict scan can only be initiated by clinicians or hospital administrators."
+        )
+
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            # 1. Verify patient belongs to this hospital
+            cur.execute("""
+                SELECT id FROM public.patients
+                WHERE hospital_id = %s AND id = %s;
+            """, (str(context.hospital_id), str(patient_id)))
+            if not cur.fetchone():
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Patient record not found.")
+
+            # 2. Fetch all clinical documents for metadata map
+            cur.execute("""
+                SELECT id, file_name, created_at, ocr_status
+                FROM public.clinical_documents
+                WHERE hospital_id = %s AND patient_id = %s;
+            """, (str(context.hospital_id), str(patient_id)))
+            doc_rows = cur.fetchall()
+            docs_map = {
+                str(r[0]): {"file_name": r[1], "created_at": r[2], "ocr_status": r[3]}
+                for r in doc_rows
+            }
+
+            # 3. Fetch all extracted entities
+            cur.execute("""
+                SELECT id, document_id, patient_id, entity_category, extracted_data,
+                       confidence_score, verification_status, created_at
+                FROM public.extracted_entities
+                WHERE hospital_id = %s AND patient_id = %s;
+            """, (str(context.hospital_id), str(patient_id)))
+            ent_rows = cur.fetchall()
+            entities = [
+                {
+                    "id": r[0],
+                    "document_id": r[1],
+                    "patient_id": r[2],
+                    "entity_category": r[3],
+                    "extracted_data": r[4],
+                    "confidence_score": r[5],
+                    "verification_status": r[6],
+                    "created_at": r[7],
+                }
+                for r in ent_rows
+            ]
+
+            # 4. Run deterministic detection engine
+            detected = detect_conflicts_from_entities(
+                hospital_id=context.hospital_id,
+                patient_id=patient_id,
+                entities=entities,
+                documents_map=docs_map,
+            )
+
+            # 5. Insert new conflicts and source citations
+            for conf in detected:
+                # Check if identical unresolved/acknowledged conflict already recorded
+                cur.execute("""
+                    SELECT id FROM public.clinical_conflicts
+                    WHERE hospital_id = %s AND patient_id = %s
+                      AND conflict_type = %s AND title = %s
+                      AND resolution_status IN ('unresolved', 'acknowledged_with_rationale');
+                """, (str(context.hospital_id), str(patient_id), conf.conflict_type, conf.title))
+                existing = cur.fetchone()
+
+                if not existing:
+                    new_conf_id = uuid4()
+                    cur.execute("""
+                        INSERT INTO public.clinical_conflicts (
+                            id, hospital_id, patient_id, conflict_type, review_priority,
+                            title, clinical_summary, patient_friendly_summary, resolution_status
+                        ) VALUES (
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, 'unresolved'
+                        );
+                    """, (
+                        str(new_conf_id), str(context.hospital_id), str(patient_id),
+                        conf.conflict_type, conf.review_priority, conf.title,
+                        conf.clinical_summary, conf.patient_friendly_summary
+                    ))
+
+                    for src in conf.sources:
+                        cur.execute("""
+                            INSERT INTO public.clinical_conflict_sources (
+                                id, hospital_id, conflict_id, document_id, entity_id,
+                                role_in_conflict, citation_text
+                            ) VALUES (
+                                gen_random_uuid(), %s, %s, %s, %s, %s, %s
+                            );
+                        """, (
+                            str(context.hospital_id),
+                            str(new_conf_id),
+                            str(src["document_id"]) if src.get("document_id") else None,
+                            str(src["entity_id"]) if src.get("entity_id") else None,
+                            src["role_in_conflict"],
+                            src["citation_text"],
+                        ))
+
+                    # Phase 8 Automated Care Coordination Trigger
+                    if conf.review_priority in ("high", "urgent"):
+                        try:
+                            auto_trigger_conflict_reconciliation_task(
+                                cur=cur,
+                                hospital_id=context.hospital_id,
+                                patient_id=patient_id,
+                                conflict_id=new_conf_id,
+                                conflict_title=conf.title,
+                                review_priority=conf.review_priority,
+                                actor_id=context.user_id,
+                            )
+                        except Exception:
+                            pass
+
+            # 6. Audit event
+            audit_event(
+                event_type="CONFLICT_SCAN_EXECUTED",
+                actor_id=str(context.user_id),
+                actor_role=context.role,
+                hospital_id=str(context.hospital_id),
+                target_resource="clinical_conflict",
+                target_id=str(patient_id),
+                action="SCAN",
+                status="SUCCESS",
+            )
+
+            # 7. Fetch all active conflicts for patient
+            cur.execute("""
+                SELECT id, hospital_id, patient_id, conflict_type, review_priority,
+                       title, clinical_summary, patient_friendly_summary, resolution_status,
+                       acknowledged_by, acknowledged_at, clinician_rationale, created_at, updated_at
+                FROM public.clinical_conflicts
+                WHERE hospital_id = %s AND patient_id = %s
+                ORDER BY created_at DESC;
+            """, (str(context.hospital_id), str(patient_id)))
+            all_conf_rows = cur.fetchall()
+
+            conf_ids = [r[0] for r in all_conf_rows]
+            sources_map = _fetch_sources_for_conflicts(cur, context.hospital_id, conf_ids)
+
+            conf_list = [
+                ClinicalConflictResponse(
+                    id=r[0],
+                    hospital_id=r[1],
+                    patient_id=r[2],
+                    conflict_type=r[3],
+                    review_priority=r[4],
+                    title=r[5],
+                    clinical_summary=r[6],
+                    patient_friendly_summary=r[7],
+                    resolution_status=r[8],
+                    acknowledged_by=r[9],
+                    acknowledged_at=r[10],
+                    clinician_rationale=r[11],
+                    created_at=r[12],
+                    updated_at=r[13],
+                    sources=sources_map.get(str(r[0]), []),
+                )
+                for r in all_conf_rows
+            ]
+
+            return ConflictScanResponse(
+                patient_id=patient_id,
+                scanned_documents_count=len(doc_rows),
+                scanned_entities_count=len(ent_rows),
+                conflicts_detected=len(detected),
+                conflicts=conf_list,
+            )
+
+
+@router.get("", response_model=List[ClinicalConflictResponse])
+def list_conflicts(
+    patient_id: Optional[UUID] = Query(None),
+    resolution_status: Optional[str] = Query(None),
+    context: SecurityContext = Depends(get_security_context),
+):
+    """List clinical conflicts. Patient role receives sanitized, patient-friendly summaries."""
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            resolved_patient_id = patient_id
+
+            # Role-based access and masking
+            if context.role == "patient":
+                cur.execute("""
+                    SELECT patient_id FROM public.patient_accounts
+                    WHERE hospital_id = %s AND user_id = %s AND status = 'verified';
+                """, (str(context.hospital_id), str(context.user_id)))
+                account_rows = cur.fetchall()
+                allowed_patient_ids = {r[0] for r in account_rows}
+
+                if not allowed_patient_ids:
+                    return []
+
+                if resolved_patient_id:
+                    if resolved_patient_id not in allowed_patient_ids:
+                        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Patient conflicts not found.")
+                else:
+                    resolved_patient_id = list(allowed_patient_ids)[0]
+
+            query = """
+                SELECT id, hospital_id, patient_id, conflict_type, review_priority,
+                       title, clinical_summary, patient_friendly_summary, resolution_status,
+                       acknowledged_by, acknowledged_at, clinician_rationale, created_at, updated_at
+                FROM public.clinical_conflicts
+                WHERE hospital_id = %s
+            """
+            params: List[object] = [str(context.hospital_id)]
+
+            if resolved_patient_id:
+                query += " AND patient_id = %s"
+                params.append(str(resolved_patient_id))
+
+            if resolution_status:
+                query += " AND resolution_status = %s"
+                params.append(resolution_status)
+
+            query += " ORDER BY CASE review_priority WHEN 'high' THEN 1 WHEN 'moderate' THEN 2 ELSE 3 END, created_at DESC;"
+
+            cur.execute(query, tuple(params))
+            rows = cur.fetchall()
+
+            conf_ids = [r[0] for r in rows]
+            sources_map = _fetch_sources_for_conflicts(cur, context.hospital_id, conf_ids)
+
+            is_patient_viewer = context.role == "patient"
+
+            return [
+                ClinicalConflictResponse(
+                    id=r[0],
+                    hospital_id=r[1],
+                    patient_id=r[2],
+                    conflict_type=r[3],
+                    review_priority=r[4],
+                    title=r[5],
+                    clinical_summary=None if is_patient_viewer else r[6],
+                    patient_friendly_summary=r[7],
+                    resolution_status=r[8],
+                    acknowledged_by=None if is_patient_viewer else r[9],
+                    acknowledged_at=r[10],
+                    clinician_rationale=None if is_patient_viewer else r[11],
+                    created_at=r[12],
+                    updated_at=r[13],
+                    sources=sources_map.get(str(r[0]), []),
+                )
+                for r in rows
+            ]
+
+
+@router.get("/{id}", response_model=ClinicalConflictResponse)
+def get_conflict(
+    id: UUID,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Retrieve full conflict record with relational source citations."""
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, hospital_id, patient_id, conflict_type, review_priority,
+                       title, clinical_summary, patient_friendly_summary, resolution_status,
+                       acknowledged_by, acknowledged_at, clinician_rationale, created_at, updated_at
+                FROM public.clinical_conflicts
+                WHERE hospital_id = %s AND id = %s;
+            """, (str(context.hospital_id), str(id)))
+            r = cur.fetchone()
+            if not r:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conflict not found.")
+
+            patient_id = r[2]
+
+            # Validate patient authorization
+            is_patient_viewer = context.role == "patient"
+            if is_patient_viewer:
+                cur.execute("""
+                    SELECT 1 FROM public.patient_accounts
+                    WHERE hospital_id = %s AND user_id = %s AND patient_id = %s AND status = 'verified';
+                """, (str(context.hospital_id), str(context.user_id), str(patient_id)))
+                if not cur.fetchone():
+                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conflict not found.")
+
+            sources_map = _fetch_sources_for_conflicts(cur, context.hospital_id, [id])
+
+            return ClinicalConflictResponse(
+                id=r[0],
+                hospital_id=r[1],
+                patient_id=r[2],
+                conflict_type=r[3],
+                review_priority=r[4],
+                title=r[5],
+                clinical_summary=None if is_patient_viewer else r[6],
+                patient_friendly_summary=r[7],
+                resolution_status=r[8],
+                acknowledged_by=None if is_patient_viewer else r[9],
+                acknowledged_at=r[10],
+                clinician_rationale=None if is_patient_viewer else r[11],
+                created_at=r[12],
+                updated_at=r[13],
+                sources=sources_map.get(str(id), []),
+            )
+
+
+@router.post("/{id}/acknowledge", response_model=ClinicalConflictResponse)
+def acknowledge_conflict(
+    id: UUID,
+    body: AcknowledgeConflictRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Clinician documents clinical rationale and acknowledges conflict without blocking emergency care.
+    Non-clinician roles are strictly prohibited (HTTP 403).
+    """
+    if context.role not in ("doctor", "hospital_admin"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Conflict acknowledgement is strictly restricted to attending clinicians and hospital administrators."
+        )
+
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT patient_id, resolution_status
+                FROM public.clinical_conflicts
+                WHERE hospital_id = %s AND id = %s;
+            """, (str(context.hospital_id), str(id)))
+            row = cur.fetchone()
+            if not row:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Conflict record not found.")
+
+            cur.execute("""
+                UPDATE public.clinical_conflicts
+                SET resolution_status = 'acknowledged_with_rationale',
+                    acknowledged_by = %s,
+                    acknowledged_at = timezone('utc'::text, now()),
+                    clinician_rationale = %s,
+                    updated_at = timezone('utc'::text, now())
+                WHERE hospital_id = %s AND id = %s
+                RETURNING id, hospital_id, patient_id, conflict_type, review_priority,
+                          title, clinical_summary, patient_friendly_summary, resolution_status,
+                          acknowledged_by, acknowledged_at, clinician_rationale, created_at, updated_at;
+            """, (str(context.user_id), body.rationale.strip(), str(context.hospital_id), str(id)))
+            updated = cur.fetchone()
+
+            # Zero-PHI audit trail
+            audit_event(
+                event_type="CONFLICT_ACKNOWLEDGED",
+                actor_id=str(context.user_id),
+                actor_role=context.role,
+                hospital_id=str(context.hospital_id),
+                target_resource="clinical_conflict",
+                target_id=str(id),
+                action="ACKNOWLEDGE",
+                status="SUCCESS",
+            )
+
+            sources_map = _fetch_sources_for_conflicts(cur, context.hospital_id, [id])
+
+            return ClinicalConflictResponse(
+                id=updated[0],
+                hospital_id=updated[1],
+                patient_id=updated[2],
+                conflict_type=updated[3],
+                review_priority=updated[4],
+                title=updated[5],
+                clinical_summary=updated[6],
+                patient_friendly_summary=updated[7],
+                resolution_status=updated[8],
+                acknowledged_by=updated[9],
+                acknowledged_at=updated[10],
+                clinician_rationale=updated[11],
+                created_at=updated[12],
+                updated_at=updated[13],
+                sources=sources_map.get(str(id), []),
+            )
+
+
+@router.get("/notifications/counts", response_model=ConflictNotificationCountResponse)
+def get_conflict_notification_counts(
+    context: SecurityContext = Depends(get_security_context),
+):
+    """Returns unacknowledged high and moderate review priority conflict counts for doctor workstation queue."""
+    if context.role not in ("doctor", "hospital_admin"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Conflict notifications are only accessible by clinicians."
+        )
+
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT 
+                    COUNT(*) FILTER (WHERE review_priority = 'high') as high_count,
+                    COUNT(*) FILTER (WHERE review_priority = 'moderate') as mod_count,
+                    COUNT(*) as total_unresolved
+                FROM public.clinical_conflicts
+                WHERE hospital_id = %s AND resolution_status = 'unresolved';
+            """, (str(context.hospital_id),))
+            row = cur.fetchone()
+            high_count = row[0] if row else 0
+            mod_count = row[1] if row else 0
+            total_unresolved = row[2] if row else 0
+
+            return ConflictNotificationCountResponse(
+                high_priority_count=high_count,
+                moderate_priority_count=mod_count,
+                total_unresolved=total_unresolved,
+            )

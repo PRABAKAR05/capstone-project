@@ -1,0 +1,148 @@
+{
+  "total_accounts": 20,
+  "passed": 20,
+  "failed": 0,
+  "negative_checks_passed": 3,
+  "results": [
+    {
+      "label": "CB-ADMIN-01",
+      "email": "cb-admin-01@carebridge.test",
+      "role": "hospital_admin",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-ADMIN-02",
+      "email": "cb-admin-02@carebridge.test",
+      "role": "hospital_admin",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-ADMIN-03",
+      "email": "cb-admin-03@carebridge.test",
+      "role": "hospital_admin",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-ADMIN-04",
+      "email": "cb-admin-04@carebridge.test",
+      "role": "hospital_admin",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-DOCTOR-01",
+      "email": "cb-doctor-01@carebridge.test",
+      "role": "doctor",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-DOCTOR-02",
+      "email": "cb-doctor-02@carebridge.test",
+      "role": "doctor",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-DOCTOR-03",
+      "email": "cb-doctor-03@carebridge.test",
+      "role": "doctor",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-DOCTOR-04",
+      "email": "cb-doctor-04@carebridge.test",
+      "role": "doctor",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-NURSE-01",
+      "email": "cb-nurse-01@carebridge.test",
+      "role": "nurse",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-NURSE-02",
+      "email": "cb-nurse-02@carebridge.test",
+      "role": "nurse",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-NURSE-03",
+      "email": "cb-nurse-03@carebridge.test",
+      "role": "nurse",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-NURSE-04",
+      "email": "cb-nurse-04@carebridge.test",
+      "role": "nurse",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-LAB-01",
+      "email": "cb-lab-01@carebridge.test",
+      "role": "lab_technician",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-LAB-02",
+      "email": "cb-lab-02@carebridge.test",
+      "role": "lab_technician",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-LAB-03",
+      "email": "cb-lab-03@carebridge.test",
+      "role": "lab_technician",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-LAB-04",
+      "email": "cb-lab-04@carebridge.test",
+      "role": "lab_technician",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-PATIENT-01",
+      "email": "cb-patient-01@carebridge.test",
+      "role": "patient",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-PATIENT-02",
+      "email": "cb-patient-02@carebridge.test",
+      "role": "patient",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-PATIENT-03",
+      "email": "cb-patient-03@carebridge.test",
+      "role": "patient",
+      "status": "PASS",
+      "code": 200
+    },
+    {
+      "label": "CB-PATIENT-04",
+      "email": "cb-patient-04@carebridge.test",
+      "role": "patient",
+      "status": "PASS",
+      "code": 200
+    }
+  ]
+}

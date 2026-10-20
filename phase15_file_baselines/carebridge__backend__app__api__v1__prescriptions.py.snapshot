@@ -1,0 +1,218 @@
+from uuid import UUID
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+
+from app.core.security import get_security_context, SecurityContext
+from app.core.database import get_db
+from app.schemas.prescription import (
+    PrescriptionCreateRequest,
+    PrescriptionDispenseRequest,
+    PrescriptionDiscontinueRequest,
+    AdherenceLogCreateRequest,
+)
+from app.prescriptions.service import (
+    create_prescription,
+    get_prescriptions,
+    get_prescription_detail,
+    dispense_prescription,
+    discontinue_prescription,
+    verify_public_prescription,
+    log_patient_adherence,
+)
+from app.prescriptions.adherence import calculate_adherence_metrics
+
+router = APIRouter(prefix="/prescriptions", tags=["prescriptions"])
+
+
+@router.get("/verify/{verification_hash}")
+def verify_prescription_endpoint(verification_hash: str):
+    """
+    Public zero-PII cryptographic verification endpoint.
+    Verifies prescription authenticity and validity without exposing patient PII.
+    """
+    with get_db(None) as conn:
+        return verify_public_prescription(verification_hash, conn)
+
+
+@router.post("", status_code=status.HTTP_201_CREATED)
+def author_prescription_endpoint(
+    body: PrescriptionCreateRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Author a structured digital prescription with pre-issuance safety checks
+    and HMAC-SHA256 tamper-evident signing.
+    Restricted to licensed physicians.
+    """
+    if context.role != "doctor":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Forbidden: Only licensed physicians may author prescriptions."
+        )
+
+    with get_db(context) as conn:
+        return create_prescription(
+            doctor_id=str(context.user_id),
+            doctor_role=context.role,
+            hospital_id=str(context.hospital_id),
+            data=body.model_dump(),
+            db_conn=conn
+        )
+
+
+@router.get("")
+def list_prescriptions_endpoint(
+    patient_id: Optional[UUID] = Query(None),
+    status_filter: Optional[str] = Query(None, alias="status"),
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    List prescriptions within the authenticated hospital tenant.
+    Patients/caregivers are restricted to their own prescriptions.
+    """
+    with get_db(context) as conn:
+        return get_prescriptions(
+            user_id=str(context.user_id),
+            user_role=context.role,
+            hospital_id=str(context.hospital_id),
+            patient_id_filter=str(patient_id) if patient_id else None,
+            status_filter=status_filter,
+            db_conn=conn
+        )
+
+
+@router.get("/adherence/{patient_id}")
+def get_adherence_metrics_endpoint(
+    patient_id: UUID,
+    window_days: int = Query(30, ge=1, le=90),
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Get patient medication adherence rate and daily scheduled dose intervals.
+    """
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            if context.role in ("patient", "caregiver"):
+                cur.execute(
+                    """
+                    SELECT 1 FROM public.patient_accounts
+                    WHERE hospital_id = %s AND user_id = %s AND patient_id = %s AND status = 'verified';
+                    """,
+                    (str(context.hospital_id), str(context.user_id), str(patient_id))
+                )
+                if not cur.fetchone():
+                    raise HTTPException(
+                        status_code=status.HTTP_403_FORBIDDEN,
+                        detail="Access denied to this patient's adherence records."
+                    )
+        return calculate_adherence_metrics(
+            hospital_id=str(context.hospital_id),
+            patient_id=str(patient_id),
+            db_conn=conn,
+            window_days=window_days
+        )
+
+
+@router.post("/adherence/log", status_code=status.HTTP_201_CREATED)
+def log_adherence_endpoint(
+    body: AdherenceLogCreateRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Log dose completion (taken, skipped, late) for adherence tracking.
+    """
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT p.patient_id FROM public.prescription_items pi
+                JOIN public.prescriptions p ON p.id = pi.prescription_id
+                WHERE pi.id = %s AND pi.hospital_id = %s;
+                """,
+                (str(body.prescription_item_id), str(context.hospital_id))
+            )
+            item_row = cur.fetchone()
+            if not item_row:
+                raise HTTPException(status_code=404, detail="Prescription item not found.")
+            target_patient_id = str(item_row[0])
+
+            if context.role in ("patient", "caregiver"):
+                cur.execute(
+                    """
+                    SELECT 1 FROM public.patient_accounts
+                    WHERE hospital_id = %s AND user_id = %s AND patient_id = %s AND status = 'verified';
+                    """,
+                    (str(context.hospital_id), str(context.user_id), target_patient_id)
+                )
+                if not cur.fetchone():
+                    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Cannot log doses for this prescription.")
+
+        return log_patient_adherence(
+            patient_id=target_patient_id,
+            user_id=str(context.user_id),
+            user_role=context.role,
+            hospital_id=str(context.hospital_id),
+            data=body.model_dump(),
+            db_conn=conn
+        )
+
+
+@router.get("/{prescription_id}")
+def get_prescription_detail_endpoint(
+    prescription_id: UUID,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Retrieve full prescription details including line items and verification signature.
+    """
+    with get_db(context) as conn:
+        return get_prescription_detail(
+            prescription_id=str(prescription_id),
+            user_id=str(context.user_id),
+            user_role=context.role,
+            hospital_id=str(context.hospital_id),
+            db_conn=conn
+        )
+
+
+@router.post("/{prescription_id}/dispense")
+def dispense_prescription_endpoint(
+    prescription_id: UUID,
+    body: PrescriptionDispenseRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Record pharmacy fulfillment stage (ready_for_pickup, dispensed).
+    Restricted to pharmacy staff, clinical staff, and hospital admins.
+    """
+    with get_db(context) as conn:
+        return dispense_prescription(
+            prescription_id=str(prescription_id),
+            user_id=str(context.user_id),
+            user_role=context.role,
+            hospital_id=str(context.hospital_id),
+            target_status=body.status,
+            dispensing_notes=body.dispensing_notes,
+            db_conn=conn
+        )
+
+
+@router.post("/{prescription_id}/discontinue")
+def discontinue_prescription_endpoint(
+    prescription_id: UUID,
+    body: PrescriptionDiscontinueRequest,
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Discontinue an active prescription with mandatory clinical rationale.
+    Restricted to licensed physicians.
+    """
+    with get_db(context) as conn:
+        return discontinue_prescription(
+            prescription_id=str(prescription_id),
+            doctor_id=str(context.user_id),
+            doctor_role=context.role,
+            hospital_id=str(context.hospital_id),
+            rationale=body.rationale,
+            db_conn=conn
+        )

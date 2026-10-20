@@ -1,0 +1,188 @@
+from uuid import UUID, uuid4
+from datetime import datetime, timezone
+from fastapi import APIRouter, Depends, HTTPException, status, Request
+from app.core.security import get_security_context, SecurityContext, require_role
+from app.core.database import get_db
+from app.core.audit import audit_event
+from app.schemas.caregiver import CaregiverRequest, CaregiverVerify, CaregiverResponse
+
+router = APIRouter(prefix="/patient-accounts", tags=["caregiver"])
+
+@router.post("/request", response_model=CaregiverResponse, status_code=status.HTTP_201_CREATED)
+def request_caregiver_link(
+    payload: CaregiverRequest,
+    request: Request,
+    context: SecurityContext = Depends(get_security_context),
+):
+    link_id = uuid4()
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            try:
+                cur.execute("""
+                    INSERT INTO public.patient_accounts (
+                        id, hospital_id, user_id, patient_id, relationship, status
+                    ) VALUES (
+                        %s, %s, %s, %s, %s, 'pending_verification'
+                    ) ON CONFLICT (user_id, patient_id) DO UPDATE SET
+                        relationship = EXCLUDED.relationship,
+                        status = 'pending_verification'
+                    RETURNING created_at;
+                """, (str(link_id), str(context.hospital_id), str(context.user_id), str(payload.patient_id), payload.relationship))
+                created_at = cur.fetchone()[0]
+            except Exception as e:
+                conn.rollback()
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Patient not found in this hospital")
+
+            audit_event(
+                event_type="CAREGIVER_REQUEST_SUBMITTED",
+                actor_id=str(context.user_id),
+                actor_role=context.role,
+                hospital_id=str(context.hospital_id),
+                target_resource="patient_account",
+                target_id=str(link_id),
+                action="CREATE",
+                status="SUCCESS",
+                client_ip=request.client.host if request.client else None,
+            )
+
+            return CaregiverResponse(
+                id=link_id,
+                hospital_id=context.hospital_id,
+                user_id=context.user_id,
+                patient_id=payload.patient_id,
+                relationship=payload.relationship,
+                status="pending_verification",
+                verified_at=None,
+                verified_by=None,
+                created_at=created_at,
+            )
+
+@router.post("/{link_id}/verify", response_model=CaregiverResponse)
+def verify_caregiver_link(
+    link_id: UUID,
+    payload: CaregiverVerify,
+    request: Request,
+    context: SecurityContext = Depends(require_role(["hospital_admin", "receptionist"])),
+):
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, hospital_id, user_id, patient_id, relationship, status, created_at
+                FROM public.patient_accounts
+                WHERE id = %s AND hospital_id = %s;
+            """, (str(link_id), str(context.hospital_id)))
+            row = cur.fetchone()
+            if not row:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Link request not found")
+
+            target_user_id = row[2]
+            # Invariant: Self-approval prohibited
+            if str(target_user_id) == str(context.user_id):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Self-approval prohibited: Staff cannot verify their own caregiver links",
+                )
+
+            now_utc = datetime.now(timezone.utc)
+            cur.execute("""
+                UPDATE public.patient_accounts
+                SET status = 'verified',
+                    verified_by = %s,
+                    verified_at = %s
+                WHERE id = %s;
+            """, (str(context.user_id), now_utc, str(link_id)))
+
+            audit_event(
+                event_type="CAREGIVER_LINK_VERIFIED",
+                actor_id=str(context.user_id),
+                actor_role=context.role,
+                hospital_id=str(context.hospital_id),
+                target_resource="patient_account",
+                target_id=str(link_id),
+                action="VERIFY",
+                status="SUCCESS",
+                client_ip=request.client.host if request.client else None,
+            )
+
+            return CaregiverResponse(
+                id=row[0],
+                hospital_id=row[1],
+                user_id=row[2],
+                patient_id=row[3],
+                relationship=row[4],
+                status="verified",
+                verified_at=now_utc,
+                verified_by=context.user_id,
+                created_at=row[6],
+            )
+
+@router.patch("/{link_id}/revoke", response_model=CaregiverResponse)
+def revoke_caregiver_link(
+    link_id: UUID,
+    request: Request,
+    context: SecurityContext = Depends(get_security_context),
+):
+    with get_db(context) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT id, hospital_id, user_id, patient_id, relationship, status, created_at
+                FROM public.patient_accounts
+                WHERE id = %s AND hospital_id = %s;
+            """, (str(link_id), str(context.hospital_id)))
+            row = cur.fetchone()
+            if not row:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Link request not found")
+
+            link_user_id = row[2]
+            link_patient_id = row[3]
+
+            # Authorization to revoke:
+            # 1. Staff in hospital
+            # 2. The caregiver user themselves
+            # 3. The patient themselves (verified patient_accounts where user_id=context.user_id and patient_id=link_patient_id)
+            is_authorized = False
+            if context.role in ("hospital_admin", "receptionist", "doctor"):
+                is_authorized = True
+            elif str(link_user_id) == str(context.user_id):
+                is_authorized = True
+            else:
+                cur.execute("""
+                    SELECT 1 FROM public.patient_accounts
+                    WHERE hospital_id = %s AND user_id = %s AND patient_id = %s AND relationship = 'self' AND status = 'verified';
+                """, (str(context.hospital_id), str(context.user_id), str(link_patient_id)))
+                if cur.fetchone():
+                    is_authorized = True
+
+            if not is_authorized:
+                # Anti-enumeration
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Link request not found")
+
+            cur.execute("""
+                UPDATE public.patient_accounts
+                SET status = 'revoked'
+                WHERE id = %s;
+            """, (str(link_id),))
+
+            audit_event(
+                event_type="CAREGIVER_LINK_REVOKED",
+                actor_id=str(context.user_id),
+                actor_role=context.role,
+                hospital_id=str(context.hospital_id),
+                target_resource="patient_account",
+                target_id=str(link_id),
+                action="REVOKE",
+                status="SUCCESS",
+                client_ip=request.client.host if request.client else None,
+            )
+
+            return CaregiverResponse(
+                id=row[0],
+                hospital_id=row[1],
+                user_id=row[2],
+                patient_id=row[3],
+                relationship=row[4],
+                status="revoked",
+                verified_at=None,
+                verified_by=None,
+                created_at=row[6],
+            )

@@ -1,0 +1,21 @@
+Account Label,Role,Full Name,Login Email,Hospital Tenant,Hospital ID,Assigned Identity,Status
+CB-ADMIN-01,hospital_admin,Arthur Pendelton,cb-admin-01@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Chief Operating Officer,ACTIVE / READY FOR DEMO
+CB-ADMIN-02,hospital_admin,Eleanor Vance,cb-admin-02@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Clinical Operations Manager,ACTIVE / READY FOR DEMO
+CB-ADMIN-03,hospital_admin,Charles Xavier,cb-admin-03@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Governance & Compliance Director,ACTIVE / READY FOR DEMO
+CB-ADMIN-04,hospital_admin,Bruce Wayne,cb-admin-04@carebridge.test,St. Jude Metro Healthcare,22222222-2222-2222-2222-222222222222,Hosp 2 Administrator,ACTIVE / READY FOR DEMO
+CB-DOCTOR-01,doctor,Dr. Evelyn Reed,cb-doctor-01@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-DOC-LIC-0001,ACTIVE / READY FOR DEMO
+CB-DOCTOR-02,doctor,Dr. Marcus Thorne,cb-doctor-02@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-DOC-LIC-0002,ACTIVE / READY FOR DEMO
+CB-DOCTOR-03,doctor,Dr. Clara Oswald,cb-doctor-03@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-DOC-LIC-0003,ACTIVE / READY FOR DEMO
+CB-DOCTOR-04,doctor,Dr. Julian Bashir,cb-doctor-04@carebridge.test,St. Jude Metro Healthcare,22222222-2222-2222-2222-222222222222,QA-DOC-LIC-0004,ACTIVE / READY FOR DEMO
+CB-NURSE-01,nurse,Nurse Sarah Jenkins,cb-nurse-01@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Lead Triage Nurse,ACTIVE / READY FOR DEMO
+CB-NURSE-02,nurse,Nurse David Kim,cb-nurse-02@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Staff Nurse OPD Desk,ACTIVE / READY FOR DEMO
+CB-NURSE-03,nurse,Nurse Maria Rodriguez,cb-nurse-03@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Care Coordinator Nurse,ACTIVE / READY FOR DEMO
+CB-NURSE-04,nurse,Nurse Alan Turing,cb-nurse-04@carebridge.test,St. Jude Metro Healthcare,22222222-2222-2222-2222-222222222222,Hosp 2 Inpatient Nurse,ACTIVE / READY FOR DEMO
+CB-LAB-01,lab_technician,Tech Jordan Miller,cb-lab-01@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Senior Diagnostic Pathologist,ACTIVE / READY FOR DEMO
+CB-LAB-02,lab_technician,Tech Rachel Zane,cb-lab-02@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Hematology Specialist,ACTIVE / READY FOR DEMO
+CB-LAB-03,lab_technician,Tech Sanjay Gupta,cb-lab-03@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,Biochemistry Analyst,ACTIVE / READY FOR DEMO
+CB-LAB-04,lab_technician,Tech Leonard McCoy,cb-lab-04@carebridge.test,St. Jude Metro Healthcare,22222222-2222-2222-2222-222222222222,Hosp 2 Lab Specialist,ACTIVE / READY FOR DEMO
+CB-PATIENT-01,patient,Maya Demo,cb-patient-01@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-MRN-001,ACTIVE / READY FOR DEMO
+CB-PATIENT-02,patient,Arjun Sample,cb-patient-02@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-MRN-002,ACTIVE / READY FOR DEMO
+CB-PATIENT-03,patient,Kavya Test,cb-patient-03@carebridge.test,Aegis Metro General,11111111-1111-1111-1111-111111111111,QA-MRN-003,ACTIVE / READY FOR DEMO
+CB-PATIENT-04,patient,Ravi Synthetic,cb-patient-04@carebridge.test,St. Jude Metro Healthcare,22222222-2222-2222-2222-222222222222,QA-MRN-004,ACTIVE / READY FOR DEMO

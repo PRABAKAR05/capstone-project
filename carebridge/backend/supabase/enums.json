@@ -1,0 +1,23 @@
+{
+  "account_link_status": [
+    "pending_verification",
+    "verified",
+    "revoked"
+  ],
+  "appointment_status": [
+    "scheduled",
+    "confirmed",
+    "in_progress",
+    "completed",
+    "cancelled",
+    "no_show"
+  ],
+  "user_role": [
+    "hospital_admin",
+    "doctor",
+    "nurse",
+    "receptionist",
+    "lab_technician",
+    "patient"
+  ]
+}
