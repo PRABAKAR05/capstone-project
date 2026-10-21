@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { getAuthToken } from "@/lib/api";
+import { getAuthToken, API_BASE_URL } from "@/lib/api";
 
 interface DocumentUploadModalProps {
   open: boolean;
@@ -84,7 +84,7 @@ export function DocumentUploadModal({
         headers["Authorization"] = `Bearer ${token}`;
       }
 
-      const res = await fetch("/api/v1/documents/upload", {
+      const res = await fetch(`${API_BASE_URL}/api/v1/documents/upload`, {
         method: "POST",
         headers,
         body: formData,

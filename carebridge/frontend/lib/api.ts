@@ -48,7 +48,8 @@ export async function apiFetch<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  const url = `${API_BASE_URL}/api/v1${cleanEndpoint}`;
+  const path = cleanEndpoint.startsWith("/api/v1") ? cleanEndpoint : `/api/v1${cleanEndpoint}`;
+  const url = `${API_BASE_URL}${path}`;
 
   // Retrieve token: from active demo token or Supabase session
   let token = activeDemoToken;

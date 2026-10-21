@@ -484,8 +484,8 @@ export default function DoctorWorkstationPage() {
 
       {/* Phase 12 Bedside IoMT Telemetry Monitor & FDIA Consistency Verification */}
       <IoMTMonitorCard
-        patientId={appointments[0]?.patient_id || "11111111-1111-1111-1111-111111111111"}
-        patientName={appointments[0] ? `Patient ${appointments[0].patient_id.substring(0, 8)}...` : "ICU Bedside Patient"}
+        patientId={appointments[0]?.patient_id || "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa"}
+        patientName={appointments[0] ? `Patient ${appointments[0].patient_id.substring(0, 8)}...` : "Alice Vance (ICU Bedside)"}
         deviceId="iomt-bedside-node-01"
       />
 

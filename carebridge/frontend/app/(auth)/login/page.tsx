@@ -21,6 +21,7 @@ function LoginForm() {
 
   const handleDemoSelect = (acc: DemoAccount) => {
     setEmail(acc.email);
+    setPassword(acc.password || "");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -26,38 +26,44 @@ export interface DemoAccount {
   email: string;
   role: UserRole;
   description: string;
+  password?: string;
 }
 
 export const SYNTHETIC_DEMO_ACCOUNTS: DemoAccount[] = [
   {
     label: "Hospital Administrator",
-    email: "admin1@aegis.example.com",
+    email: "cb-admin-01@carebridge.test",
     role: "hospital_admin",
     description: "Full administrative governance, capacity monitoring, and doctor roster overview.",
+    password: "156ZFZHgEc^fWYi&",
   },
   {
     label: "Attending Cardiologist",
-    email: "doc1@aegis.example.com",
+    email: "cb-doctor-01@carebridge.test",
     role: "doctor",
     description: "Doctor workstation, patient queue, and authorized clinical notes recording.",
+    password: "o8cXDQ1jVP6*0MzT",
   },
   {
     label: "Lead Clinical Nurse",
-    email: "nurse.sarah@aegis.health",
+    email: "cb-nurse-01@carebridge.test",
     role: "nurse",
     description: "Patient intake desk, rapid OPD check-in, and care coordination task execution.",
+    password: "bOBNl#WaF4LaL!9K",
   },
   {
     label: "Diagnostic Lab Technician",
-    email: "lab.marcus@aegis.health",
+    email: "cb-lab-01@carebridge.test",
     role: "lab_technician",
     description: "Diagnostic orders, specimen accessioning, and demographics-masked patient verification.",
+    password: "9T^L9ue6SYWYVJEq",
   },
   {
     label: "Authoritative Patient",
-    email: "patuser1@example.com",
+    email: "cb-patient-01@carebridge.test",
     role: "patient",
     description: "Self records, 3-step appointment booking wizard, and medication adherence.",
+    password: "Z5RIVfS^SEyhW5li",
   },
 ];
 
@@ -179,51 +185,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setLoginError(null);
     try {
-      let supabaseSuccess = false;
+      // 1. Try native backend FastAPI auth first (validates against PostgreSQL auth.users)
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password: pass,
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim(), password: pass }),
         });
-        if (!error && data.user) {
-          await loadUserProfile(data.user.id, data.user.email || email);
-          supabaseSuccess = true;
-          return true;
-        }
-      } catch {
-        // Fallback to backend auth
-      }
 
-      if (!supabaseSuccess) {
-        try {
-          const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password: pass }),
+        if (res.ok) {
+          const data = await res.json();
+          setActiveDemoToken(data.access_token);
+          setUser({
+            id: data.user.id,
+            hospital_id: data.user.hospital_id,
+            role: data.user.role as UserRole,
+            full_name: data.user.full_name,
+            email: data.user.email,
           });
-
-          if (res.ok) {
-            const data = await res.json();
-            setActiveDemoToken(data.access_token);
-            setUser({
-              id: data.user.id,
-              hospital_id: data.user.hospital_id,
-              role: data.user.role as UserRole,
-              full_name: data.user.full_name,
-              email: data.user.email,
-            });
-            await fetchHospitalDetails();
-            return true;
-          } else {
-            const errData = await res.json().catch(() => ({}));
-            setLoginError(errData.detail || "Invalid credentials");
+          await fetchHospitalDetails();
+          return true;
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401 || res.status === 403) {
+            setLoginError(errData.detail || "Invalid email or password");
             return false;
           }
-        } catch {
-          setLoginError("Could not connect to authentication service");
+        }
+      } catch {
+        // Fallback to Supabase auth if backend endpoint is unreachable
+      }
+
+      // 2. Fallback to Supabase Cloud Auth
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: pass,
+        });
+        if (!error && data?.user) {
+          await loadUserProfile(data.user.id, data.user.email || email);
+          return true;
+        } else if (error) {
+          setLoginError(error.message);
           return false;
         }
+      } catch {
+        // Supabase error
       }
+
+      setLoginError("Invalid email or password");
       return false;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Authentication error";
