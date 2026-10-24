@@ -693,7 +693,7 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
     with get_db(context) as conn:
         with conn.cursor() as cur:
             query = """
-                SELECT pr.id, pr.status, pr.created_at, pr.digital_signature_hash,
+                SELECT pr.id, pr.status, pr.issued_at, pr.verification_hash,
                        COALESCE(prof.full_name, 'Attending Physician') as doctor_name
                 FROM public.prescriptions pr
                 LEFT JOIN public.doctors d ON pr.doctor_id = d.id
@@ -704,7 +704,7 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
             if status:
                 query += " AND pr.status = %s"
                 params.append(status)
-            query += " ORDER BY pr.created_at DESC LIMIT 5;"
+            query += " ORDER BY pr.issued_at DESC LIMIT 5;"
 
             cur.execute(query, tuple(params))
             p_rows = cur.fetchall()
@@ -715,14 +715,21 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
                 pr_id = str(pr[0])
                 # Fetch items
                 cur.execute("""
-                    SELECT medication_name, strength, form, route, dosage, frequency, duration, instructions
+                    SELECT drug_name, dosage, route, frequency, duration_days, instructions
                     FROM public.prescription_items
                     WHERE prescription_id = %s AND hospital_id = %s;
                 """, (pr_id, str(context.hospital_id)))
                 items = [
                     {
                         "medication_name": item[0],
-                        "strength": item[1],
+                        "dosage": item[1],
+                        "route": item[2],
+                        "frequency": item[3],
+                        "duration_days": item[4],
+                        "instructions": item[5],
+                    }
+                    for item in cur.fetchall()
+                ]
                         "form": item[2],
                         "route": item[3],
                         "dosage": item[4],
