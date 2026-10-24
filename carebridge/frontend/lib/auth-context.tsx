@@ -139,6 +139,69 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [fetchHospitalDetails]);
 
+  const signInWithEmail = React.useCallback(async (email: string, pass: string): Promise<boolean> => {
+    setIsLoading(true);
+    setLoginError(null);
+    try {
+      // 1. Try native backend FastAPI auth first (validates against PostgreSQL auth.users)
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: email.trim(), password: pass }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setActiveDemoToken(data.access_token);
+          setUser({
+            id: data.user.id,
+            hospital_id: data.user.hospital_id,
+            role: data.user.role as UserRole,
+            full_name: data.user.full_name,
+            email: data.user.email,
+          });
+          await fetchHospitalDetails();
+          return true;
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 401 || res.status === 403) {
+            setLoginError(errData.detail || "Invalid email or password");
+            return false;
+          }
+        }
+      } catch {
+        // Fallback to Supabase auth if backend endpoint is unreachable
+      }
+
+      // 2. Fallback to Supabase Cloud Auth
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password: pass,
+        });
+        if (!error && data?.user) {
+          await loadUserProfile(data.user.id, data.user.email || email);
+          return true;
+        } else if (error) {
+          setLoginError(error.message);
+          return false;
+        }
+      } catch {
+        // Supabase error
+      }
+
+      setLoginError("Invalid email or password");
+      return false;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Authentication error";
+      setLoginError(msg);
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [fetchHospitalDetails, loadUserProfile]);
+
   // Initial session check
   React.useEffect(() => {
     async function initSession() {
@@ -214,70 +277,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
     initSession();
-  }, [loadUserProfile, fetchHospitalDetails]);
-
-  const signInWithEmail = async (email: string, pass: string): Promise<boolean> => {
-    setIsLoading(true);
-    setLoginError(null);
-    try {
-      // 1. Try native backend FastAPI auth first (validates against PostgreSQL auth.users)
-      try {
-        const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email.trim(), password: pass }),
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setActiveDemoToken(data.access_token);
-          setUser({
-            id: data.user.id,
-            hospital_id: data.user.hospital_id,
-            role: data.user.role as UserRole,
-            full_name: data.user.full_name,
-            email: data.user.email,
-          });
-          await fetchHospitalDetails();
-          return true;
-        } else {
-          const errData = await res.json().catch(() => ({}));
-          if (res.status === 401 || res.status === 403) {
-            setLoginError(errData.detail || "Invalid email or password");
-            return false;
-          }
-        }
-      } catch {
-        // Fallback to Supabase auth if backend endpoint is unreachable
-      }
-
-      // 2. Fallback to Supabase Cloud Auth
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password: pass,
-        });
-        if (!error && data?.user) {
-          await loadUserProfile(data.user.id, data.user.email || email);
-          return true;
-        } else if (error) {
-          setLoginError(error.message);
-          return false;
-        }
-      } catch {
-        // Supabase error
-      }
-
-      setLoginError("Invalid email or password");
-      return false;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Authentication error";
-      setLoginError(msg);
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [loadUserProfile, fetchHospitalDetails, signInWithEmail]);
 
   const selectDemoAccount = async (account: DemoAccount, pass?: string): Promise<boolean> => {
     setIsLoading(true);
@@ -336,6 +336,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setHospital(null);
       if (typeof window !== "undefined") {
+        // eslint-disable-next-line @next/next/no-location-assign-relative-destination
         window.location.href = "/login";
       }
     } finally {

@@ -730,15 +730,6 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
                     }
                     for item in cur.fetchall()
                 ]
-                        "form": item[2],
-                        "route": item[3],
-                        "dosage": item[4],
-                        "frequency": item[5],
-                        "duration": item[6],
-                        "instructions": item[7],
-                    }
-                    for item in cur.fetchall()
-                ]
 
                 # Fetch adherence score
                 cur.execute("""
