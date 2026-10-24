@@ -144,33 +144,68 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function initSession() {
       setIsLoading(true);
       try {
+        // 1. Check for stored JWT token from native backend
+        const savedToken = typeof window !== "undefined" ? localStorage.getItem("carebridge_auth_token") : null;
+        if (savedToken) {
+          setActiveDemoToken(savedToken);
+          try {
+            const res = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+              headers: { Authorization: `Bearer ${savedToken}` },
+            });
+            if (res.ok) {
+              const me = await res.json();
+              setUser({
+                id: me.id,
+                hospital_id: me.hospital_id,
+                role: me.role as UserRole,
+                full_name: me.full_name,
+                email: me.email,
+              });
+              await fetchHospitalDetails();
+              setIsLoading(false);
+              return;
+            }
+          } catch {
+            // Token expired or server unreachable, fallback below
+          }
+        }
+
+        // 2. Check Supabase session
         const { data } = await supabase.auth.getSession();
         if (data.session?.user) {
           await loadUserProfile(data.session.user.id, data.session.user.email || "");
-        } else {
-          // If in demo mode without cloud Supabase login, default to Admin synthetic profile for immediate walkthrough
-          const savedDemo = localStorage.getItem("carebridge_demo_account");
-          if (savedDemo) {
-            const acc = JSON.parse(savedDemo) as DemoAccount;
-            const uid = acc.role === "doctor"
-              ? "70000000-0000-0000-0000-000000000002"
-              : acc.role === "nurse"
-              ? "11111111-0003-0000-0000-000000000032"
-              : acc.role === "lab_technician"
-              ? "11111111-0003-0000-0000-000000000030"
-              : acc.role === "patient"
-              ? "70000000-0000-0000-0000-000000000004"
-              : "70000000-0000-0000-0000-000000000001";
+          setIsLoading(false);
+          return;
+        }
 
-            setUser({
-              id: uid,
-              hospital_id: "11111111-1111-1111-1111-111111111111",
-              role: acc.role,
-              full_name: acc.label,
-              email: acc.email,
-            });
-            await fetchHospitalDetails();
+        // 3. Fallback to saved demo persona
+        const savedDemo = typeof window !== "undefined" ? localStorage.getItem("carebridge_demo_account") : null;
+        if (savedDemo) {
+          const acc = JSON.parse(savedDemo) as DemoAccount;
+          const fullAcc = SYNTHETIC_DEMO_ACCOUNTS.find((a) => a.email === acc.email) || acc;
+          if (fullAcc.password) {
+            const ok = await signInWithEmail(fullAcc.email, fullAcc.password);
+            if (ok) return;
           }
+
+          const uid = acc.role === "doctor"
+            ? "90000000-0002-0000-0000-000000000001"
+            : acc.role === "nurse"
+            ? "11111111-0003-0000-0000-000000000032"
+            : acc.role === "lab_technician"
+            ? "11111111-0003-0000-0000-000000000030"
+            : acc.role === "patient"
+            ? "70000000-0000-0000-0000-000000000004"
+            : "70000000-0000-0000-0000-000000000001";
+
+          setUser({
+            id: uid,
+            hospital_id: "11111111-1111-1111-1111-111111111111",
+            role: acc.role,
+            full_name: acc.label,
+            email: acc.email,
+          });
+          await fetchHospitalDetails();
         }
       } catch {
         // Session initialization completed
@@ -248,16 +283,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     setLoginError(null);
     try {
-      if (pass) {
-        const success = await signInWithEmail(account.email, pass);
+      const effectivePassword = pass || account.password;
+      if (effectivePassword) {
+        const success = await signInWithEmail(account.email, effectivePassword);
         if (success) {
-          localStorage.setItem("carebridge_demo_account", JSON.stringify(account));
+          if (typeof window !== "undefined") {
+            localStorage.setItem("carebridge_demo_account", JSON.stringify(account));
+          }
           return true;
         }
       }
       // Demo simulation switch
       const uid = account.role === "doctor"
-        ? "70000000-0000-0000-0000-000000000002"
+        ? "90000000-0002-0000-0000-000000000001"
         : account.role === "nurse"
         ? "11111111-0003-0000-0000-000000000032"
         : account.role === "lab_technician"
@@ -273,7 +311,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         full_name: account.label,
         email: account.email,
       });
-      localStorage.setItem("carebridge_demo_account", JSON.stringify(account));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("carebridge_demo_account", JSON.stringify(account));
+      }
       await fetchHospitalDetails();
       return true;
     } catch {
@@ -288,10 +328,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       await supabase.auth.signOut();
-      localStorage.removeItem("carebridge_demo_account");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("carebridge_demo_account");
+        localStorage.removeItem("carebridge_auth_token");
+      }
       setActiveDemoToken(null);
       setUser(null);
       setHospital(null);
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     } finally {
       setIsLoading(false);
     }

@@ -35,10 +35,24 @@ let activeDemoToken: string | null = null;
 
 export function setActiveDemoToken(token: string | null) {
   activeDemoToken = token;
+  if (typeof window !== "undefined") {
+    if (token) {
+      localStorage.setItem("carebridge_auth_token", token);
+    } else {
+      localStorage.removeItem("carebridge_auth_token");
+    }
+  }
 }
 
 export async function getAuthToken(): Promise<string | null> {
   if (activeDemoToken) return activeDemoToken;
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("carebridge_auth_token");
+    if (saved) {
+      activeDemoToken = saved;
+      return saved;
+    }
+  }
   const { data } = await supabase.auth.getSession();
   return data.session?.access_token || null;
 }
@@ -51,8 +65,12 @@ export async function apiFetch<T>(
   const path = cleanEndpoint.startsWith("/api/v1") ? cleanEndpoint : `/api/v1${cleanEndpoint}`;
   const url = `${API_BASE_URL}${path}`;
 
-  // Retrieve token: from active demo token or Supabase session
+  // Retrieve token: from memory, localStorage, or Supabase session
   let token = activeDemoToken;
+  if (!token && typeof window !== "undefined") {
+    token = localStorage.getItem("carebridge_auth_token");
+    if (token) activeDemoToken = token;
+  }
   if (!token) {
     const { data } = await supabase.auth.getSession();
     token = data.session?.access_token || null;

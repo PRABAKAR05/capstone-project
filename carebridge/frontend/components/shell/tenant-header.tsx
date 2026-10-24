@@ -94,7 +94,9 @@ export function TenantHeader() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => signOut()}
+                onClick={async () => {
+                  await signOut();
+                }}
                 className="text-slate-500 hover:text-red-600 h-8 px-2"
                 title="Sign Out"
               >
@@ -120,7 +122,7 @@ export function TenantHeader() {
               <button
                 key={acc.email}
                 onClick={async () => {
-                  await selectDemoAccount(acc);
+                  await selectDemoAccount(acc, acc.password);
                   setSwitcherOpen(false);
                 }}
                 className={`w-full text-left p-3 rounded-lg border transition-all flex items-start space-x-3 cursor-pointer ${
