@@ -113,4 +113,11 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'dummy-service-role-key' }}
           DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres
         run: |
-          python -m pytest carebridge/backend/tests/ -o testpaths=carebridge/backend/tests -v --tb=short
+          python -m pytest carebridge/backend/tests/ -o testpaths=carebridge/backend/tests -v --tb=short 2>&1 | tee pytest_run.log || true
+          echo "### Pytest Output" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 80 pytest_run.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          if grep -q "ERRORS" pytest_run.log || grep -q "FAILURES" pytest_run.log || ! grep -q "passed" pytest_run.log; then
+            exit 1
+          fi
