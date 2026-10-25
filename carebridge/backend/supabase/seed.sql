@@ -60,3 +60,27 @@ INSERT INTO public.patient_accounts (hospital_id, user_id, patient_id, relations
 VALUES
     ('11111111-1111-1111-1111-111111111111', '70000000-0000-0000-0000-000000000004', '11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'self', 'verified')
 ON CONFLICT DO NOTHING;
+
+-- 8. Insert Synthetic Patient Insurance Policies
+INSERT INTO public.patient_insurance_policies (
+    id, hospital_id, patient_id, provider_name, policy_number,
+    policy_holder_name, relation_to_patient, sum_insured_inr,
+    remaining_balance_inr, copay_percentage, deductible_inr,
+    exclusions, valid_from, valid_until, status
+) VALUES (
+    '88888888-8888-8888-8888-888888888881',
+    '11111111-1111-1111-1111-111111111111',
+    '11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+    'Star Health Comprehensive',
+    'POL-STAR-2026-001',
+    'Alice Vance',
+    'self',
+    500000.00,
+    450000.00,
+    10.00,
+    1000.00,
+    '["cosmetic_surgery"]'::jsonb,
+    '2026-01-01',
+    '2027-01-01',
+    'active'
+) ON CONFLICT (id) DO NOTHING;
