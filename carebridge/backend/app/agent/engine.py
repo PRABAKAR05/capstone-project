@@ -23,13 +23,30 @@ def clean_mojibake(text: str) -> str:
     """Normalize corrupted special characters, currency symbols, and broken encoding."""
     if not text:
         return text
+
+    # Attempt re-encoding for UTF-8 misdecoded as Latin-1 (e.g. â€‘, â€“)
+    try:
+        if any(c in text for c in ("â", "Ã", "Â", "€")):
+            repaired = text.encode("latin-1").decode("utf-8")
+            text = repaired
+    except Exception:
+        pass
+
     replacements = {
+        "â€‘": "-",
+        "â€“": "-",
+        "â€”": "-",
+        "â€˜": "'",
+        "â€™": "'",
+        "â€œ": '"',
+        "â€": '"',
         "₹": "INR ",
-        "": "",
         "?_": " ",
         "??": "-",
-        "\u2013": "-",
-        "\u2014": "-",
+        "\u2011": "-",  # non-breaking hyphen
+        "\u2012": "-",  # figure dash
+        "\u2013": "-",  # en dash
+        "\u2014": "-",  # em dash
         "\u2018": "'",
         "\u2019": "'",
         "\u201c": '"',
@@ -59,6 +76,13 @@ def generate_rule_based_fallback(context: SecurityContext, user_message: str) ->
             "To cancel or reschedule an upcoming visit, please open your appointment list:\n\n"
             "👉 **Navigate to: Patient Portal -> Upcoming Visits** (`/portal`)\n\n"
             "Select the visit and choose 'Cancel Visit' (cancellations must be at least 2 hours in advance).\n\n"
+            f"*{DISCLAIMER_TEXT}*"
+        )
+    elif any(w in lower_msg for w in ("task", "care plan", "checklist", "instruction", "follow up")):
+        return (
+            "Here is how to check your care coordination tasks:\n\n"
+            "👉 **Navigate to: Patient Portal -> Care Tasks** (`/portal`)\n\n"
+            "There you can track your medication reminders, lab preparation steps, and clinical care plan instructions (care tasks are separate from doctor appointments).\n\n"
             f"*{DISCLAIMER_TEXT}*"
         )
     elif any(w in lower_msg for w in ("doctor", "specialist", "cardiologist", "physician")):

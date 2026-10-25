@@ -639,6 +639,10 @@ def tool_lookup_hospital_info(context: SecurityContext) -> Tuple[Dict[str, Any],
 
 
 def tool_get_my_documents(context: SecurityContext, status: Optional[str] = None, patient_id: Optional[str] = None) -> Tuple[Dict[str, Any], List[ChatCitation]]:
+    if patient_id in ("null", "None", ""):
+        patient_id = None
+    if status in ("null", "None", "", "all"):
+        status = None
     eff_patient_id = resolve_effective_patient_id(context, explicit_patient_id=patient_id)
     if not eff_patient_id:
         return {"error": "No accessible patient record found."}, []
@@ -686,6 +690,11 @@ def tool_get_my_documents(context: SecurityContext, status: Optional[str] = None
 
 
 def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = None, patient_id: Optional[str] = None) -> Tuple[Dict[str, Any], List[ChatCitation]]:
+    if patient_id in ("null", "None", ""):
+        patient_id = None
+    if status in ("null", "None", "", "all"):
+        status = None
+
     eff_patient_id = resolve_effective_patient_id(context, explicit_patient_id=patient_id)
     if not eff_patient_id:
         return {"error": "No accessible patient record found."}, []
@@ -731,12 +740,13 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
                     for item in cur.fetchall()
                 ]
 
-                # Fetch adherence score
+                # Fetch adherence score using prescription_items link
                 cur.execute("""
                     SELECT COUNT(*),
-                           COUNT(*) FILTER (WHERE status = 'taken')
-                    FROM public.medication_adherence_logs
-                    WHERE prescription_id = %s AND hospital_id = %s;
+                           COUNT(*) FILTER (WHERE mal.status = 'taken')
+                    FROM public.medication_adherence_logs mal
+                    JOIN public.prescription_items pi ON mal.prescription_item_id = pi.id
+                    WHERE pi.prescription_id = %s AND mal.hospital_id = %s;
                 """, (pr_id, str(context.hospital_id)))
                 adh_row = cur.fetchone()
                 total_scheduled = adh_row[0] if adh_row else 0
@@ -771,6 +781,10 @@ def tool_get_my_prescriptions(context: SecurityContext, status: Optional[str] = 
 
 
 def tool_get_my_care_tasks(context: SecurityContext, status: Optional[str] = None, patient_id: Optional[str] = None) -> Tuple[Dict[str, Any], List[ChatCitation]]:
+    if patient_id in ("null", "None", ""):
+        patient_id = None
+    if status in ("null", "None", "", "all"):
+        status = None
     eff_patient_id = resolve_effective_patient_id(context, explicit_patient_id=patient_id)
     if not eff_patient_id:
         return {"error": "No accessible patient record found."}, []

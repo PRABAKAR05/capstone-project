@@ -131,6 +131,23 @@ TOOL_DEFINITIONS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_my_care_tasks",
+            "description": "Retrieve active care coordination tasks (checklists, lab orders, follow-up actions) for the patient. Distinct from appointments.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Optional task status filter: 'pending', 'claimed', 'completed'.",
+                    },
+                },
+                "required": [],
+            },
+        },
+    },
 ]
 
 
@@ -537,5 +554,9 @@ def execute_agent_tool(context: SecurityContext, tool_name: str, arguments: Dict
         )
     elif tool_name == "lookup_hospital_info":
         return tool_lookup_hospital_info(context)
+    elif tool_name == "get_my_care_tasks":
+        from app.chat.tools import tool_get_my_care_tasks
+        res, _ = tool_get_my_care_tasks(context, status=arguments.get("status"), patient_id=arguments.get("patient_id"))
+        return res
     else:
         return {"error": f"Unknown tool: '{tool_name}'"}

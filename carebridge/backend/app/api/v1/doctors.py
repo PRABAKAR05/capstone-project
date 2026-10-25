@@ -11,7 +11,7 @@ router = APIRouter(prefix="/doctors", tags=["doctors"])
 
 @router.get("", response_model=List[dict])
 def list_doctors(
-    department_id: Optional[UUID] = None,
+    department_id: Optional[str] = None,
     context: SecurityContext = Depends(get_security_context),
 ):
     # Use unconstrained db connection so patient callers can view the public doctor directory
@@ -20,15 +20,22 @@ def list_doctors(
             query = """
                 SELECT d.id, d.hospital_id, d.profile_id, d.department_id, d.license_number,
                        d.specialization, d.qualification, d.opd_room, d.consultation_fee,
-                       d.is_available, p.full_name, p.email
+                       d.is_available, p.full_name, p.email, dept.name as dept_name
                 FROM public.doctors d
                 JOIN public.profiles p ON d.profile_id = p.id
+                LEFT JOIN public.departments dept ON d.department_id = dept.id
                 WHERE d.hospital_id = %s
             """
             params = [str(context.hospital_id)]
             if department_id:
-                query += " AND d.department_id = %s"
-                params.append(str(department_id))
+                try:
+                    dept_uuid = str(UUID(department_id))
+                    query += " AND d.department_id = %s"
+                    params.append(dept_uuid)
+                except (ValueError, TypeError):
+                    query += " AND (dept.name ILIKE %s OR dept.code ILIKE %s OR d.specialization ILIKE %s)"
+                    pattern = f"%{department_id}%"
+                    params.extend([pattern, pattern, pattern])
             query += " ORDER BY p.full_name;"
             
             cur.execute(query, tuple(params))
@@ -47,6 +54,7 @@ def list_doctors(
                     "is_available": r[9],
                     "full_name": r[10],
                     "email": r[11],
+                    "department_name": r[12],
                 }
                 for r in rows
             ]

@@ -130,9 +130,24 @@ def main():
 
             # 1.3 If Doctor, insert into public.doctors
             if spec["role"] == "doctor":
-                # Find a department in that hospital
-                cur.execute("SELECT id FROM public.departments WHERE hospital_id = %s LIMIT 1;", (spec["hospital_id"],))
+                # Match department by specialty
+                spec_clean = spec.get("spec", "")
+                if "Neuro" in spec_clean:
+                    dept_name_query = "%Neurology%"
+                elif "General" in spec_clean or "Medicine" in spec_clean or "Internal" in spec_clean:
+                    dept_name_query = "%Outpatient%"
+                else:
+                    dept_name_query = "%Cardiology%"
+
+                cur.execute("""
+                    SELECT id FROM public.departments 
+                    WHERE hospital_id = %s AND (name ILIKE %s OR code ILIKE %s)
+                    LIMIT 1;
+                """, (spec["hospital_id"], dept_name_query, dept_name_query))
                 dept_row = cur.fetchone()
+                if not dept_row:
+                    cur.execute("SELECT id FROM public.departments WHERE hospital_id = %s ORDER BY name ASC LIMIT 1;", (spec["hospital_id"],))
+                    dept_row = cur.fetchone()
                 dept_id = dept_row[0] if dept_row else None
                 doc_table_id = spec["id"].replace("-0002-", "-0022-")
                 cur.execute("""
@@ -142,7 +157,10 @@ def main():
                     ) VALUES (
                         %s, %s, %s, %s, %s, %s, 'MBBS, MD', 600.00, true
                     )
-                    ON CONFLICT (id) DO NOTHING;
+                    ON CONFLICT (id) DO UPDATE SET
+                        department_id = EXCLUDED.department_id,
+                        specialization = EXCLUDED.specialization,
+                        is_available = true;
                 """, (doc_table_id, spec["hospital_id"], spec["id"], dept_id, spec["lic"], spec["spec"]))
 
             # 1.4 If Patient, insert into public.patients and public.patient_accounts

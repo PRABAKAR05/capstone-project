@@ -115,7 +115,9 @@ export default function LabTechnicianPage() {
                     <TableRow key={p.id}>
                       <TableCell className="text-xs font-mono font-semibold">{p.mrn}</TableCell>
                       <TableCell className="text-xs">{p.first_name} {p.last_name}</TableCell>
-                      <TableCell className="text-xs">{p.date_of_birth}</TableCell>
+                      <TableCell className="text-xs font-mono text-slate-600">
+                        {p.date_of_birth ? `${p.date_of_birth.substring(0, 4)}-**-**` : "—"}
+                      </TableCell>
                       <TableCell className="text-xs capitalize">{p.gender}</TableCell>
                       <TableCell className="text-xs font-bold text-rose-700">{p.blood_group}</TableCell>
                       <TableCell>

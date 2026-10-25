@@ -38,13 +38,30 @@ def clean_mojibake(text: str) -> str:
     """Normalize corrupted special characters, currency symbols, and broken encoding."""
     if not text:
         return text
+
+    # Attempt re-encoding for UTF-8 misdecoded as Latin-1 (e.g. â€‘, â€“)
+    try:
+        if any(c in text for c in ("â", "Ã", "Â", "€")):
+            repaired = text.encode("latin-1").decode("utf-8")
+            text = repaired
+    except Exception:
+        pass
+
     replacements = {
+        "â€‘": "-",
+        "â€“": "-",
+        "â€”": "-",
+        "â€˜": "'",
+        "â€™": "'",
+        "â€œ": '"',
+        "â€": '"',
         "₹": "INR ",
-        "": "",
         "?_": " ",
         "??": "-",
-        "\u2013": "-",
-        "\u2014": "-",
+        "\u2011": "-",  # non-breaking hyphen
+        "\u2012": "-",  # figure dash
+        "\u2013": "-",  # en dash
+        "\u2014": "-",  # em dash
         "\u2018": "'",
         "\u2019": "'",
         "\u201c": '"',

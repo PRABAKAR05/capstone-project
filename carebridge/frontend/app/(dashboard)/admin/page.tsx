@@ -30,9 +30,11 @@ export default function AdminOperationsPage() {
   const { hospital } = useAuth();
   const [departments, setDepartments] = React.useState<Department[]>([]);
   const [doctors, setDoctors] = React.useState<Doctor[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     async function loadData() {
+      setLoading(true);
       try {
         const [deptData, docData] = await Promise.all([
           apiFetch<Department[]>("/departments"),
@@ -84,6 +86,8 @@ export default function AdminOperationsPage() {
             is_available: true,
           },
         ]);
+      } finally {
+        setLoading(false);
       }
     }
     loadData();
@@ -121,7 +125,11 @@ export default function AdminOperationsPage() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-bold uppercase text-slate-500">Active Departments</p>
-              <h4 className="text-lg font-extrabold text-teal-900 mt-0.5">{departments.length} Units</h4>
+              {loading ? (
+                <div className="h-6 w-20 bg-teal-200/60 rounded animate-pulse my-1" />
+              ) : (
+                <h4 className="text-lg font-extrabold text-teal-900 mt-0.5">{departments.length} Units</h4>
+              )}
               <p className="text-[10px] text-teal-700 mt-1">100% Operational</p>
             </div>
             <Stethoscope className="h-7 w-7 text-teal-600 opacity-80" />
@@ -132,7 +140,11 @@ export default function AdminOperationsPage() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-[10px] font-bold uppercase text-slate-500">Active Physicians</p>
-              <h4 className="text-lg font-extrabold text-slate-900 mt-0.5">{doctors.length} Doctors</h4>
+              {loading ? (
+                <div className="h-6 w-24 bg-slate-200 rounded animate-pulse my-1" />
+              ) : (
+                <h4 className="text-lg font-extrabold text-slate-900 mt-0.5">{doctors.length} Doctors</h4>
+              )}
               <p className="text-[10px] text-emerald-600 font-semibold mt-1">On-Duty & Ready</p>
             </div>
             <Users className="h-7 w-7 text-slate-600 opacity-80" />

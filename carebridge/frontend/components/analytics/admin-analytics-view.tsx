@@ -43,12 +43,14 @@ export function AdminAnalyticsView() {
   const [timeWindow, setTimeWindow] = React.useState<"today" | "7_days" | "30_days">("today");
   const [overview, setOverview] = React.useState<OperationsOverview | null>(null);
   const [departments, setDepartments] = React.useState<DepartmentMetric[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     let ignore = false;
 
     async function fetchAnalytics() {
+      setIsLoading(true);
       try {
         const [overData, deptData] = await Promise.all([
           apiFetch<OperationsOverview>(`/analytics/overview?time_window=${timeWindow}`),
@@ -86,6 +88,10 @@ export function AdminAnalyticsView() {
               { department_id: "3", department_name: "Pediatrics", total_appointments: 4, active_doctors: 1, load_percentage: 16.7 },
             ]);
           }
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
         }
       }
     }
@@ -159,7 +165,21 @@ export function AdminAnalyticsView() {
       )}
 
       {/* KPI Cards Grid */}
-      {overview && (
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="border-slate-200 shadow-xs animate-pulse">
+              <CardHeader className="pb-2">
+                <div className="h-3 w-20 bg-slate-200 rounded mb-2"></div>
+                <div className="h-8 w-16 bg-slate-200 rounded"></div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="h-3 w-28 bg-slate-100 rounded"></div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : overview ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* OPD Volume Card */}
           <Card className="border-slate-200 shadow-xs">
@@ -235,7 +255,7 @@ export function AdminAnalyticsView() {
             </CardContent>
           </Card>
         </div>
-      )}
+      ) : null}
 
       {/* Departmental Volume Breakdown */}
       <Card className="border-slate-200 shadow-xs">
