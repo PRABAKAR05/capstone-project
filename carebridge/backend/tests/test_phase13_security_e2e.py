@@ -467,7 +467,8 @@ def test_ac_13_12_cscm_iomt_comprehensive_research_preservation():
 
     verified_count = 0
     for rel_path in sample_keys:
-        full_path = PROJECT_ROOT / rel_path
+        norm_path = rel_path.replace("\\", "/")
+        full_path = PROJECT_ROOT / norm_path
         if not full_path.exists():
             continue
 

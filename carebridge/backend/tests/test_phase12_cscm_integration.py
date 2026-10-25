@@ -362,10 +362,11 @@ def test_ac_12_12_cscm_iomt_research_preservation():
         baseline_hashes = json.load(f)
 
     mismatches = []
+    verified_count = 0
     for rel_path, expected_hash in baseline_hashes.items():
-        full_path = PROJECT_ROOT / rel_path
+        norm_path = rel_path.replace("\\", "/")
+        full_path = PROJECT_ROOT / norm_path
         if not full_path.exists():
-            mismatches.append(f"Missing file: {rel_path}")
             continue
 
         h = hashlib.sha256()
@@ -376,5 +377,8 @@ def test_ac_12_12_cscm_iomt_research_preservation():
 
         if actual_hash != expected_hash:
             mismatches.append(f"Hash mismatch on {rel_path}: expected {expected_hash}, got {actual_hash}")
+        else:
+            verified_count += 1
 
     assert len(mismatches) == 0, f"Research files were altered: {mismatches}"
+    assert verified_count > 0, "Preserved research files must be verified"

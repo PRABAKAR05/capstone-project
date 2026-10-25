@@ -30,6 +30,7 @@ INSERT INTO auth.users (id, aud, role, email)
 VALUES 
     ('70000000-0000-0000-0000-000000000001', 'authenticated', 'authenticated', 'admin1@aegis.example.com'),
     ('70000000-0000-0000-0000-000000000002', 'authenticated', 'authenticated', 'doc1@aegis.example.com'),
+    ('70000000-0000-0000-0000-000000000003', 'authenticated', 'authenticated', 'rec1@aegis.example.com'),
     ('70000000-0000-0000-0000-000000000033', 'authenticated', 'authenticated', 'labtech1@aegis.example.com'),
     ('70000000-0000-0000-0000-000000000004', 'authenticated', 'authenticated', 'patuser1@example.com'),
     ('70000000-0000-0000-0000-000000000005', 'authenticated', 'authenticated', 'inactive@example.com'),
@@ -42,6 +43,7 @@ INSERT INTO public.profiles (id, hospital_id, role, full_name, email, is_active)
 VALUES
     ('70000000-0000-0000-0000-000000000001', '11111111-1111-1111-1111-111111111111', 'hospital_admin', 'Admin 1', 'admin1@aegis.example.com', true),
     ('70000000-0000-0000-0000-000000000002', '11111111-1111-1111-1111-111111111111', 'doctor', 'Doctor 1', 'doc1@aegis.example.com', true),
+    ('70000000-0000-0000-0000-000000000003', '11111111-1111-1111-1111-111111111111', 'receptionist', 'Receptionist 1', 'rec1@aegis.example.com', true),
     ('70000000-0000-0000-0000-000000000033', '11111111-1111-1111-1111-111111111111', 'lab_technician', 'Lab Tech 1', 'labtech1@aegis.example.com', true),
     ('70000000-0000-0000-0000-000000000004', '11111111-1111-1111-1111-111111111111', 'patient', 'Patient User 1', 'patuser1@example.com', true),
     ('70000000-0000-0000-0000-000000000005', '11111111-1111-1111-1111-111111111111', 'patient', 'Inactive User', 'inactive@example.com', false),
