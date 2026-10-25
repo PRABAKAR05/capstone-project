@@ -1,0 +1,71 @@
+{
+    "dataset": "PhysioNet",
+    "preprocessing_hash": "7be100f8",
+    "channels": [
+        "HR",
+        "NISysABP",
+        "NIDiasABP",
+        "NIMAP",
+        "Temp"
+    ],
+    "training_observations_used": {
+        "HR": 35406,
+        "NISysABP": 33496,
+        "NIDiasABP": 33489,
+        "NIMAP": 33193,
+        "Temp": 13141
+    },
+    "statistics": {
+        "HR": {
+            "zscore": {
+                "mean": 89.44638061523438,
+                "std": 20.269685745239258
+            },
+            "robust": {
+                "median": 88.0,
+                "iqr": 27.0
+            }
+        },
+        "NISysABP": {
+            "zscore": {
+                "mean": 116.29840850830078,
+                "std": 24.032798767089844
+            },
+            "robust": {
+                "median": 113.0,
+                "iqr": 32.0
+            }
+        },
+        "NIDiasABP": {
+            "zscore": {
+                "mean": 56.74578094482422,
+                "std": 15.870742797851562
+            },
+            "robust": {
+                "median": 55.0,
+                "iqr": 20.0
+            }
+        },
+        "NIMAP": {
+            "zscore": {
+                "mean": 75.25814056396484,
+                "std": 16.307945251464844
+            },
+            "robust": {
+                "median": 73.0,
+                "iqr": 20.839996337890625
+            }
+        },
+        "Temp": {
+            "zscore": {
+                "mean": 37.04081344604492,
+                "std": 1.671555519104004
+            },
+            "robust": {
+                "median": 37.099998474121094,
+                "iqr": 1.2000007629394531
+            }
+        }
+    },
+    "note": "The normalization method used by subsequent experiments must be selected explicitly and recorded in the experiment configuration."
+}
