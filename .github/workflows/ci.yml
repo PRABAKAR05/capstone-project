@@ -113,11 +113,4 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'dummy-service-role-key' }}
           DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres
         run: |
-          python -m pytest carebridge/backend/tests/ -o testpaths=carebridge/backend/tests -v --tb=short > pytest_run.log 2>&1 || true
-          cat pytest_run.log
-          grep -A 15 -B 2 "ERROR collecting" pytest_run.log | head -n 30 | while IFS= read -r line; do
-            echo "::error title=CollectionError::$line"
-          done
-          if grep -q "ERRORS" pytest_run.log || grep -q "FAILURES" pytest_run.log || ! grep -q "passed" pytest_run.log; then
-            exit 1
-          fi
+          python -m pytest carebridge/backend/tests/ -o testpaths=carebridge/backend/tests -v --tb=short
