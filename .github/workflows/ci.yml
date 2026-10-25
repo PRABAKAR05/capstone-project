@@ -55,6 +55,20 @@ jobs:
   backend-check:
     name: Backend Test Suite (128 Tests)
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -74,13 +88,29 @@ jobs:
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install pytest pytest-asyncio pytest-cov httpx
 
+      - name: Initialize PostgreSQL Database
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          PGPASSWORD=password psql -h localhost -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+          PGPASSWORD=password psql -h localhost -U postgres -d postgres -c "CREATE EXTENSION IF NOT EXISTS btree_gist;"
+          PGPASSWORD=password psql -h localhost -U postgres -d postgres -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'authenticated') THEN CREATE ROLE authenticated; END IF; IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'anon') THEN CREATE ROLE anon; END IF; END \$\$;"
+          PGPASSWORD=password psql -h localhost -U postgres -d postgres -c "CREATE SCHEMA IF NOT EXISTS auth; CREATE TABLE IF NOT EXISTS auth.users (id UUID PRIMARY KEY, aud VARCHAR(255) DEFAULT 'authenticated', role VARCHAR(255) DEFAULT 'authenticated', email VARCHAR(255) UNIQUE, raw_app_meta_data JSONB DEFAULT '{}', raw_user_meta_data JSONB DEFAULT '{}', created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP);"
+          for f in carebridge/backend/supabase/migrations/0*.sql; do
+            if [[ "$f" != *"_down.sql"* ]]; then
+              echo "Applying migration: $f"
+              PGPASSWORD=password psql -h localhost -U postgres -d postgres -f "$f" || true
+            fi
+          done
+          echo "Applying seed data"
+          PGPASSWORD=password psql -h localhost -U postgres -d postgres -f carebridge/backend/supabase/seed.sql || true
+
       - name: Run Pytest Suite
         env:
-          PYTHONPATH: carebridge/backend
+          PYTHONPATH: carebridge/backend:.
           ENVIRONMENT: test
           SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://vmuzexvtbodnkzhfitzf.supabase.co' }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY || 'dummy-key' }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'dummy-service-role-key' }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:Praba0503200@db.vmuzexvtbodnkzhfitzf.supabase.co:5432/postgres' }}
+          DATABASE_URL: postgresql://postgres:password@localhost:5432/postgres
         run: |
           pytest carebridge/backend/tests/ -v
