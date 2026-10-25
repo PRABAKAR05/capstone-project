@@ -14,7 +14,8 @@ def list_doctors(
     department_id: Optional[UUID] = None,
     context: SecurityContext = Depends(get_security_context),
 ):
-    with get_db(context) as conn:
+    # Use unconstrained db connection so patient callers can view the public doctor directory
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             query = """
                 SELECT d.id, d.hospital_id, d.profile_id, d.department_id, d.license_number,
@@ -56,7 +57,8 @@ def get_doctor_slots(
     slot_date: str = Query(..., description="Target date in YYYY-MM-DD format", pattern=r"^\d{4}-\d{2}-\d{2}$"),
     context: SecurityContext = Depends(get_security_context),
 ):
-    with get_db(context) as conn:
+    # Use unconstrained db connection so patient callers can view schedule slots
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             # 1. Fetch doctor & hospital timezone
             cur.execute("""

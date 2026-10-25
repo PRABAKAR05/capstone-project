@@ -114,28 +114,31 @@ def list_appointments(
     with get_db(context) as conn:
         with conn.cursor() as cur:
             query = """
-                SELECT id, hospital_id, patient_id, doctor_id, department_id,
-                       scheduled_at, ends_at, status, reason_for_visit, clinical_notes,
-                       created_at, updated_at
-                FROM public.appointments
-                WHERE hospital_id = %s
+                SELECT a.id, a.hospital_id, a.patient_id, a.doctor_id, a.department_id,
+                       a.scheduled_at, a.ends_at, a.status, a.reason_for_visit, a.clinical_notes,
+                       a.created_at, a.updated_at,
+                       NULLIF(TRIM(CONCAT(pt.first_name, ' ', pt.last_name)), '') as patient_name,
+                       pt.mrn as patient_mrn
+                FROM public.appointments a
+                LEFT JOIN public.patients pt ON a.patient_id = pt.id
+                WHERE a.hospital_id = %s
             """
             params = [str(context.hospital_id)]
 
             if context.role == "patient":
-                query += """ AND patient_id IN (
+                query += """ AND a.patient_id IN (
                     SELECT patient_id FROM public.patient_accounts
                     WHERE user_id = %s AND hospital_id = %s AND status = 'verified'
                 )"""
                 params.extend([str(context.user_id), str(context.hospital_id)])
             elif doctor_id:
-                query += " AND doctor_id = %s"
+                query += " AND a.doctor_id = %s"
                 params.append(str(doctor_id))
             elif patient_id:
-                query += " AND patient_id = %s"
+                query += " AND a.patient_id = %s"
                 params.append(str(patient_id))
 
-            query += " ORDER BY scheduled_at ASC LIMIT 100;"
+            query += " ORDER BY a.scheduled_at ASC LIMIT 100;"
             cur.execute(query, tuple(params))
             rows = cur.fetchall()
 
@@ -145,6 +148,8 @@ def list_appointments(
                     scheduled_at=r[5], ends_at=r[6], status=r[7], reason_for_visit=r[8],
                     clinical_notes=r[9] if context.role != "lab_technician" else None,
                     created_at=r[10], updated_at=r[11],
+                    patient_name=r[12],
+                    patient_mrn=r[13],
                 )
                 for r in rows
             ]

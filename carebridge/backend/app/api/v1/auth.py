@@ -3,10 +3,10 @@ import logging
 from typing import Optional
 from uuid import UUID
 import jwt
-import psycopg2
 from pydantic import BaseModel, EmailStr
 from fastapi import APIRouter, HTTPException, status, Depends
 from app.core.config import settings
+from app.core.database import get_db
 from app.core.security import get_jwt_secret, get_security_context, SecurityContext
 
 logger = logging.getLogger("carebridge.auth")
@@ -24,6 +24,7 @@ class UserResponse(BaseModel):
     full_name: str
     email: str
     is_active: bool
+    patient_id: Optional[UUID] = None
 
 class LoginResponse(BaseModel):
     access_token: str
@@ -42,8 +43,7 @@ def login(req: LoginRequest):
             detail="Valid email and non-empty password required",
         )
 
-    conn = psycopg2.connect(settings.DATABASE_URL)
-    try:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT 
@@ -94,9 +94,29 @@ def login(req: LoginRequest):
                     detail="ACCOUNT_DEACTIVATED: User account is inactive",
                 )
 
+            # Resolve linked patient_id if user is a patient
+            resolved_patient_id: Optional[UUID] = None
+            if role == "patient":
+                cur.execute("""
+                    SELECT patient_id FROM public.patient_accounts
+                    WHERE user_id = %s AND hospital_id = %s AND status = 'verified'
+                    LIMIT 1;
+                """, (str(user_id), str(hospital_id)))
+                p_row = cur.fetchone()
+                if p_row:
+                    resolved_patient_id = p_row[0]
+
             # Mint HS256 Supabase-compatible JWT
             now = int(time.time())
             expires_in = 86400
+            user_meta = {
+                "full_name": full_name,
+                "role": role,
+                "hospital_id": str(hospital_id),
+            }
+            if resolved_patient_id:
+                user_meta["patient_id"] = str(resolved_patient_id)
+
             payload = {
                 "sub": str(user_id),
                 "aud": "authenticated",
@@ -107,11 +127,7 @@ def login(req: LoginRequest):
                     "provider": "email",
                     "providers": ["email"]
                 },
-                "user_metadata": {
-                    "full_name": full_name,
-                    "role": role,
-                    "hospital_id": str(hospital_id),
-                },
+                "user_metadata": user_meta,
                 "iat": now,
                 "exp": now + expires_in,
             }
@@ -129,18 +145,16 @@ def login(req: LoginRequest):
                     full_name=full_name,
                     email=email,
                     is_active=is_active,
+                    patient_id=resolved_patient_id,
                 )
             )
-    finally:
-        conn.close()
 
 @router.get("/me", response_model=UserResponse)
 def get_current_user_profile(context: SecurityContext = Depends(get_security_context)):
     """
-    Returns the authenticated user's profile details.
+    Returns the authenticated user's profile details including linked patient_id.
     """
-    conn = psycopg2.connect(settings.DATABASE_URL)
-    try:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT id, hospital_id, role, full_name, email, is_active
@@ -153,6 +167,18 @@ def get_current_user_profile(context: SecurityContext = Depends(get_security_con
                     status_code=status.HTTP_404_NOT_FOUND,
                     detail="User profile not found",
                 )
+            
+            resolved_patient_id: Optional[UUID] = None
+            if row[2] == "patient":
+                cur.execute("""
+                    SELECT patient_id FROM public.patient_accounts
+                    WHERE user_id = %s AND hospital_id = %s AND status = 'verified'
+                    LIMIT 1;
+                """, (str(context.user_id), str(context.hospital_id)))
+                p_row = cur.fetchone()
+                if p_row:
+                    resolved_patient_id = p_row[0]
+
             return UserResponse(
                 id=row[0],
                 hospital_id=row[1],
@@ -160,6 +186,5 @@ def get_current_user_profile(context: SecurityContext = Depends(get_security_con
                 full_name=row[3],
                 email=row[4],
                 is_active=row[5],
+                patient_id=resolved_patient_id,
             )
-    finally:
-        conn.close()

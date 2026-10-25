@@ -52,8 +52,19 @@ app.include_router(chat_router, prefix=api_v1_prefix)
 app.include_router(insurance_router, prefix=api_v1_prefix)
 app.include_router(analytics_router, prefix=api_v1_prefix)
 app.include_router(cscm_router, prefix=api_v1_prefix)
-app.include_router(auth_router, prefix=api_v1_prefix)
+import sys
+import asyncio
+import logging
 
+# On Windows, suppress unhandled socket connection reset errors (WinError 64 / 121)
+if sys.platform == "win32":
+    try:
+        # Use selector event loop on Windows to prevent Proactor socket close aborts
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        pass
+
+app.include_router(auth_router, prefix=api_v1_prefix)
 
 
 @app.get("/health", tags=["system"])
@@ -64,6 +75,19 @@ async def health_check():
 @app.get("/", tags=["system"])
 async def root():
     return {"message": "CareBridge AI Backend", "docs": "/docs"}
+
+
+# Probe and models discovery silence route (Issue #22)
+@app.get("/v1/models", tags=["system"])
+@app.get("/models", tags=["system"])
+async def list_available_models():
+    return {
+        "object": "list",
+        "data": [
+            {"id": "llama-3.3-70b-versatile", "object": "model", "owned_by": "groq"},
+            {"id": "llama-3.1-8b-instant", "object": "model", "owned_by": "groq"},
+        ],
+    }
 
 
 # RFC 7807 Exception Handlers

@@ -41,18 +41,45 @@ export default function AdminOperationsPage() {
         setDepartments(deptData || []);
         setDoctors(docData || []);
       } catch {
-        // Mock fallback
+        // Mock fallback with the 4 active hospital physicians
         setDepartments([
           { id: "1", name: "Cardiology", code: "CARD", head_of_department: "Dr. Evelyn Reed" },
-          { id: "2", name: "Neurology", code: "NEUR", head_of_department: "Dr. Marcus Brody" },
+          { id: "2", name: "Neurology", code: "NEUR", head_of_department: "Dr. Marcus Thorne" },
         ]);
         setDoctors([
           {
-            id: "1",
+            id: "90000000-0022-0000-0000-000000000001",
             full_name: "Dr. Evelyn Reed",
             specialization: "Cardiology",
             qualification: "MD, FACC",
             license_number: "LIC-PH3-DOC1",
+            consultation_fee: 500,
+            is_available: true,
+          },
+          {
+            id: "90000000-0022-0000-0000-000000000002",
+            full_name: "Dr. Marcus Thorne",
+            specialization: "Neurology",
+            qualification: "MBBS, MD, DM",
+            license_number: "LIC-PH3-DOC2",
+            consultation_fee: 600,
+            is_available: true,
+          },
+          {
+            id: "90000000-0022-0000-0000-000000000003",
+            full_name: "Dr. Clara Oswald",
+            specialization: "General Medicine",
+            qualification: "MBBS, MD",
+            license_number: "LIC-PH3-DOC3",
+            consultation_fee: 400,
+            is_available: true,
+          },
+          {
+            id: "71111111-1111-1111-1111-111111111111",
+            full_name: "Dr. Rajesh Nair",
+            specialization: "Cardiology",
+            qualification: "MD",
+            license_number: "LIC-PH3-DOC4",
             consultation_fee: 500,
             is_available: true,
           },

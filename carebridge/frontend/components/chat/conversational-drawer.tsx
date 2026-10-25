@@ -16,6 +16,7 @@ import {
   FileText,
   Calendar,
   CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,6 +63,7 @@ export function ConversationalDrawer() {
   const [inputValue, setInputValue] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [isListening, setIsListening] = React.useState(false);
+  const [voiceError, setVoiceError] = React.useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = React.useState<string>("en-IN");
   const [speechSynthesisActive, setSpeechSynthesisActive] = React.useState(false);
   const recognitionRef = React.useRef<unknown>(null);
@@ -126,6 +128,7 @@ export function ConversationalDrawer() {
     }
 
     try {
+      setVoiceError(null);
       const recognition = new SpeechRec();
       recognition.continuous = false;
       recognition.interimResults = false;
@@ -138,8 +141,13 @@ export function ConversationalDrawer() {
         }
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (e: { error: string }) => {
         setIsListening(false);
+        if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+          setVoiceError("Microphone unavailable / permission denied — type instead");
+        } else {
+          setVoiceError(`Voice input error (${e.error}) — type instead`);
+        }
       };
 
       recognition.onend = () => {
@@ -151,6 +159,7 @@ export function ConversationalDrawer() {
       setIsListening(true);
     } catch {
       setIsListening(false);
+      setVoiceError("Microphone unavailable / permission denied — type instead");
     }
   };
 
@@ -508,6 +517,24 @@ export function ConversationalDrawer() {
                 </div>
               )}
 
+              {/* Voice Error Notice (Issue #9) */}
+              {voiceError && (
+                <div className="mb-2 p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-[11px] flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <AlertCircle className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+                    {voiceError}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setVoiceError(null)}
+                    className="text-amber-600 hover:text-amber-800 font-bold ml-2 text-xs"
+                    aria-label="Dismiss error"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -527,6 +554,7 @@ export function ConversationalDrawer() {
                     }`}
                     title={isListening ? "Stop Listening" : "Speak Message"}
                     aria-label="Toggle Speech Recognition"
+                    aria-pressed={isListening}
                   >
                     {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
                   </Button>

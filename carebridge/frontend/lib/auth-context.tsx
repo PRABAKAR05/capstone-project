@@ -160,15 +160,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             role: data.user.role as UserRole,
             full_name: data.user.full_name,
             email: data.user.email,
+            patient_id: data.user.patient_id ? String(data.user.patient_id) : undefined,
           });
           await fetchHospitalDetails();
           return true;
         } else {
           const errData = await res.json().catch(() => ({}));
-          if (res.status === 401 || res.status === 403) {
-            setLoginError(errData.detail || "Invalid email or password");
-            return false;
+          let errMsg = "Invalid email or password";
+          if (errData.detail) {
+            if (typeof errData.detail === "string") {
+              errMsg = errData.detail;
+            } else if (Array.isArray(errData.detail)) {
+              errMsg = errData.detail.map((d: { msg?: string }) => d.msg || JSON.stringify(d)).join(", ");
+            } else if (typeof errData.detail === "object") {
+              errMsg = errData.title || JSON.stringify(errData.detail);
+            }
           }
+          setLoginError(errMsg);
+          return false;
         }
       } catch {
         // Fallback to Supabase auth if backend endpoint is unreachable
@@ -301,8 +310,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         : account.role === "lab_technician"
         ? "11111111-0003-0000-0000-000000000030"
         : account.role === "patient"
-        ? "70000000-0000-0000-0000-000000000004"
+        ? "90000000-0005-0000-0000-000000000001"
         : "70000000-0000-0000-0000-000000000001";
+
+      const patientId = account.role === "patient" ? "90000000-aaaa-0000-0000-000000000001" : undefined;
 
       setUser({
         id: uid,
@@ -310,6 +321,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         role: account.role,
         full_name: account.label,
         email: account.email,
+        patient_id: patientId,
       });
       if (typeof window !== "undefined") {
         localStorage.setItem("carebridge_demo_account", JSON.stringify(account));

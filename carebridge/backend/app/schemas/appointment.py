@@ -33,6 +33,8 @@ class AppointmentResponse(BaseModel):
     status: AppointmentStatus
     reason_for_visit: Optional[str] = None
     clinical_notes: Optional[str] = None
+    patient_name: Optional[str] = None
+    patient_mrn: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 

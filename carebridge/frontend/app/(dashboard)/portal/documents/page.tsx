@@ -41,7 +41,7 @@ export default function PatientDocumentsPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Default seed patient ID for demo if not set
-  const patientId = user?.patient_id || "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
+  const patientId = user?.patient_id || "90000000-aaaa-0000-0000-000000000001";
 
   const fetchDocuments = React.useCallback(async () => {
     try {

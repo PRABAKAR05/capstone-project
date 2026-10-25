@@ -24,19 +24,39 @@ function LoginForm() {
     setPassword(acc.password || "");
   };
 
+  const getDestination = (targetRole?: string) => {
+    if (returnUrl && returnUrl !== "/") return returnUrl;
+    switch (targetRole) {
+      case "doctor":
+        return "/doctor";
+      case "hospital_admin":
+        return "/admin";
+      case "nurse":
+        return "/nurse";
+      case "lab_technician":
+        return "/lab";
+      case "patient":
+        return "/portal";
+      default:
+        return "/doctor";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
+    const matchedDemo = SYNTHETIC_DEMO_ACCOUNTS.find((a) => a.email.toLowerCase() === email.toLowerCase());
+    const predictedRole = matchedDemo?.role;
+
     if (password) {
       const ok = await signInWithEmail(email, password);
-      if (ok) router.push(returnUrl);
+      if (ok) router.push(getDestination(predictedRole));
     } else {
       // In demonstration mode, allow proceeding with selected synthetic demo persona
-      const demo = SYNTHETIC_DEMO_ACCOUNTS.find((a) => a.email === email);
-      if (demo) {
-        const ok = await selectDemoAccount(demo);
-        if (ok) router.push(returnUrl);
+      if (matchedDemo) {
+        const ok = await selectDemoAccount(matchedDemo);
+        if (ok) router.push(getDestination(matchedDemo.role));
       }
     }
   };

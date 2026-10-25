@@ -105,3 +105,4 @@ build/
 # ============================================================
 artifacts/**/test-credentials.private.json
 *.private.json
+carebridge/backend/uploads/

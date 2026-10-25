@@ -44,7 +44,7 @@ interface SlotsResponse {
 
 export default function BookAppointmentWizard() {
   const router = useRouter();
-  const { hospital } = useAuth();
+  const { hospital, user } = useAuth();
 
   const [step, setStep] = React.useState<1 | 2 | 3>(1);
   const [departments, setDepartments] = React.useState<Department[]>([]);
@@ -167,8 +167,8 @@ export default function BookAppointmentWizard() {
     setErrorMsg(null);
     setConflictAlert(null);
 
-    // Synthetic patient ID: Alice Vance
-    const patientId = "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
+    // Authenticated patient ID
+    const patientId = user?.patient_id || "90000000-aaaa-0000-0000-000000000001";
 
     try {
       await apiFetch("/appointments", {

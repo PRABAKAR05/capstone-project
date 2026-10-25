@@ -46,11 +46,12 @@ interface AppointmentData {
 }
 
 export default function PatientPortalPage() {
-  const { hospital } = useAuth();
+  const { hospital, user } = useAuth();
   const [patient, setPatient] = React.useState<PatientData | null>(null);
   const [appointments, setAppointments] = React.useState<AppointmentData[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null);
+  const [recordNotLinked, setRecordNotLinked] = React.useState(false);
 
   // Cancellation Modal state
   const [cancelModalOpen, setCancelModalOpen] = React.useState(false);
@@ -64,41 +65,58 @@ export default function PatientPortalPage() {
     let ignore = false;
     async function loadData() {
       try {
-        const patientId = "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
-        const [pData, appts] = await Promise.all([
-          apiFetch<PatientData>(`/patients/${patientId}`).catch(() => null),
-          apiFetch<AppointmentData[]>(`/appointments?patient_id=${patientId}`).catch(() => []),
-        ]);
+        // Dynamically resolve patient profile via /patients/me or user.patient_id
+        let resolvedPatient: PatientData | null = null;
+        try {
+          resolvedPatient = await apiFetch<PatientData>("/patients/me");
+        } catch {
+          if (user?.patient_id) {
+            resolvedPatient = await apiFetch<PatientData>(`/patients/${user.patient_id}`).catch(() => null);
+          }
+        }
+
+        if (!resolvedPatient && user?.role === "patient") {
+          // Fallback to Maya Demo synthetic profile
+          resolvedPatient = {
+            id: user?.patient_id || "90000000-aaaa-0000-0000-000000000001",
+            mrn: "QA-MRN-001",
+            first_name: "Maya",
+            last_name: "Demo",
+            date_of_birth: "1992-04-12",
+            gender: "female",
+            blood_group: "B+",
+            phone: "+91 98765 00001",
+            emergency_contact_name: "Rohan Demo",
+            emergency_contact_phone: "+91 98765 00002",
+          };
+        }
+
+        const effectivePatientId = resolvedPatient?.id;
+        const appts = effectivePatientId
+          ? await apiFetch<AppointmentData[]>(`/appointments?patient_id=${effectivePatientId}`).catch(() => [])
+          : await apiFetch<AppointmentData[]>("/appointments").catch(() => []);
 
         if (!ignore) {
-          if (pData) {
-            setPatient(pData);
+          if (resolvedPatient) {
+            setPatient(resolvedPatient);
+            setRecordNotLinked(false);
           } else {
-            setPatient({
-              id: "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-              mrn: "MRN-2026-90421",
-              first_name: "Alice",
-              last_name: "Vance",
-              date_of_birth: "1988-06-14",
-              gender: "female",
-              blood_group: "O+",
-              phone: "+91 98765 43210",
-              emergency_contact_name: "Arthur Vance",
-              emergency_contact_phone: "+91 98765 00000",
-            });
+            setRecordNotLinked(true);
           }
           setAppointments(appts || []);
           setLoading(false);
         }
       } catch {
-        if (!ignore) setLoading(false);
+        if (!ignore) {
+          setLoading(false);
+        }
       }
     }
     loadData();
     return () => {
       ignore = true;
     };
-  }, [refreshKey]);
+  }, [refreshKey, user]);
 
   const handleCancelSubmit = async () => {
     if (!selectedApptId || !cancelReason) return;
@@ -179,6 +197,16 @@ export default function PatientPortalPage() {
           <AlertCircle className="h-4 w-4 text-red-600" />
           <AlertTitle>Notice</AlertTitle>
           <AlertDescription>{errorMsg}</AlertDescription>
+        </Alert>
+      )}
+
+      {recordNotLinked && (
+        <Alert variant="warning">
+          <AlertCircle className="h-4 w-4 text-amber-600" />
+          <AlertTitle>Patient Record Not Linked</AlertTitle>
+          <AlertDescription>
+            Your login account is not currently linked to an active patient record in this hospital. Please visit the hospital registration desk with your government ID and MRN to link your records.
+          </AlertDescription>
         </Alert>
       )}
 

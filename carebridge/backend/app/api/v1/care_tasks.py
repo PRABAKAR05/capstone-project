@@ -98,6 +98,8 @@ def list_care_tasks(
     assigned_role: Optional[str] = Query(None),
     assigned_to: Optional[UUID] = Query(None),
     priority: Optional[str] = Query(None),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
     context: SecurityContext = Depends(get_security_context),
 ):
     """List care coordination tasks. Patient callers receive sanitized views."""
@@ -159,8 +161,10 @@ def list_care_tasks(
             query += """
                 ORDER BY 
                   CASE priority WHEN 'urgent' THEN 1 WHEN 'high' THEN 2 WHEN 'routine' THEN 3 ELSE 4 END,
-                  due_date ASC NULLS LAST, created_at DESC;
+                  due_date ASC NULLS LAST, created_at DESC
+                LIMIT %s OFFSET %s;
             """
+            params.extend([limit, offset])
 
             cur.execute(query, tuple(params))
             rows = cur.fetchall()

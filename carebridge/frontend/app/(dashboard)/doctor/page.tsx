@@ -24,6 +24,8 @@ interface DoctorAppointment {
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "no_show";
   reason_for_visit?: string;
   clinical_notes?: string;
+  patient_name?: string;
+  patient_mrn?: string;
 }
 
 export default function DoctorWorkstationPage() {
@@ -397,6 +399,7 @@ export default function DoctorWorkstationPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Time Slot</TableHead>
+                <TableHead>Patient</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Chief Complaint</TableHead>
                 <TableHead>Clinical Record</TableHead>
@@ -406,11 +409,15 @@ export default function DoctorWorkstationPage() {
             <TableBody>
               {filteredAppointments.map((appt) => {
                 const { fullStr } = formatInHospitalTimezone(appt.scheduled_at, hospital?.timezone);
+                const patientDisplay = appt.patient_name || (appt.patient_mrn ? `MRN: ${appt.patient_mrn}` : `Patient ${appt.patient_id.substring(0, 8)}...`);
 
                 return (
                   <TableRow key={appt.id}>
                     <TableCell className="font-semibold text-xs text-slate-900">
                       {fullStr}
+                    </TableCell>
+                    <TableCell className="font-medium text-xs text-blue-950">
+                      {patientDisplay}
                     </TableCell>
                     <TableCell>
                       {appt.status === "confirmed" ? (
@@ -484,8 +491,15 @@ export default function DoctorWorkstationPage() {
 
       {/* Phase 12 Bedside IoMT Telemetry Monitor & FDIA Consistency Verification */}
       <IoMTMonitorCard
-        patientId={appointments[0]?.patient_id || "11111111-aaaa-aaaa-aaaa-aaaaaaaaaaaa"}
-        patientName={appointments[0] ? `Patient ${appointments[0].patient_id.substring(0, 8)}...` : "Alice Vance (ICU Bedside)"}
+        patientId={appointments[0]?.patient_id || "90000000-aaaa-0000-0000-000000000001"}
+        patientName={
+          appointments[0]?.patient_name ||
+          (appointments[0]?.patient_mrn
+            ? `${appointments[0].patient_mrn}`
+            : appointments[0]
+            ? `Patient ${appointments[0].patient_id.substring(0, 8)}...`
+            : "Maya Demo (QA-MRN-001)")
+        }
         deviceId="iomt-bedside-node-01"
       />
 

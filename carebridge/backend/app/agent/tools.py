@@ -139,10 +139,10 @@ TOOL_DEFINITIONS = [
 # ---------------------------------------------------------------------------
 
 def tool_search_doctors(context: SecurityContext, department_name: Optional[str] = None, specialty: Optional[str] = None) -> Dict[str, Any]:
-    with get_db(context) as conn:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             query = """
-                SELECT d.id, COALESCE(p.full_name, 'Dr. Sarah Chen'), d.specialization, d.qualification,
+                SELECT d.id, COALESCE(p.full_name, 'Staff Physician'), d.specialization, d.qualification,
                        d.opd_room, d.consultation_fee, d.is_available, dept.name as dept_name
                 FROM public.doctors d
                 JOIN public.departments dept ON d.department_id = dept.id
@@ -183,11 +183,11 @@ def tool_get_doctor_slots(context: SecurityContext, doctor_id: str, slot_date: s
     except Exception:
         return {"error": "Invalid doctor_id or slot_date format. Expected UUID and YYYY-MM-DD."}
 
-    with get_db(context) as conn:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             # Fetch doctor and hospital timezone
             cur.execute("""
-                SELECT d.id, h.timezone, COALESCE(p.full_name, 'Dr. Sarah Chen'), dept.name
+                SELECT d.id, h.timezone, COALESCE(p.full_name, 'Staff Physician'), dept.name
                 FROM public.doctors d
                 JOIN public.hospitals h ON d.hospital_id = h.id
                 JOIN public.departments dept ON d.department_id = dept.id
@@ -300,7 +300,7 @@ def tool_book_appointment(context: SecurityContext, doctor_id: str, scheduled_at
 
             # Fetch doctor department
             cur.execute("""
-                SELECT d.department_id, COALESCE(p.full_name, 'Dr. Sarah Chen'), dept.name
+                SELECT d.department_id, COALESCE(p.full_name, 'Staff Physician'), dept.name
                 FROM public.doctors d
                 JOIN public.departments dept ON d.department_id = dept.id
                 LEFT JOIN public.profiles p ON d.profile_id = p.id

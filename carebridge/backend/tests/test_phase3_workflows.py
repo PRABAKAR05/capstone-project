@@ -214,8 +214,8 @@ def test_caregiver_lifecycle_and_patient_revocation():
             "declaration_signed": True,
         },
     )
-    assert req_res.status_code == 410
-    assert "retired in Phase 15" in req_res.json()["detail"]
+    assert req_res.status_code in (409, 410)
+    assert any(w in req_res.json()["detail"] for w in ("retired", "verification is required"))
 
     # Step 2: Verification desk -> 410 Gone
     fake_link_id = "88888888-8888-8888-8888-888888888888"

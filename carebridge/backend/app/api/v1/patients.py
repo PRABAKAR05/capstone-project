@@ -103,12 +103,15 @@ def search_patients(
             results = []
             for r in rows:
                 if context.role == "lab_technician":
+                    masked_first = f"{r[3][0]}***" if r[3] else "—"
+                    masked_last = f"{r[4][0]}***" if r[4] else "—"
+                    masked_phone = f"*****{r[8][-4:]}" if r[8] and len(r[8]) >= 4 else "*****"
                     results.append(
                         PatientDemographicsOnly(
-                            id=r[0], hospital_id=r[1], mrn=r[2], first_name=r[3],
-                            last_name=r[4], date_of_birth=r[5], gender=r[6],
-                            blood_group=r[7], phone=r[8],
-                            emergency_contact_name=r[11], emergency_contact_phone=r[12],
+                            id=r[0], hospital_id=r[1], mrn=r[2], first_name=masked_first,
+                            last_name=masked_last, date_of_birth=r[5], gender=r[6],
+                            blood_group=r[7], phone=masked_phone,
+                            emergency_contact_name="Restricted (Lab Masked)", emergency_contact_phone="Restricted",
                         )
                     )
                 else:
@@ -122,6 +125,44 @@ def search_patients(
                         )
                     )
             return results
+
+@router.get("/me", response_model=PatientResponse)
+def get_my_patient_profile(
+    context: SecurityContext = Depends(get_security_context),
+):
+    """
+    Returns the authenticated patient's profile record dynamically resolved via patient_accounts.
+    """
+    if context.role != "patient":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only authenticated patient accounts may access /patients/me",
+        )
+
+    with get_db(None) as conn:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT p.id, p.hospital_id, p.mrn, p.first_name, p.last_name, p.date_of_birth,
+                       p.gender, p.blood_group, p.phone, p.email, p.address,
+                       p.emergency_contact_name, p.emergency_contact_phone, p.created_at, p.updated_at
+                FROM public.patient_accounts pa
+                JOIN public.patients p ON pa.patient_id = p.id
+                WHERE pa.hospital_id = %s AND pa.user_id = %s AND pa.status = 'verified'
+                LIMIT 1;
+            """, (str(context.hospital_id), str(context.user_id)))
+            row = cur.fetchone()
+            if not row:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="No linked verified patient profile found for this user account.",
+                )
+            return PatientResponse(
+                id=row[0], hospital_id=row[1], mrn=row[2], first_name=row[3],
+                last_name=row[4], date_of_birth=row[5], gender=row[6],
+                blood_group=row[7], phone=row[8], email=row[9], address=row[10],
+                emergency_contact_name=row[11], emergency_contact_phone=row[12],
+                created_at=row[13], updated_at=row[14],
+            )
 
 @router.get("/{patient_id}", response_model=Union[PatientResponse, PatientDemographicsOnly])
 def get_patient_by_id(
@@ -166,11 +207,14 @@ def get_patient_by_id(
             )
 
             if context.role == "lab_technician":
+                masked_first = f"{row[3][0]}***" if row[3] else "—"
+                masked_last = f"{row[4][0]}***" if row[4] else "—"
+                masked_phone = f"*****{row[8][-4:]}" if row[8] and len(row[8]) >= 4 else "*****"
                 return PatientDemographicsOnly(
-                    id=row[0], hospital_id=row[1], mrn=row[2], first_name=row[3],
-                    last_name=row[4], date_of_birth=row[5], gender=row[6],
-                    blood_group=row[7], phone=row[8],
-                    emergency_contact_name=row[11], emergency_contact_phone=row[12],
+                    id=row[0], hospital_id=row[1], mrn=row[2], first_name=masked_first,
+                    last_name=masked_last, date_of_birth=row[5], gender=row[6],
+                    blood_group=row[7], phone=masked_phone,
+                    emergency_contact_name="Restricted (Lab Masked)", emergency_contact_phone="Restricted",
                 )
             return PatientResponse(
                 id=row[0], hospital_id=row[1], mrn=row[2], first_name=row[3],

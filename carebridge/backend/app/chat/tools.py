@@ -266,10 +266,10 @@ def resolve_effective_patient_id(context: SecurityContext, explicit_patient_id: 
 # ---------------------------------------------------------------------------
 
 def tool_search_doctors(context: SecurityContext, department_name: Optional[str] = None, specialty: Optional[str] = None) -> Tuple[Dict[str, Any], List[ChatCitation]]:
-    with get_db(context) as conn:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             query = """
-                SELECT d.id, COALESCE(p.full_name, 'Dr. Sarah Chen'), d.specialization, d.qualification,
+                SELECT d.id, COALESCE(p.full_name, 'Staff Physician'), d.specialization, d.qualification,
                        d.opd_room, d.consultation_fee, d.is_available, dept.name as dept_name
                 FROM public.doctors d
                 JOIN public.departments dept ON d.department_id = dept.id
@@ -319,10 +319,10 @@ def tool_get_doctor_slots(context: SecurityContext, doctor_id: str, slot_date: s
     except Exception:
         return {"error": "Invalid doctor_id or slot_date format. Expected UUID and YYYY-MM-DD."}, []
 
-    with get_db(context) as conn:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             cur.execute("""
-                SELECT d.id, h.timezone, COALESCE(p.full_name, 'Dr. Sarah Chen'), dept.name
+                SELECT d.id, h.timezone, COALESCE(p.full_name, 'Staff Physician'), dept.name
                 FROM public.doctors d
                 JOIN public.hospitals h ON d.hospital_id = h.id
                 JOIN public.departments dept ON d.department_id = dept.id
@@ -398,11 +398,11 @@ def tool_get_my_appointments(context: SecurityContext) -> Tuple[Dict[str, Any], 
     if not patient_id:
         return {"error": "No linked patient account found for this user."}, []
 
-    with get_db(context) as conn:
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT a.id, a.scheduled_at, a.ends_at, a.status, a.reason_for_visit,
-                       COALESCE(p.full_name, 'Dr. Sarah Chen') as doc_name,
+                       COALESCE(p.full_name, 'Staff Physician') as doc_name,
                        dept.name as dept_name
                 FROM public.appointments a
                 JOIN public.doctors d ON a.doctor_id = d.id

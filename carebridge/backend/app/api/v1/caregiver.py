@@ -5,19 +5,18 @@ from app.schemas.caregiver import CaregiverRequest, CaregiverVerify, CaregiverRe
 
 router = APIRouter(prefix="/patient-accounts", tags=["caregiver"])
 
-@router.post("/request", response_model=CaregiverResponse, status_code=status.HTTP_410_GONE)
+@router.post("/request", response_model=CaregiverResponse, status_code=status.HTTP_409_CONFLICT)
 def request_caregiver_link(
     payload: CaregiverRequest,
     request: Request,
     context: SecurityContext = Depends(get_security_context),
 ):
     """
-    Deprecated: Caregiver registration has been permanently retired in Phase 15.
-    Returns HTTP 410 Gone.
+    Caregiver proxy requests require front-desk identity verification.
     """
     raise HTTPException(
-        status_code=status.HTTP_410_GONE,
-        detail="Endpoint deprecated: Caregiver and proxy account requests have been retired in Phase 15.",
+        status_code=status.HTTP_409_CONFLICT,
+        detail="Caregiver proxy link cannot be processed online. In-person identity verification is required at the hospital front desk.",
     )
 
 @router.post("/{link_id}/verify", response_model=CaregiverResponse)

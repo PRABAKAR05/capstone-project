@@ -21,7 +21,18 @@ from app.insurance.rules import calculate_deterministic_estimate, RULE_VERSION
 
 
 def verify_patient_access(cur, context: SecurityContext, patient_id: UUID):
-    """Ensures patient callers only access authorized patient records."""
+    """Ensures patient callers only access authorized patient records, and verifies patient exists in hospital tenant."""
+    # Check patient exists in hospital tenant (Issue #18)
+    cur.execute(
+        "SELECT 1 FROM public.patients WHERE id = %s AND hospital_id = %s;",
+        (str(patient_id), str(context.hospital_id))
+    )
+    if not cur.fetchone():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Patient {patient_id} not found in this hospital tenant.",
+        )
+
     if context.role == "patient":
         cur.execute("""
             SELECT 1 FROM public.patient_accounts
@@ -305,10 +316,15 @@ def adjudicate_claim(context: SecurityContext, claim_id: UUID, payload: ClaimAdj
                 "settled": [],
                 "rejected": [],
             }
+            if current_status in ("settled", "rejected"):
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Invalid status transition: Claim has already been {current_status} and finalized. Further adjudication transitions are not permitted.",
+                )
             if payload.adjudication_status not in valid_targets.get(current_status, []):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Invalid status transition from '{current_status}' to '{payload.adjudication_status}'.",
+                    detail=f"Invalid status transition from '{current_status}' to '{payload.adjudication_status}'. Allowed next states: {', '.join(valid_targets.get(current_status, [])) or 'None'}.",
                 )
 
             now_utc = datetime.now(timezone.utc)

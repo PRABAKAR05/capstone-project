@@ -52,6 +52,18 @@ def create_prescription(
     if not items_data or not isinstance(items_data, list) or len(items_data) == 0:
         raise HTTPException(status_code=422, detail="Prescription must contain at least one medication item.")
 
+    # 0. Validate patient belongs to caller's hospital tenant (Issue #3)
+    with db_conn.cursor() as cur:
+        cur.execute(
+            "SELECT id FROM public.patients WHERE id = %s AND hospital_id = %s;",
+            (str(patient_id), str(hospital_id))
+        )
+        if not cur.fetchone():
+            raise HTTPException(
+                status_code=404,
+                detail=f"Patient {patient_id} not found in this hospital tenant."
+            )
+
     # 1. Pre-issuance safety checks
     safety_report = check_pre_issuance_safety(hospital_id, str(patient_id), items_data, db_conn)
 
@@ -155,13 +167,21 @@ def get_prescriptions(
     hospital_id: str,
     patient_id_filter: Optional[str],
     status_filter: Optional[str],
-    db_conn
+    db_conn,
+    limit: int = 50,
+    offset: int = 0,
 ) -> List[Dict]:
     """Lists prescriptions respecting tenant isolation and patient role boundaries."""
-    # Patients can ONLY view their own records
+    # Resolve linked patient_id for patient callers
     effective_patient_id = patient_id_filter
     if user_role == "patient":
-        effective_patient_id = user_id
+        with db_conn.cursor() as p_cur:
+            p_cur.execute(
+                "SELECT patient_id FROM public.patient_accounts WHERE user_id = %s AND hospital_id = %s AND status = 'verified' LIMIT 1;",
+                (user_id, hospital_id)
+            )
+            p_row = p_cur.fetchone()
+            effective_patient_id = str(p_row[0]) if p_row else user_id
 
     query = """
         SELECT 
@@ -179,7 +199,8 @@ def get_prescriptions(
         query += " AND p.status = %s"
         params.append(status_filter)
 
-    query += " ORDER BY p.issued_at DESC"
+    query += " ORDER BY p.issued_at DESC LIMIT %s OFFSET %s"
+    params.extend([limit, offset])
 
     with db_conn.cursor(cursor_factory=RealDictCursor) as cur:
         cur.execute(query, params)

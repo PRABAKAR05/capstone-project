@@ -82,6 +82,13 @@ def verify_jwt_token(token: str) -> dict:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+import time
+from typing import Dict, Tuple
+
+# In-memory TTL cache for profile lookups (user_uuid -> (hospital_id, role, email, is_active, timestamp))
+_PROFILE_CACHE: Dict[str, Tuple[UUID, str, str, bool, float]] = {}
+_PROFILE_CACHE_TTL_SECONDS = 300.0  # 5 minutes TTL
+
 def get_security_context(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme)) -> SecurityContext:
     if not credentials or not credentials.credentials:
         raise HTTPException(
@@ -108,9 +115,47 @@ def get_security_context(credentials: Optional[HTTPAuthorizationCredentials] = D
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Resolve profile in database
-    conn = psycopg2.connect(settings.DATABASE_URL)
-    try:
+    # 1. Check in-memory cache first to avoid remote DB hop
+    now = time.time()
+    cache_entry = _PROFILE_CACHE.get(user_id_str)
+    if cache_entry and (now - cache_entry[4]) < _PROFILE_CACHE_TTL_SECONDS:
+        hospital_id, role, email, is_active, _ = cache_entry
+        return SecurityContext(
+            user_id=user_uuid,
+            hospital_id=hospital_id,
+            role=role,
+            email=email,
+            is_active=is_active,
+        )
+
+    # 2. Fast-path: Check if valid user_metadata exists in verified token claims
+    user_metadata = payload.get("user_metadata") or {}
+    meta_hospital_id = user_metadata.get("hospital_id")
+    meta_role = user_metadata.get("role")
+    meta_email = payload.get("email") or ""
+    if meta_hospital_id and meta_role:
+        try:
+            h_uuid = UUID(meta_hospital_id)
+            if meta_role in ("receptionist", "caregiver"):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="ROLE_RETIRED: Role has been retired and is no longer authorized",
+                )
+            if meta_role in ("hospital_admin", "doctor", "nurse", "lab_technician", "patient"):
+                _PROFILE_CACHE[user_id_str] = (h_uuid, meta_role, meta_email, True, now)
+                return SecurityContext(
+                    user_id=user_uuid,
+                    hospital_id=h_uuid,
+                    role=meta_role,
+                    email=meta_email,
+                    is_active=True,
+                )
+        except (ValueError, TypeError):
+            pass
+
+    # 3. Resolve profile in database using connection pool (no raw TCP connect)
+    from app.core.database import get_db
+    with get_db(None) as conn:
         with conn.cursor() as cur:
             cur.execute("""
                 SELECT hospital_id, role, email, is_active
@@ -145,6 +190,8 @@ def get_security_context(credentials: Optional[HTTPAuthorizationCredentials] = D
                     detail="ACCOUNT_DEACTIVATED: User account is inactive",
                 )
 
+            _PROFILE_CACHE[user_id_str] = (hospital_id, role, email, is_active, now)
+
             return SecurityContext(
                 user_id=user_uuid,
                 hospital_id=hospital_id,
@@ -152,8 +199,6 @@ def get_security_context(credentials: Optional[HTTPAuthorizationCredentials] = D
                 email=email,
                 is_active=is_active,
             )
-    finally:
-        conn.close()
 
 def require_role(allowed_roles: List[str]):
     def role_dependency(context: SecurityContext = Depends(get_security_context)) -> SecurityContext:

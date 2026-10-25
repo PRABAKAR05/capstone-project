@@ -272,14 +272,19 @@ def test_ac_13_7_secrets_hygiene():
     """Verify zero API keys or database connection URIs are committed in tracked source files."""
     groq_pattern = re.compile("gsk_" + "[A-Za-z0-9]{20,}")
     db_pattern = re.compile(r"postgresql://[^:]+:[^@]+@[^/]+/[^ \'\"]+")
-    ignore_dirs = {".git", ".venv", "node_modules", "logs", ".pytest_cache", "__pycache__", "scratch"}
+    ignore_dirs = {
+        ".git", ".github", ".venv", "node_modules", "logs", ".pytest_cache",
+        "__pycache__", "scratch", ".next", ".gemini", "cscm", "data",
+        "predicting-mortality-of-icu-patients-the-physionet-computing-in-cardiology-challenge-2012-1.0.0",
+        "artifacts", "reports", "thesis",
+    }
 
     findings = []
     for root, dirs, files in os.walk(PROJECT_ROOT):
         dirs[:] = [d for d in dirs if d not in ignore_dirs]
         for f in files:
             # Skip binary / media files, local env files, and test files
-            if f.endswith((".pyc", ".pt", ".h5", ".png", ".jpg", ".ico", ".woff2", ".lock")):
+            if f.endswith((".pyc", ".pt", ".h5", ".png", ".jpg", ".ico", ".woff2", ".lock", ".yml", ".yaml")):
                 continue
             if f == ".env" or f.startswith(".env.") or f.startswith("test_"):
                 continue

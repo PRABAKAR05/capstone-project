@@ -137,6 +137,18 @@ export function DocumentUploadModal({
             </Alert>
           )}
 
+          {isUploading && (
+            <div className="rounded-lg bg-blue-50/80 border border-blue-200 p-3 text-xs text-blue-900 space-y-1.5 animate-pulse">
+              <div className="flex items-center gap-2 font-bold text-blue-800">
+                <span className="inline-block h-2 w-2 rounded-full bg-blue-600 animate-ping" />
+                OCR & Clinical Entity Extraction in Progress
+              </div>
+              <p className="text-[11px] text-blue-700">
+                Parsing clinical terms, dosages, lab values, and diagnoses. This typically takes 10–15 seconds. Please do not close this window.
+              </p>
+            </div>
+          )}
+
           {/* Classification Selection */}
           <Select
             label="Document Classification"

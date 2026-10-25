@@ -64,6 +64,8 @@ def author_prescription_endpoint(
 def list_prescriptions_endpoint(
     patient_id: Optional[UUID] = Query(None),
     status_filter: Optional[str] = Query(None, alias="status"),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
     context: SecurityContext = Depends(get_security_context),
 ):
     """
@@ -77,7 +79,9 @@ def list_prescriptions_endpoint(
             hospital_id=str(context.hospital_id),
             patient_id_filter=str(patient_id) if patient_id else None,
             status_filter=status_filter,
-            db_conn=conn
+            db_conn=conn,
+            limit=limit,
+            offset=offset,
         )
 
 

@@ -34,6 +34,28 @@ logger = logging.getLogger("carebridge.chat.engine")
 
 MAX_REACT_TURNS = 5
 
+def clean_mojibake(text: str) -> str:
+    """Normalize corrupted special characters, currency symbols, and broken encoding."""
+    if not text:
+        return text
+    replacements = {
+        "₹": "INR ",
+        "": "",
+        "?_": " ",
+        "??": "-",
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2018": "'",
+        "\u2019": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\u00a0": " ",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return text
+
+
 Tuple_Response = Tuple[str, bool, bool, Optional[ActionConfirmation], List[ChatCitation], List[Dict[str, Any]]]
 
 
@@ -419,7 +441,7 @@ async def run_conversational_turn(
     return ChatTurnResponse(
         conversation_id=conversation_id,
         role="assistant",
-        content=final_content,
+        content=clean_mojibake(final_content),
         is_emergency=False,
         requires_confirmation=False,
         pending_action=None,

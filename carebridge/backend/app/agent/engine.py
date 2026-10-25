@@ -19,6 +19,28 @@ logger = logging.getLogger("carebridge.agent.engine")
 MAX_REACT_TURNS = 5
 
 
+def clean_mojibake(text: str) -> str:
+    """Normalize corrupted special characters, currency symbols, and broken encoding."""
+    if not text:
+        return text
+    replacements = {
+        "₹": "INR ",
+        "": "",
+        "?_": " ",
+        "??": "-",
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2018": "'",
+        "\u2019": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\u00a0": " ",
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return text
+
+
 def generate_rule_based_fallback(context: SecurityContext, user_message: str) -> str:
     """Deterministic fallback response when Groq API is unreachable or rate-limited."""
     lower_msg = user_message.lower()
@@ -180,7 +202,7 @@ async def run_agent_turn(
 
             return {
                 "role": "assistant",
-                "content": final_text,
+                "content": clean_mojibake(final_text),
                 "is_emergency": False,
                 "tool_calls_executed": tool_calls_executed,
                 "model_used": getattr(response, "model", "llama-3.3-70b-versatile"),
