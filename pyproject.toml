@@ -28,7 +28,7 @@ classifiers = [
 Repository = "https://github.com/PRABAKAR/cscm-iomt"
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["carebridge/backend/tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
