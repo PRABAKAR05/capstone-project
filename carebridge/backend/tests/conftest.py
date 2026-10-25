@@ -55,6 +55,31 @@ def seed_database_for_session():
         conn = pool.getconn()
         conn.autocommit = True
         with conn.cursor() as cur:
+            # 1. Ensure auth schema, roles, and helper functions exist
+            cur.execute("""
+                CREATE SCHEMA IF NOT EXISTS auth;
+                DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'authenticated') THEN CREATE ROLE authenticated; END IF; END $$;
+                DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'anon') THEN CREATE ROLE anon; END IF; END $$;
+                DO $$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'service_role') THEN CREATE ROLE service_role; END IF; END $$;
+
+                CREATE OR REPLACE FUNCTION auth.uid() RETURNS UUID AS $$
+                  SELECT NULLIF(current_setting('request.jwt.claim.sub', true), '')::uuid;
+                $$ LANGUAGE sql STABLE;
+
+                CREATE OR REPLACE FUNCTION auth.role() RETURNS text AS $$
+                  SELECT NULLIF(current_setting('request.jwt.claim.role', true), '')::text;
+                $$ LANGUAGE sql STABLE;
+
+                CREATE OR REPLACE FUNCTION auth.jwt() RETURNS jsonb AS $$
+                  SELECT NULLIF(current_setting('request.jwt.claims', true), '')::jsonb;
+                $$ LANGUAGE sql STABLE;
+
+                GRANT USAGE ON SCHEMA auth, public TO anon, authenticated, service_role;
+                GRANT ALL ON ALL TABLES IN SCHEMA auth, public TO anon, authenticated, service_role;
+                GRANT ALL ON ALL SEQUENCES IN SCHEMA auth, public TO anon, authenticated, service_role;
+                GRANT ALL ON ALL ROUTINES IN SCHEMA auth, public TO anon, authenticated, service_role;
+            """)
+
             users = [
                 ("70000000-0000-0000-0000-000000000001", "11111111-1111-1111-1111-111111111111", "hospital_admin", "Admin 1", "admin1@aegis.example.com", True),
                 ("70000000-0000-0000-0000-000000000002", "11111111-1111-1111-1111-111111111111", "doctor", "Doctor 1", "doc1@aegis.example.com", True),
