@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from typing import List, Dict, Any, Optional, Tuple
 from uuid import uuid4
 
@@ -35,41 +36,69 @@ logger = logging.getLogger("carebridge.chat.engine")
 MAX_REACT_TURNS = 5
 
 def clean_mojibake(text: str) -> str:
-    """Normalize corrupted special characters, currency symbols, and broken encoding."""
+    """Normalize corrupted special characters, currency symbols, and broken multi-byte encoding."""
     if not text:
         return text
 
-    # Attempt re-encoding for UTF-8 misdecoded as Latin-1 (e.g. â€‘, â€“)
-    try:
-        if any(c in text for c in ("â", "Ã", "Â", "€")):
-            repaired = text.encode("latin-1").decode("utf-8")
-            text = repaired
-    except Exception:
-        pass
+    # 1. Regex repair for UTF-8 byte sequences erroneously decoded as Latin-1 (ISO-8859-1)
+    def _fix_latin1_match(m):
+        try:
+            return m.group(0).encode("latin-1").decode("utf-8")
+        except Exception:
+            return m.group(0)
 
-    replacements = {
-        "â€‘": "-",
-        "â€“": "-",
-        "â€”": "-",
-        "â€˜": "'",
-        "â€™": "'",
-        "â€œ": '"',
-        "â€": '"',
-        "₹": "INR ",
-        "?_": " ",
-        "??": "-",
-        "\u2011": "-",  # non-breaking hyphen
-        "\u2012": "-",  # figure dash
-        "\u2013": "-",  # en dash
-        "\u2014": "-",  # em dash
-        "\u2018": "'",
-        "\u2019": "'",
-        "\u201c": '"',
-        "\u201d": '"',
-        "\u00a0": " ",
-    }
-    for old, new in replacements.items():
-        text = text.replace(old, new)
+    text = re.sub(r"[\u0080-\u00ff]{2,}", _fix_latin1_match, text)
+
+    # 2. Comprehensive replacements for multi-byte, CP1252, Latin-1, and ambiguous unicode sequences
+    replacements = [
+        # Bullet variations
+        ("\u00e2\u0080\u00a2", "•"),
+        ("\u00e2\u20ac\u00a2", "•"),
+        ("â€¢", "•"),
+        # Narrow NBSP & NBSP variations -> standard space
+        ("\u00e2\u0080\u00af", " "),
+        ("\u00e2\u20ac\u00af", " "),
+        ("â€¯", " "),
+        ("\u202f", " "),
+        ("\u00a0", " "),
+        # Hyphens & Dashes
+        ("\u00e2\u0080\u0091", "-"),
+        ("\u00e2\u20ac\u0091", "-"),
+        ("\u00e2\u20ac\u2018", "-"),
+        ("â€\u2011", "-"),
+        ("â€‘", "-"),
+        ("\u00e2\u0080\u0093", "-"),
+        ("\u00e2\u20ac\u0093", "-"),
+        ("â€“", "-"),
+        ("\u00e2\u0080\u0094", "-"),
+        ("\u00e2\u20ac\u0094", "-"),
+        ("â€”", "-"),
+        ("\u2011", "-"),
+        ("\u2012", "-"),
+        ("\u2013", "-"),
+        ("\u2014", "-"),
+        # Quotes & Apostrophes
+        ("\u00e2\u0080\u0098", "'"),
+        ("\u00e2\u0080\u0099", "'"),
+        ("â€˜", "'"),
+        ("â€™", "'"),
+        ("\u00e2\u0080\u009c", '"'),
+        ("\u00e2\u0080\u009d", '"'),
+        ("â€œ", '"'),
+        ("â€\x9d", '"'),
+        ("â€", '"'),
+        ("\u2018", "'"),
+        ("\u2019", "'"),
+        ("\u201c", '"'),
+        ("\u201d", '"'),
+        # Currency & formatting artifacts
+        ("₹", "INR "),
+        ("?_", " "),
+        ("??", "-"),
+    ]
+    for old, new in replacements:
+        if old in text:
+            text = text.replace(old, new)
     return text
 
 
@@ -323,7 +352,7 @@ async def run_conversational_turn(
         return ChatTurnResponse(
             conversation_id=conversation_id,
             role="assistant",
-            content=content,
+            content=clean_mojibake(content),
             is_emergency=is_em,
             requires_confirmation=req_conf,
             pending_action=pending,
@@ -434,7 +463,7 @@ async def run_conversational_turn(
         return ChatTurnResponse(
             conversation_id=conversation_id,
             role="assistant",
-            content=content,
+            content=clean_mojibake(content),
             is_emergency=is_em,
             requires_confirmation=req_conf,
             pending_action=pending,

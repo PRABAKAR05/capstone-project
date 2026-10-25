@@ -106,10 +106,11 @@ def search_patients(
                     masked_first = f"{r[3][0]}***" if r[3] else "—"
                     masked_last = f"{r[4][0]}***" if r[4] else "—"
                     masked_phone = f"*****{r[8][-4:]}" if r[8] and len(r[8]) >= 4 else "*****"
+                    masked_dob = f"{r[5].year}-**-**" if hasattr(r[5], "year") else f"{str(r[5])[:4]}-**-**" if r[5] else None
                     results.append(
                         PatientDemographicsOnly(
                             id=r[0], hospital_id=r[1], mrn=r[2], first_name=masked_first,
-                            last_name=masked_last, date_of_birth=r[5], gender=r[6],
+                            last_name=masked_last, date_of_birth=masked_dob, gender=r[6],
                             blood_group=r[7], phone=masked_phone,
                             emergency_contact_name="Restricted (Lab Masked)", emergency_contact_phone="Restricted",
                         )
@@ -210,9 +211,10 @@ def get_patient_by_id(
                 masked_first = f"{row[3][0]}***" if row[3] else "—"
                 masked_last = f"{row[4][0]}***" if row[4] else "—"
                 masked_phone = f"*****{row[8][-4:]}" if row[8] and len(row[8]) >= 4 else "*****"
+                masked_dob = f"{row[5].year}-**-**" if hasattr(row[5], "year") else f"{str(row[5])[:4]}-**-**" if row[5] else None
                 return PatientDemographicsOnly(
                     id=row[0], hospital_id=row[1], mrn=row[2], first_name=masked_first,
-                    last_name=masked_last, date_of_birth=row[5], gender=row[6],
+                    last_name=masked_last, date_of_birth=masked_dob, gender=row[6],
                     blood_group=row[7], phone=masked_phone,
                     emergency_contact_name="Restricted (Lab Masked)", emergency_contact_phone="Restricted",
                 )

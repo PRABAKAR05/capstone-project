@@ -1,6 +1,6 @@
 from uuid import UUID
 from datetime import date, datetime
-from typing import Optional, Literal
+from typing import Optional, Literal, Union
 from pydantic import BaseModel, Field, EmailStr
 
 class PatientCreate(BaseModel):
@@ -21,7 +21,7 @@ class PatientResponse(BaseModel):
     mrn: str
     first_name: str
     last_name: str
-    date_of_birth: date
+    date_of_birth: Optional[Union[date, str]] = None
     gender: str
     blood_group: Optional[str] = None
     phone: str
@@ -38,7 +38,7 @@ class PatientDemographicsOnly(BaseModel):
     mrn: str
     first_name: str
     last_name: str
-    date_of_birth: date
+    date_of_birth: Optional[Union[date, str]] = None
     gender: str
     blood_group: Optional[str] = None
     phone: str
